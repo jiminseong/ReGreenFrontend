@@ -1,18 +1,26 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function InstallPrompt() {
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
+    // iOS 기기인지 확인 (iPhone, iPad, iPod) 및 MSStream이 없는 경우
     setIsIOS(/iPhone|iPad|iPod/.test(navigator.userAgent) && !("MSStream" in window));
+
+    // PWA가 standalone 모드로 실행 중인지 확인
     setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
   }, []);
 
-  if (isStandalone) return null;
+  // PWA가 standalone 모드로 실행 중인지 확인 후 스플래쉬 페이지로 이동
+  if (isStandalone) {
+    router.push("/splash");
+  }
 
   return (
     <div className="max-w-md mx-auto mb-32 md:mb-0 p-6 bg-white rounded-2xl shadow-lg text-center border">
