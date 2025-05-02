@@ -28,7 +28,7 @@ const SplashPage = () => {
       transition={{ duration: 1 }}
     >
       <Image src="/192.webp" alt="로고" width={100} height={100} />
-      <h1 className="text-2xl font-bold mt-4">ReGreen</h1>
+      <h1 className="text-2xl font-bold mt-4">wooimi</h1>
     </motion.div>
   );
 };
