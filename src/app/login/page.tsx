@@ -29,7 +29,7 @@ const LoginPage = () => {
         {/* 카카오 로그인 버튼 */}
         <button
           className="flex items-center justify-center w-full max-w-xs px-4 py-3  bg-[#F7CE45] border-[1px] border-[#E2E2E2]  font-semibold rounded-xl "
-          // onClick={() => router.push("/auth/kakao")}
+          onClick={() => router.push("/home")}
         >
           <Image
             src="/icon/auth/kakao.svg"
