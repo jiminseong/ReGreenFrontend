@@ -9,7 +9,7 @@ const SplashPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const timer = setTimeout(() => router.push(`/onboard`), 1500);
+    const timer = setTimeout(() => router.push(`/onboard`), 1550);
 
     return () => clearTimeout(timer);
   }, [router]);
@@ -19,8 +19,7 @@ const SplashPage = () => {
       className="flex flex-col items-center justify-center h-screen bg-white"
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 2 }}
+      transition={{ duration: 1.6 }}
     >
       <Image src="/192.webp" alt="로고" width={100} height={100} />
       <h1 className="text-2xl font-bold mt-4">wooimi</h1>
