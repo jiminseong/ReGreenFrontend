@@ -13,9 +13,10 @@ const OnboardingPage = () => {
   const router = useRouter();
 
   const handleNext = () => {
-    if (currentStep < 3) {
-      setCurrentStep(currentStep + 1);
-    } else {
+    if (currentStep < 2) {
+      setCurrentStep((prevStep) => prevStep + 1);
+    } else if (currentStep === 2) {
+      // 마지막 단계에서 바로 /login으로 이동
       router.push("/login");
     }
   };
@@ -23,8 +24,13 @@ const OnboardingPage = () => {
   return (
     <div className="flex flex-col items-center justify-between h-screen p-4">
       <div className="relative w-full flex flex-col items-center justify-center ">
-        <ProgressBar step={currentStep} totalSteps={3} />
-        <button className="absolute top-5 text-ppink text-lg font-semibold right-0">skip</button>
+        <ProgressBar step={currentStep + 1} totalSteps={3} />
+        <button
+          className="absolute top-5 text-ppink text-lg font-semibold right-0"
+          onClick={() => router.push("/login")}
+        >
+          skip
+        </button>
       </div>
       <div className="flex flex-col gap-8 items-center justify-center">
         {currentStep === 0 ? (
