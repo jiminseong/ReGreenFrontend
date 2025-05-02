@@ -29,7 +29,6 @@ function InstallPrompt() {
 
   return (
     <div className="max-w-md mx-auto mb-32 md:mb-0 p-6 bg-white rounded-2xl shadow-lg text-center border">
-      \
       {isIOS ? (
         <p className="mt-4 text-sm text-gray-500">
           iOS에서는 아래의
