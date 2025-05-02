@@ -8,27 +8,28 @@ function InstallPrompt() {
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
   const router = useRouter();
-
   useEffect(() => {
     // iOS 기기인지 확인 (iPhone, iPad, iPod) 및 MSStream이 없는 경우
     setIsIOS(/iPhone|iPad|iPod/.test(navigator.userAgent) && !("MSStream" in window));
 
     // PWA가 standalone 모드로 실행 중인지 확인
-    setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
+    const isStandaloneMode = window.matchMedia("(display-mode: standalone)").matches;
+    setIsStandalone(isStandaloneMode);
+
+    // PWA가 standalone 모드로 실행 중인 경우 스플래쉬 페이지로 즉시 이동
+    if (isStandaloneMode) {
+      router.push("/splash");
+    }
   }, []);
 
-  // PWA가 standalone 모드로 실행 중인지 확인 후 스플래쉬 페이지로 이동
-  if (isStandalone) {
-    router.push("/splash");
+  // isStandalone 상태가 null일 때 로딩 화면 표시
+  if (isStandalone === null) {
+    return <div className="flex items-center justify-center h-screen">로딩 중...</div>;
   }
 
   return (
     <div className="max-w-md mx-auto mb-32 md:mb-0 p-6 bg-white rounded-2xl shadow-lg text-center border">
-      <h2 className="text-xl font-bold mb-2">우이미 베타버전 설치하기</h2>
-      <p className="text-gray-700 text-sm">
-        우이미를 홈 화면에 추가하면 <br /> 더 빠르고 편리하게 사용할 수 있어요!
-      </p>
-
+      \
       {isIOS ? (
         <p className="mt-4 text-sm text-gray-500">
           iOS에서는 아래의
@@ -57,7 +58,7 @@ function InstallPrompt() {
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <main className="min-h-screen bg-white flex items-center justify-center px-4">
       <InstallPrompt />
     </main>
   );

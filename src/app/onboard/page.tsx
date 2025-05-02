@@ -21,7 +21,7 @@ const OnboardingPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen bg-gray-100 p-4">
+    <div className="flex flex-col items-center justify-between h-screen p-4">
       <div className="relative w-full flex flex-col items-center justify-center ">
         <ProgressBar step={currentStep} totalSteps={3} />
         <button className="absolute top-5 text-ppink text-lg font-semibold right-0">skip</button>
