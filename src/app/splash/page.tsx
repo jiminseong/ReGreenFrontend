@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-// import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { motion } from "framer-motion";
 
 const SplashPage = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -11,7 +12,7 @@ const SplashPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      router.push("/onboard"); // 온보딩으로 이동
+      setTimeout(() => router.push(`/onboard`), 1500); // 애니메이션 후 이동
     }, 3000);
     return () => clearTimeout(timer);
   }, [router]);
@@ -19,10 +20,16 @@ const SplashPage = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-white">
-      {/* <Image src="/192.png" alt="로고" width={192} height={192} /> */}
+    <motion.div
+      className="flex flex-col items-center justify-center h-screen bg-white"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Image src="/192.webp" alt="로고" width={192} height={192} />
       <h1 className="text-2xl font-bold mt-4">ReGreen</h1>
-    </div>
+    </motion.div>
   );
 };
 
