@@ -48,6 +48,9 @@ function InstallPrompt() {
           수 있어요.
         </p>
       )}
+      <button onClick={() => router.push("/splash")} className="mt-6 px-4 py-2  underline text-sm ">
+        시작
+      </button>
     </div>
   );
 }
