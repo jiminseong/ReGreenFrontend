@@ -12,7 +12,7 @@ const SplashPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(() => router.push(`/onboard`), 1500); // 애니메이션 후 이동
+      setTimeout(() => router.push(`/onboard`), 1000);
     }, 3000);
     return () => clearTimeout(timer);
   }, [router]);
@@ -25,9 +25,9 @@ const SplashPage = () => {
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 1 }}
     >
-      <Image src="/192.webp" alt="로고" width={192} height={192} />
+      <Image src="/192.webp" alt="로고" width={100} height={100} />
       <h1 className="text-2xl font-bold mt-4">ReGreen</h1>
     </motion.div>
   );
