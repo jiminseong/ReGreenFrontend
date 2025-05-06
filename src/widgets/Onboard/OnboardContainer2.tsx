@@ -11,7 +11,7 @@ const OnboardContainer2 = () => {
         인증해보세요!
       </h1>
       <Image
-        src="/image/onboard/2.webp"
+        src="/image/onboard/2.png"
         alt="온보딩 이미지"
         width={259}
         height={338}

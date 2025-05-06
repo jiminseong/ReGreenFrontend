@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Room from "@/widgets/home/Room";
 import BottomNavigationBar from "@/widgets/home/BottomNavigationBar";
-import TopNavigationBar from "@/widgets/home/TopNavigationBar";
+import TopSatatusBar from "@/widgets/home/TopSatatusBar";
 
 const HomePage = () => {
   const router = useRouter();
@@ -21,7 +21,7 @@ const HomePage = () => {
 
   return (
     <div className="p-5  flex flex-col items-center justify-evenly h-screen w-full bg-gradient-to-b from-[rgba(141,157,0,0.4)] to-[rgba(233,187,1,0.4)] ">
-      <TopNavigationBar />
+      <TopSatatusBar />
       <Room />
       <BottomNavigationBar />
     </div>

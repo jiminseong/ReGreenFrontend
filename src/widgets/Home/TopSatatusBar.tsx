@@ -1,6 +1,7 @@
+import CoupleProfile from "@/entities/user/ui/CoupleProfile";
 import Image from "next/image";
 
-const TopNavigationBar = () => {
+const TopSatatusBar = () => {
   return (
     <div className=" w-full flex flex-col justify-center items-center gap-4">
       <div className="w-full text-center rounded-lg bg-[#FFFFFF8C] py-2  font-semibold">
@@ -8,7 +9,9 @@ const TopNavigationBar = () => {
       </div>
       <div className="flex w-full justify-between">
         {/* 일러스트 */}
-        <div className="p-4 bg-[#FFFFFF8C] rounded-lg">일러스트</div>
+        <div className="p-2 bg-[#FFFFFF8C] rounded-lg">
+          <CoupleProfile size="small" />
+        </div>
 
         <div className="flex flex-col rounded-lg gap-2.5">
           {/* D-Day */}
@@ -32,4 +35,4 @@ const TopNavigationBar = () => {
   );
 };
 
-export default TopNavigationBar;
+export default TopSatatusBar;

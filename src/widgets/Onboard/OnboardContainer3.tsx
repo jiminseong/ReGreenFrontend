@@ -9,7 +9,7 @@ const OnboardContainer3 = () => {
         우리만의 아지트를 꾸며보자!
       </h1>
       <Image
-        src="/image/onboard/3.webp"
+        src="/image/onboard/3.png"
         alt="온보딩 이미지"
         width={259}
         height={338}

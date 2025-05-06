@@ -7,7 +7,7 @@ const OnboardContainer1 = () => {
         지구가 망하면 <br /> 우리의 인연도 끝이다!
       </h1>
       <Image
-        src="/image/onboard/1.webp"
+        src="/image/onboard/1.png"
         alt="온보딩 이미지"
         width={259}
         height={338}
