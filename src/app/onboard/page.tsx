@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import OnboardContainer1 from "@/widgets/Onboard/OnboardContainer1";
+import OnboardContainer1 from "@/widgets/onboard/OnboardContainer1";
 import Button from "@/shared/ui/Button";
-import OnboardContainer2 from "@/widgets/Onboard/OnboardContainer2";
-import OnboardContainer3 from "@/widgets/Onboard/OnboardContainer3";
-import ProgressBar from "@/widgets/Onboard/ProgressBar";
+import OnboardContainer2 from "@/widgets/onboard/OnboardContainer2";
+import OnboardContainer3 from "@/widgets/onboard/OnboardContainer3";
+import ProgressBar from "@/widgets/onboard/ProgressBar";
 
 const OnboardingPage = () => {
   const [currentStep, setCurrentStep] = useState(0);

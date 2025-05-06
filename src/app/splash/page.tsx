@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import SplashContent from "@/widgets/Splash/\bSplashContent";
+import SplashContent from "@/widgets/splash/SplashContent";
 
 const SplashPage = () => {
   const router = useRouter();

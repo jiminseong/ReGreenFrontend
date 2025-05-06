@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Room from "@/widgets/Home/Room";
-import BottomNavigationBar from "@/widgets/Home/BottomNavigationBar";
-import TopNavigationBar from "@/widgets/Home/TopNavigationBar";
+import Room from "@/widgets/home/Room";
+import BottomNavigationBar from "@/widgets/home/BottomNavigationBar";
+import TopNavigationBar from "@/widgets/home/TopNavigationBar";
 
 const HomePage = () => {
   const router = useRouter();
