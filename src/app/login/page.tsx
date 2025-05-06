@@ -18,7 +18,7 @@ const LoginPage = () => {
   }, [router]);
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen py-4 ">
+    <div className="flex flex-col items-center justify-between h-screen p-5  ">
       {/* 로고 및 타이틀 */}
       <div className="text-center h-[60%] flex flex-col items-center justify-center">
         <h1 className="text-4xl font-bold text-ppink">wooimi</h1>

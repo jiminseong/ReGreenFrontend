@@ -22,7 +22,7 @@ const OnboardingPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen p-4">
+    <div className="flex flex-col items-center justify-between h-screen p-5">
       <div className="relative w-full flex flex-col items-center justify-center ">
         <ProgressBar step={currentStep + 1} totalSteps={3} />
         <button

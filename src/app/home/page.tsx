@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Room from "@/features/room-customizer/ui/Room";
+import Room from "@/widgets/Home/Room";
+import BottomNavigationBar from "@/shared/ui/BottomNavigationBar";
 
 const HomePage = () => {
   const router = useRouter();
@@ -18,15 +19,9 @@ const HomePage = () => {
   }, [router]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <h1 className="text-2xl font-bold mb-4">홈</h1>
+    <div className="p-5 relative flex flex-col items-center justify-center h-screen w-full bg-gradient-to-b from-[rgba(141,157,0,0.4)] to-[rgba(233,187,1,0.4)] ">
       <Room />
-      <button
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        onClick={() => router.push("/cart")}
-      >
-        상점으로 이동
-      </button>
+      <BottomNavigationBar />
     </div>
   );
 };
