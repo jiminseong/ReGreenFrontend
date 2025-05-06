@@ -35,7 +35,7 @@ const activities = [
 
 const ActivityList = () => {
   return (
-    <div className="bg-white h-screen overflow-y-auto">
+    <div className="bg-white h-screen scrollbar-hide ">
       {activities.map((activity, index) => (
         <ActivityItem
           key={index}

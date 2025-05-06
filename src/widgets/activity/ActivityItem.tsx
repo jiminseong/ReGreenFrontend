@@ -17,7 +17,7 @@ const ActivityItem: React.FC<ActivityItemProp> = ({ iconSrc, label, isChecked })
 
       {/* 체크박스 */}
       <div
-        className={`w-6 h-6 rounded-full flex items-center justify-center ${
+        className={`w-6 h-6  cursor-pointer rounded-full flex items-center justify-center ${
           isChecked ? "bg-ppink" : "bg-gray-300"
         }`}
       >
