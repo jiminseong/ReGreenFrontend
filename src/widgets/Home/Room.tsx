@@ -37,10 +37,10 @@ export default function Room() {
   }, [furniture]);
 
   return (
-    <div className="flex w-full h-full flex-col items-center">
-      <Stage width={350} height={350} style={{ background: "transprent" }}>
+    <div className="flex w-full h-full flex-col items-center justify-center">
+      <Stage width={340} height={340} style={{ background: "transprent" }}>
         <Layer>
-          {background && <KonvaImage image={background} width={350} height={350} />}
+          {background && <KonvaImage image={background} width={340} height={340} />}
 
           {furniture.map((item) => {
             const type = furnitureTypes.find((t) => t.id === item.type);

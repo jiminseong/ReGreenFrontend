@@ -13,12 +13,12 @@ interface FurnitureProps {
 
 function isInsideHexagon(x: number, y: number): boolean {
   const hexPath = [
-    [175, 0],
-    [350, 87.5],
-    [350, 262.5],
-    [175, 350],
-    [0, 262.5],
-    [0, 87.5],
+    [170, 0], // 상단 중앙
+    [340, 85], // 우측 상단
+    [340, 255], // 우측 하단
+    [170, 340], // 하단 중앙
+    [0, 255], // 좌측 하단
+    [0, 85], // 좌측 상단
   ];
 
   let inside = false;
