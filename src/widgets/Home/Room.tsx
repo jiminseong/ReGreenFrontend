@@ -19,7 +19,7 @@ export default function Room() {
     { id: 3, type: "orange-box", x: 280, y: 260, width: 60, height: 60 },
   ]);
 
-  const [background] = useImage("/image/room/background.png");
+  const [background] = useImage("/image/home/background.png");
 
   const updatePosition = (id: number, x: number, y: number) => {
     setFurniture((prev) => prev.map((item) => (item.id === id ? { ...item, x, y } : item)));
@@ -38,7 +38,7 @@ export default function Room() {
 
   return (
     <div className="flex w-full h-full flex-col items-center">
-      <Stage width={350} height={350} style={{ background: "#ffffff" }}>
+      <Stage width={350} height={350} style={{ background: "transprent" }}>
         <Layer>
           {background && <KonvaImage image={background} width={350} height={350} />}
 
