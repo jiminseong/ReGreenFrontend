@@ -12,6 +12,8 @@ export default function Page() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      // 로컬 스토리지에 온보딩 열람 상태 있다면
+      const isInboardFinished = localStorage.getItem("onboarded");
       const isIOSDevice = /iPhone|iPad|iPod/.test(navigator.userAgent) && !("MSStream" in window);
       setIsIOS(isIOSDevice);
 
@@ -19,8 +21,12 @@ export default function Page() {
         window.matchMedia("(display-mode: standalone)").matches ||
         ("standalone" in window.navigator && window.navigator.standalone === true);
 
-      if (!isStandalone) {
+      if (!isStandalone && !isInboardFinished) {
         router.push("/onboard");
+      } else if (isStandalone && isInboardFinished) {
+        // 로컬 스토리지에 온보딩 열람 상태 있다면 로그인으로 이동
+        // TODO: 로그인 되어있다면 -> 홈으로 이동
+        router.push("/login");
       } else {
         setShowPrompt(true);
       }

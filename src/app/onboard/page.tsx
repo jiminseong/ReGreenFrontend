@@ -12,12 +12,18 @@ const OnboardingPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const router = useRouter();
 
+  const handleOnboardfinsh = () => {
+    // 로컬 스토리지에 온보딩 열람 상태 저장
+    localStorage.setItem("onboarded", "true");
+    router.push("/login");
+  };
   const handleNext = () => {
     if (currentStep < 2) {
       setCurrentStep((prevStep) => prevStep + 1);
     } else if (currentStep === 2) {
-      // 마지막 단계에서 바로 /login으로 이동
-      router.push("/login");
+      // 마지막 단계에서 온보딩 완료 버튼 클릭 시
+      // 로컬 스토리지에 온보딩 열람 상태 저장
+      handleOnboardfinsh();
     }
   };
 
@@ -27,7 +33,7 @@ const OnboardingPage = () => {
         <ProgressBar step={currentStep + 1} totalSteps={3} />
         <button
           className="absolute top-5 text-ppink text-lg font-semibold right-0"
-          onClick={() => router.push("/login")}
+          onClick={() => handleOnboardfinsh()}
         >
           skip
         </button>
