@@ -21,7 +21,7 @@ export default function Page() {
         window.matchMedia("(display-mode: standalone)").matches ||
         ("standalone" in window.navigator && window.navigator.standalone === true);
 
-      if (!isStandalone && !isInboardFinished) {
+      if (isStandalone && !isInboardFinished) {
         router.push("/onboard");
       } else if (isStandalone && isInboardFinished) {
         // 로컬 스토리지에 온보딩 열람 상태 있다면 로그인으로 이동
