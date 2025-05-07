@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Pretendard } from "./fonts/font";
+import QueryProvider from "./providers/query-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,11 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased overflow-hidden">
-        <div
-          className={`${Pretendard.className} inset-0 z-[210] mx-auto min-h-screen w-full min-w-[320px] max-w-[var(--max-width)] bg-white md:w-[500px]`}
-        >
-          {children}
-        </div>
+        <QueryProvider>
+          <div
+            className={`${Pretendard.className} inset-0 z-[210] mx-auto min-h-screen w-full min-w-[320px] max-w-[var(--max-width)] bg-white md:w-[500px]`}
+          >
+            {children}
+          </div>
+        </QueryProvider>
       </body>
     </html>
   );
