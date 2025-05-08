@@ -13,7 +13,7 @@ const LoginPage = () => {
         {/* 카카오 로그인 버튼 */}
         <LoginButton provider="kakao" />
         {/* 네이버 로그인 버튼 */}
-        <LoginButton provider="naver" />
+        {/* <LoginButton provider="naver" /> */}
       </div>
       {/* 하단 텍스트 */}
       <button className="underline text-sm text-gray-500 mt-4">로그인에 어려움이 있나요?</button>
