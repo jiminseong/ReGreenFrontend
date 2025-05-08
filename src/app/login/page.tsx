@@ -1,22 +1,6 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import LoginButton from "@/features/auth/ui/LoginButton";
 
 const LoginPage = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    // 로컬 스토리지에서 로그인 상태 확인
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-
-    // 로그인 상태가 true라면 홈(/home)으로 리다이렉트
-    if (isLoggedIn === "true") {
-      router.push("/home");
-    }
-  }, [router]);
-
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5  ">
       {/* 로고 및 타이틀 */}
