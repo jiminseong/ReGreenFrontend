@@ -12,7 +12,7 @@ const furnitureTypes: FurnitureType[] = [
   { id: "orange-box", color: "#ffb74d", label: "주황상자" },
 ];
 
-export default function Room() {
+export default function Room({ type }: { type?: string }) {
   const [furniture, setFurniture] = useState<FurnitureItem[]>([
     { id: 1, type: "blue-box", x: 160, y: 200, width: 50, height: 50 },
     { id: 2, type: "red-box", x: 220, y: 220, width: 40, height: 40 },
@@ -37,7 +37,11 @@ export default function Room() {
   }, [furniture]);
 
   return (
-    <div className="flex w-full h-full flex-col items-center justify-center">
+    <div
+      className={`flex w-full h-full flex-col items-center justify-center ${
+        type === "inventory" ? "pb-[75%] md:pb-[65%]" : ""
+      }`}
+    >
       <Stage width={340} height={340} style={{ background: "transprent" }}>
         <Layer>
           {background && <KonvaImage image={background} width={340} height={340} />}
