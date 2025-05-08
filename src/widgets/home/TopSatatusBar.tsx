@@ -1,17 +1,21 @@
 import CoupleProfile from "@/entities/user/ui/CoupleProfile";
+import useHandleMypage from "@/features/mypage/lib/hadnleMypage";
 import Image from "next/image";
 
 const TopSatatusBar = () => {
+  const handleMypage = useHandleMypage();
   return (
     <div className=" w-full flex flex-col justify-center items-center gap-4">
-      <div className="w-full text-center rounded-lg bg-[#FFFFFF8C] py-2  font-semibold">
+      {/* <div className="w-full text-center rounded-lg bg-[#FFFFFF8C] py-2  font-semibold">
         길동이네
-      </div>
+      </div> */}
       <div className="flex w-full justify-between">
-        {/* 일러스트 */}
-        <div className="p-2 bg-[#FFFFFF8C] rounded-lg">
+        <button
+          onClick={() => handleMypage.navigateToMypage()}
+          className="p-2 bg-[#FFFFFF8C] rounded-lg "
+        >
           <CoupleProfile size="small" />
-        </div>
+        </button>
 
         <div className="flex flex-col rounded-lg gap-2.5">
           {/* D-Day */}
