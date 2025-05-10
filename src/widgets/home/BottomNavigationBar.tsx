@@ -1,33 +1,41 @@
+"use client";
 import { useRouter } from "next/navigation";
+import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
 
 const BottomNavigationBar = () => {
+  const { mode, setMode } = useHomeMode();
   const router = useRouter();
+
   const handleNavigation = (path: string) => {
-    router.push(path);
+    // 인증하기는 여전히 라우팅
+    if (path === "/activity/list") {
+      router.push(path);
+    }
+
+    // 방 꾸미기는 상태 전환
+    if (path === "inventory") {
+      setMode("inventory");
+    }
   };
+
   return (
-    <div className="w-full ">
-      <div className="flex w-full justify-center gap-4">
+    <div
+      className={`w-full transition-all duration-1000 ease-in-out
+    ${mode === "inventory" ? "hidden" : ""}`}
+    >
+      <div className="flex w-full justify-center gap-4 mb-9">
         <div
           onClick={() => handleNavigation("/activity/list")}
-          className="flex w-[50%] cursor-pointer flex-col rounded-[22px] bg-white p-10 text-center"
+          className="font-bold text-lg flex w-[50%] cursor-pointer flex-col rounded-[22px] bg-white px-7 py-5 text-center shadow-[0px_6px_0px_0px_rgba(0,0,0,0.25)]"
         >
-          <p className="font-semibold text-[14px]">환경 보호</p>
-          <p className="text-xl font-bold">
-            인증 하기 <br /> 📷
-          </p>
-          <p className="font-medium text-[#999999]">이별 미루기</p>
+          실천 인증 하기
         </div>
 
         <div
-          onClick={() => handleNavigation("/home/inventory")}
-          className="flex w-[50%] cursor-pointer flex-col rounded-[22px] bg-white p-10 text-center"
+          onClick={() => handleNavigation("inventory")}
+          className="font-bold text-lg md:text-xl flex w-[50%] cursor-pointer flex-col rounded-[22px] bg-white px-7 py-5 text-center shadow-[0px_6px_0px_0px_rgba(0,0,0,0.25)]"
         >
-          <p className="font-semibold text-[14px]">우리의 아지트</p>
-          <p className="text-xl font-bold">
-            방 꾸미기 <br /> 🎀
-          </p>
-          <p className="font-medium text-[#999999]">쇼핑하기</p>
+          방 꾸미기
         </div>
       </div>
     </div>

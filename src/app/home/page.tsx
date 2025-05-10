@@ -1,29 +1,18 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Room from "@/widgets/home/Room";
 import BottomNavigationBar from "@/widgets/home/BottomNavigationBar";
 import TopSatatusBar from "@/widgets/home/TopSatatusBar";
 
 const HomePage = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    // 로컬 스토리지에서 커플 상태 확인
-    const isCouple = localStorage.getItem("isCouple");
-
-    // 커플 상태가 false라면 홈(/couple)로 리다이렉트
-    if (isCouple === "false") {
-      router.push("/couple");
-    }
-  }, [router]);
-
   return (
-    <div className="p-5  flex flex-col items-center justify-evenly h-screen w-full bg-gradient-to-b from-[rgba(141,157,0,0.4)] to-[rgba(233,187,1,0.4)] ">
-      <TopSatatusBar />
-      <Room />
-      <BottomNavigationBar />
+    <div className="p-5  relative flex flex-col items-center justify-evenly h-screen w-full ">
+      <div className="z-[0] top-0 absolute bg-[#BEF2EE] w-full h-[50%]" />
+      <div className="z-[0] bottom-0 absolute bg-[#AEC700] w-full h-[50%]" />
+      <div className=" z-1 flex flex-col items-center justify-evenly w-full h-full">
+        <div className="flex-grow" />
+        <TopSatatusBar />
+        <Room />
+        <BottomNavigationBar />
+      </div>
     </div>
   );
 };

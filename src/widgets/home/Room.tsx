@@ -1,59 +1,195 @@
 "use client";
 
-import { FurnitureItem, FurnitureType } from "@/entities/room/model/type";
-import Furniture from "@/features/room-customizer/ui/Furniture";
-import { useEffect, useState } from "react";
-import { Layer, Stage, Image as KonvaImage } from "react-konva";
-import useImage from "use-image";
+import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
+import React from "react";
 
-const furnitureTypes: FurnitureType[] = [
-  { id: "blue-box", color: "#4f83cc", label: "파란상자" },
-  { id: "red-box", color: "#e57373", label: "빨간상자" },
-  { id: "orange-box", color: "#ffb74d", label: "주황상자" },
-];
+interface FurnitureItem {
+  furnitureId: number;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  type: "furniture" | "decor" | "structure";
+  zIndex: number;
+  s3ImageUrl: string;
+}
 
-export default function Room({ type }: { type?: string }) {
-  const [furniture, setFurniture] = useState<FurnitureItem[]>([
-    { id: 1, type: "blue-box", x: 160, y: 200, width: 50, height: 50 },
-    { id: 2, type: "red-box", x: 220, y: 220, width: 40, height: 40 },
-    { id: 3, type: "orange-box", x: 280, y: 260, width: 60, height: 60 },
-  ]);
+const Room = () => {
+  const { mode } = useHomeMode();
 
-  const [background] = useImage("/image/home/background.png");
-
-  const updatePosition = (id: number, x: number, y: number) => {
-    setFurniture((prev) => prev.map((item) => (item.id === id ? { ...item, x, y } : item)));
-  };
-
-  useEffect(() => {
-    console.log("Furniture positions updated:");
-    furniture.forEach((item) => {
-      console.log(
-        `${item.id}: ${item.type} → x: ${Math.round(item.x)}, y: ${Math.round(item.y)}, w: ${
-          item.width
-        }, h: ${item.height}`
-      );
-    });
-  }, [furniture]);
+  const roomData: FurnitureItem[] = [
+    {
+      furnitureId: 1,
+      name: "Eco Bag",
+      description: "This is a bag",
+      price: 100,
+      category: "BAG",
+      type: "furniture",
+      zIndex: 4,
+      s3ImageUrl: "/image/home/inventory/green/bag.svg",
+    },
+    {
+      furnitureId: 2,
+      name: "Eco Bed",
+      description: "This is a bed",
+      price: 1200,
+      category: "BED",
+      type: "furniture",
+      zIndex: 3,
+      s3ImageUrl: "/image/home/inventory/green/bed.svg",
+    },
+    {
+      furnitureId: 3,
+      name: "Eco Book",
+      description: "This is a book",
+      price: 60,
+      category: "BOOK",
+      type: "decor",
+      zIndex: 5,
+      s3ImageUrl: "/image/home/inventory/green/book.svg",
+    },
+    {
+      furnitureId: 4,
+      name: "Eco Calendar",
+      description: "This is a calendar",
+      price: 80,
+      category: "CALENDAR",
+      type: "decor",
+      zIndex: 6,
+      s3ImageUrl: "/image/home/inventory/green/calendar.svg",
+    },
+    {
+      furnitureId: 5,
+      name: "Eco Carpet",
+      description: "This is a carpet",
+      price: 200,
+      category: "CARPET",
+      type: "furniture",
+      zIndex: 1,
+      s3ImageUrl: "/image/home/inventory/green/carpet.svg",
+    },
+    {
+      furnitureId: 6,
+      name: "Eco Chair",
+      description: "This is a chair",
+      price: 150,
+      category: "CHAIR",
+      type: "furniture",
+      zIndex: 4,
+      s3ImageUrl: "/image/home/inventory/green/chair.svg",
+    },
+    {
+      furnitureId: 7,
+      name: "Eco Cushion",
+      description: "This is a cushion",
+      price: 70,
+      category: "CUSHION",
+      type: "decor",
+      zIndex: 5,
+      s3ImageUrl: "/image/home/inventory/green/cushion.svg",
+    },
+    {
+      furnitureId: 8,
+      name: "Eco Desk",
+      description: "This is a desk",
+      price: 900,
+      category: "DESK",
+      type: "furniture",
+      zIndex: 3,
+      s3ImageUrl: "/image/home/inventory/green/desk.svg",
+    },
+    {
+      furnitureId: 9,
+      name: "Eco Frame",
+      description: "This is a frame",
+      price: 110,
+      category: "FRAME",
+      type: "decor",
+      zIndex: 6,
+      s3ImageUrl: "/image/home/inventory/green/frame.svg",
+    },
+    {
+      furnitureId: 10,
+      name: "Eco Globe",
+      description: "This is a globe",
+      price: 140,
+      category: "GLOBE",
+      type: "decor",
+      zIndex: 5,
+      s3ImageUrl: "/image/home/inventory/green/globe.svg",
+    },
+    {
+      furnitureId: 11,
+      name: "Eco Ladder",
+      description: "This is a ladder",
+      price: 300,
+      category: "LADDER",
+      type: "furniture",
+      zIndex: 2,
+      s3ImageUrl: "/image/home/inventory/green/ladder.svg",
+    },
+    {
+      furnitureId: 12,
+      name: "Eco Nightstand",
+      description: "This is a nightstand",
+      price: 250,
+      category: "NIGHTSTAND",
+      type: "furniture",
+      zIndex: 3,
+      s3ImageUrl: "/image/home/inventory/green/nightstand.svg",
+    },
+    {
+      furnitureId: 13,
+      name: "Eco Rabbit",
+      description: "This is a rabbit",
+      price: 130,
+      category: "RABBIT",
+      type: "decor",
+      zIndex: 6,
+      s3ImageUrl: "/image/home/inventory/green/rabbit.svg",
+    },
+    {
+      furnitureId: 14,
+      name: "Eco Wall",
+      description: "This is a wall",
+      price: 0,
+      category: "WALL",
+      type: "structure",
+      zIndex: 0,
+      s3ImageUrl: "/image/home/inventory/green/wall.svg",
+    },
+    {
+      furnitureId: 15,
+      name: "Eco Window",
+      description: "This is a window",
+      price: 0,
+      category: "WINDOW",
+      type: "structure",
+      zIndex: 0,
+      s3ImageUrl: "/image/home/inventory/green/window.svg",
+    },
+  ];
 
   return (
     <div
-      className={`flex w-full h-full flex-col items-center justify-center ${
-        type === "inventory" ? "pb-[75%] md:pb-[65%]" : ""
-      }`}
+      className={`
+    flex w-full h-full flex-col items-center justify-center
+    transition-all duration-1000 ease-in-out
+    ${mode === "inventory" ? "pb-[75%] md:pb-[65%]" : "pb-0"}
+  `}
     >
-      <Stage width={340} height={340} style={{ background: "transprent" }}>
-        <Layer>
-          {background && <KonvaImage image={background} width={340} height={340} />}
-
-          {furniture.map((item) => {
-            const type = furnitureTypes.find((t) => t.id === item.type);
-            return (
-              type && <Furniture key={item.id} item={item} type={type} onDragEnd={updatePosition} />
-            );
-          })}
-        </Layer>
-      </Stage>
+      {roomData
+        .sort((a, b) => a.zIndex - b.zIndex)
+        .map((item) => (
+          <img
+            key={item.furnitureId}
+            src={item.s3ImageUrl}
+            alt={item.name}
+            className={`absolute z-[${item.zIndex}]`}
+          />
+        ))}
     </div>
   );
-}
+};
+
+export default Room;

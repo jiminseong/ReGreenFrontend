@@ -1,11 +1,19 @@
+"use client";
 import CoupleProfile from "@/entities/user/ui/CoupleProfile";
 import useHandleMypage from "@/features/mypage/lib/hadnleMypage";
+import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
 import Image from "next/image";
 
 const TopSatatusBar = () => {
+  const { mode } = useHomeMode();
   const handleMypage = useHandleMypage();
+
   return (
-    <div className=" w-full flex flex-col justify-center items-center gap-4">
+    <div
+      className={`${
+        mode === "inventory" ? "hidden" : ""
+      }w-full flex flex-col justify-center items-center gap-4`}
+    >
       {/* <div className="w-full text-center rounded-lg bg-[#FFFFFF8C] py-2  font-semibold">
         길동이네
       </div> */}
