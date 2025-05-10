@@ -2,6 +2,8 @@
 
 import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
 import React from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface FurnitureItem {
   furnitureId: number;
@@ -171,24 +173,29 @@ const Room = () => {
   ];
 
   return (
-    <div
-      className={`
-    flex w-full h-full flex-col items-center justify-center
-    transition-all duration-1000 ease-in-out
-    ${mode === "inventory" ? "pb-[75%] md:pb-[65%]" : "pb-0"}
-  `}
+    <motion.div
+      animate={{
+        y: mode === "inventory" ? -110 : 100, // 위로 살짝 올라가며 InventoryList 공간 확보
+      }}
+      transition={{
+        duration: mode === "inventory" ? 0.4 : 0.75,
+        ease: mode === "inventory" ? "backIn" : "backIn",
+      }}
+      className="relative w-full h-full flex flex-col items-center justify-center"
     >
       {roomData
         .sort((a, b) => a.zIndex - b.zIndex)
         .map((item) => (
-          <img
+          <Image
             key={item.furnitureId}
             src={item.s3ImageUrl}
             alt={item.name}
+            width={900}
+            height={900}
             className={`absolute z-[${item.zIndex}]`}
           />
         ))}
-    </div>
+    </motion.div>
   );
 };
 
