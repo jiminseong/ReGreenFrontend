@@ -70,7 +70,7 @@ export const http = ky.create({
      */
     afterResponse: [
       async (request, options, response) => {
-        if (response.status !== 419) {
+        if (response.status === 419) {
           const refresh = await http.post("api/auth/refresh", {
             prefixUrl: process.env.NEXT_PUBLIC_SERVER_URL,
             credentials: "include",
