@@ -9,7 +9,7 @@ const Button: React.FC<ButtonProps> = ({ children, onClick, className, active = 
   return (
     <button
       onClick={onClick}
-      className={`${className} w-full px-4 py-4 rounded-lg font-bold ${
+      className={`${className} z-5 w-full px-4 py-4 rounded-lg font-bold ${
         active ? "bg-lpink text-ppink " : "bg-[#EEEEEE] text-[#999999] "
       }`}
     >

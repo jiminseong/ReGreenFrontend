@@ -3,19 +3,19 @@
 import Image from "next/image";
 
 import React from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 interface LoginButtonProps {
   provider?: "kakao" | "naver";
 }
 
 const LoginButton: React.FC<LoginButtonProps> = ({ provider = "kakao" }) => {
-  const router = useRouter();
+  // const router = useRouter();
   function handleLogin() {
     if (provider === "kakao") {
       //임시 구현 : 홈으로 이동
-      router.push("/home");
-      // window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/kakao/login`;
+      // router.push("/home");
+      window.location.href = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/kakao/login`;
     } else if (provider === "naver") {
       // window.location.href = "/api/auth/naver"; // 미래 확장 대비
     }

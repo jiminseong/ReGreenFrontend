@@ -3,7 +3,7 @@ import Image from "next/image";
 const OnboardContainer1 = () => {
   return (
     <div className="flex flex-col gap-8 items-center justify-center">
-      <h1 className="text-2xl font-bold text-center">
+      <h1 className="absolute text-2xl font-bold text-center top-[101px]">
         지구가 망하면 <br /> 우리의 인연도 끝이다!
       </h1>
       <Image
