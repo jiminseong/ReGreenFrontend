@@ -31,12 +31,14 @@ const BottomNavigationBar = () => {
       }}
       className="z-10 w-full"
     >
-      <div className="flex w-full justify-center gap-4 mb-9">
-        <div onClick={() => handleNavigation("activity")} className={buttonClass}>
-          실천 인증 하기
-        </div>
-        <div onClick={() => handleNavigation("inventory")} className={buttonClass}>
-          방 꾸미기
+      <div className="w-full flex flex-col items-start  gap-3.5">
+        <div className="flex w-full justify-center gap-4 mb-9">
+          <div onClick={() => handleNavigation("activity")} className={buttonClass}>
+            실천 인증 하기
+          </div>
+          <div onClick={() => handleNavigation("inventory")} className={buttonClass}>
+            방 꾸미기
+          </div>
         </div>
       </div>
     </motion.div>
