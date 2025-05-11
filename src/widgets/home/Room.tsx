@@ -175,11 +175,11 @@ const Room = () => {
   return (
     <motion.div
       animate={{
-        y: mode === "inventory" ? -110 : 100, // 위로 살짝 올라가며 InventoryList 공간 확보
+        y: mode === "inventory" ? -100 : 40, // 위로 살짝 올라가며 InventoryList 공간 확보
       }}
       transition={{
-        duration: mode === "inventory" ? 0.4 : 0.75,
-        ease: mode === "inventory" ? "backIn" : "backIn",
+        duration: mode === "inventory" ? 0.35 : 0.35,
+        ease: "linear",
       }}
       className="relative w-full h-full flex flex-col items-center justify-center"
     >
@@ -195,6 +195,19 @@ const Room = () => {
             className={`absolute z-[${item.zIndex}]`}
           />
         ))}
+      <div
+        className={`${
+          mode === "inventory" ? "visible" : "hidden"
+        } w-full h-[162px] absolute z-[-1] bottom-0 flex justify-center items-center`}
+      >
+        <Image
+          src="/image/home/backgroundFillter.png"
+          alt="배경 필터"
+          width={900}
+          height={900}
+          className="absolute z-[-10] bottom-[120px] w-full h-full"
+        />
+      </div>
     </motion.div>
   );
 };

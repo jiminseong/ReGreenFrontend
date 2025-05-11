@@ -27,7 +27,7 @@ const BottomNavigationBar = () => {
       }}
       transition={{
         duration: 0.3,
-        ease: [0.42, 0, 0.58, 1],
+        ease: "easeInOut",
       }}
       className="z-10 w-full"
     >

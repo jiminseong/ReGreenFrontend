@@ -18,33 +18,14 @@ const TopStatusBar = () => {
 
   return (
     <div className="w-full relative flex flex-col justify-center items-center gap-4 z-10">
-      <div className="relative flex w-full items-start justify-between">
-        {/* 좌측: 커플 프로필 */}
-        <motion.button
-          onClick={() => handleMypage.navigateToMypage()}
-          whileHover={{ scale: 1.05 }}
-          animate={{
-            opacity: mode === "inventory" ? 0 : 1,
-            pointerEvents: mode === "inventory" ? "none" : "auto",
-          }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="p-2 bg-[#FFFFFF8C] rounded-lg"
-        >
-          <CoupleProfile size="small" />
-        </motion.button>
-
+      <div className=" flex w-full items-start justify-between">
         {/* 중앙: D-Day + 하트 */}
         <motion.div
-          animate={{
-            left: mode === "inventory" ? "1.25rem" : undefined,
-            right: mode === "inventory" ? undefined : "1.25rem",
-          }}
-          initial={false}
           transition={{
             duration: 0.3,
             ease: "easeInOut",
           }}
-          className="absolute top-0 w-[140px] flex flex-col gap-2.5 rounded-lg"
+          className=" w-[140px] flex flex-col gap-2.5 rounded-lg"
         >
           <div className="flex justify-between">
             <div className="w-[52px] font-semibold bg-[#FFFFFFC2] border-[#EEEEEE] py-1.25 text-center rounded-full border-[1px]">
@@ -59,6 +40,19 @@ const TopStatusBar = () => {
             <div className="font-semibold py-1.25 px-3.25 text-right">0</div>
           </div>
         </motion.div>
+        {/* 커플 프로필 */}
+        <motion.button
+          onClick={() => handleMypage.navigateToMypage()}
+          whileHover={{ scale: 1.05 }}
+          animate={{
+            opacity: mode === "inventory" ? 0 : 1,
+            pointerEvents: mode === "inventory" ? "none" : "auto",
+          }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className={`${mode === "inventory" ? "hidden" : "visibile"}`}
+        >
+          <CoupleProfile size="small" />
+        </motion.button>
 
         {/* 우측: 저장하기 버튼 */}
         <motion.button
@@ -69,9 +63,11 @@ const TopStatusBar = () => {
             pointerEvents: mode === "inventory" ? "auto" : "none",
           }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="absolute top-0 right-0 bg-[#FF387F] px-4 h-[40px] text-white font-semibold text-[17px] rounded-lg"
+          className={`${
+            mode === "inventory" ? "visible" : "hidden"
+          } font-extrabold px-4   text-lg rounded-lg`}
         >
-          저장하기
+          저장
         </motion.button>
       </div>
     </div>
