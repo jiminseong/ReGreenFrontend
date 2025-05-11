@@ -44,8 +44,18 @@ export const http = ky.create({
      * 요청 전 호출되는 훅. 필요 시 헤더 추가 등 처리 가능
      */
     beforeRequest: [
-      () => {
-        // 필요 시 헤더 추가 가능
+      (request) => {
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) {
+          request.headers.set("Authorization", `Bearer ${accessToken}`);
+        }
+
+        const refreshToken = localStorage.getItem("refreshToken");
+
+        // refresh 요청일 때만 x-refresh-token 추가
+        if (refreshToken && request.url.includes("auth/refresh")) {
+          request.headers.set("x-refresh-token", refreshToken);
+        }
       },
     ],
 
@@ -60,8 +70,8 @@ export const http = ky.create({
      */
     afterResponse: [
       async (request, options, response) => {
-        if (response.status === 419) {
-          const refresh = await ky.post("auth/refresh", {
+        if (response.status !== 419) {
+          const refresh = await http.post("api/auth/refresh", {
             prefixUrl: process.env.NEXT_PUBLIC_SERVER_URL,
             credentials: "include",
           });
@@ -70,7 +80,12 @@ export const http = ky.create({
             window.location.href = "/login";
           }
 
-          return ky(request);
+          return http(request.url, {
+            method: request.method,
+            headers: request.headers,
+            body: request.body,
+            credentials: "include",
+          });
         }
 
         return response;
