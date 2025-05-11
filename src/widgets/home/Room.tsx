@@ -1,9 +1,10 @@
 "use client";
 
 import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
-import React from "react";
+import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import CaptureButton from "@/features/room-customizer/ui/CaptureButton";
 
 interface FurnitureItem {
   furnitureId: number;
@@ -18,7 +19,7 @@ interface FurnitureItem {
 
 const Room = () => {
   const { mode } = useHomeMode();
-
+  const targetRef = useRef<HTMLDivElement>(null);
   const roomData: FurnitureItem[] = [
     {
       furnitureId: 1,
@@ -173,29 +174,46 @@ const Room = () => {
   ];
 
   return (
-    <motion.div
-      animate={{
-        y: mode === "inventory" ? -110 : 100, // 위로 살짝 올라가며 InventoryList 공간 확보
-      }}
-      transition={{
-        duration: mode === "inventory" ? 0.4 : 0.75,
-        ease: mode === "inventory" ? "backIn" : "backIn",
-      }}
-      className="relative w-full h-full flex flex-col items-center justify-center"
-    >
-      {roomData
-        .sort((a, b) => a.zIndex - b.zIndex)
-        .map((item) => (
+    <>
+      <motion.div
+        ref={targetRef}
+        animate={{
+          y: mode === "inventory" ? -80 : 40, // 위로 살짝 올라가며 InventoryList 공간 확보
+        }}
+        transition={{
+          duration: mode === "inventory" ? 0.35 : 0.35,
+          ease: "linear",
+        }}
+        className="relative w-full h-full flex flex-col items-center justify-center"
+      >
+        {roomData
+          .sort((a, b) => a.zIndex - b.zIndex)
+          .map((item) => (
+            <Image
+              key={item.furnitureId}
+              src={item.s3ImageUrl}
+              alt={item.name}
+              width={900}
+              height={900}
+              className={`absolute z-[${item.zIndex}]`}
+            />
+          ))}
+        <div
+          className={`${
+            mode === "inventory" ? "visible" : "hidden"
+          } w-full h-[162px] absolute z-[-1] bottom-[-50px] md:bottom-[-120px] flex justify-center items-center`}
+        >
           <Image
-            key={item.furnitureId}
-            src={item.s3ImageUrl}
-            alt={item.name}
+            src="/image/home/backgroundFillter.png"
+            alt="배경 필터"
             width={900}
             height={900}
-            className={`absolute z-[${item.zIndex}]`}
+            className="absolute z-[-10] bottom-[120px] w-full h-full"
           />
-        ))}
-    </motion.div>
+        </div>
+      </motion.div>
+      <CaptureButton captureTargetRef={targetRef} />
+    </>
   );
 };
 

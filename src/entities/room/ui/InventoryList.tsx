@@ -7,7 +7,13 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const InventoryListComponent = () => {
   const [activeTab, setActiveTab] = useState("소파");
-  const { mode } = useHomeMode();
+  const { mode, setMode } = useHomeMode();
+
+  function handleHomeMode() {
+    if (mode === "inventory") {
+      setMode("home");
+    }
+  }
 
   const tabs = ["소파", "침대", "벽지", "선반", "커텐", "액자"];
   const items = [
@@ -25,9 +31,17 @@ const InventoryListComponent = () => {
           initial={{ y: 650 }}
           animate={{ y: 0 }}
           exit={{ y: 250 }}
-          transition={{ duration: 0.5, ease: mode === "inventory" ? "backIn" : "backOut" }}
+          transition={{ duration: 0.2, ease: "linear" }}
           className="z-20 w-full h-[40%] absolute bottom-0 bg-white px-5 pt-12 "
         >
+          <Image
+            onClick={handleHomeMode}
+            src="icon/home/underTriangleIcon.svg"
+            alt="삼각형 아이콘"
+            width={25}
+            height={12}
+            className="absolute top-[-32px] left-[50%] translate-x-[-50%]"
+          />
           {/* 탭 메뉴 */}
           <div className="flex border-b">
             {tabs.map((tab) => (

@@ -12,17 +12,17 @@ interface CoupleProfileProps {
 const CoupleProfile: React.FC<CoupleProfileProps> = ({
   size = "small",
   className = "",
-  couple1 = { name: "이름1", image: "/image/home/tempCouple1.png" },
-  couple2 = { name: "이름2", image: "/image/home/tempCouple2.png" },
+  // couple1 = { name: "이름1", image: "/image/home/tempCouple1.png" },
+  // couple2 = { name: "이름2", image: "/image/home/tempCouple2.png" },
 }) => {
-  const imageSize = size === "large" ? 99 : 39;
-  const heartWidth = size === "large" ? 15 : 10;
-  const heartHeight = size === "large" ? 14.25 : 9.25;
+  const imageSize = size === "large" ? 99 : 134;
+  // const heartWidth = size === "large" ? 15 : 10;
+  // const heartHeight = size === "large" ? 14.25 : 9.25;
 
   return (
     <div className={`flex items-end justify-center ${className}`}>
       {/* 커플 1 */}
-      <div className="flex flex-col items-center gap-2.5">
+      {/* <div className="flex flex-col items-center gap-2.5">
         <Image
           className="rounded-full"
           src={couple1.image}
@@ -33,7 +33,7 @@ const CoupleProfile: React.FC<CoupleProfileProps> = ({
         <p className={`font-bold ${size === "large" ? "" : "text-sm"}`}>{couple1.name}</p>
       </div>
 
-      {/* 하트 아이콘 */}
+      
       <div className="py-1 flex items-center justify-center">
         <Image
           src="/icon/home/lightHeartIcon.svg"
@@ -43,7 +43,7 @@ const CoupleProfile: React.FC<CoupleProfileProps> = ({
         />
       </div>
 
-      {/* 커플 2 */}
+      
       <div className="flex flex-col items-center gap-2.5">
         <Image
           className="rounded-full"
@@ -53,7 +53,13 @@ const CoupleProfile: React.FC<CoupleProfileProps> = ({
           height={imageSize}
         />
         <p className={`font-bold ${size === "large" ? "" : "text-sm"}`}>{couple2.name}</p>
-      </div>
+      </div> */}
+      <Image
+        src="/image/home/coupleImage.png"
+        alt="커플 프로필"
+        width={imageSize}
+        height={imageSize}
+      />
     </div>
   );
 };
