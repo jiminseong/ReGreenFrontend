@@ -17,11 +17,13 @@ const LoginPage = () => {
     if (!code) return;
 
     try {
-      const res = await http.post(`api/auth/kakao/login?code=${code}`).json<{
-        code: number;
-        message: string;
-        data: { accessToken: string; refreshToken: string };
-      }>();
+      const res = await http
+        .post(`api/auth/kakao/login?code=${code}&local=${process.env.NEXT_PUBLIC_LOCAL_BOOLEAN}`)
+        .json<{
+          code: number;
+          message: string;
+          data: { accessToken: string; refreshToken: string };
+        }>();
 
       if (res.code === 2100) {
         console.log("로그인 성공");
