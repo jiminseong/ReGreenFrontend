@@ -8,11 +8,11 @@ import LoginButton from "@/features/auth/ui/LoginButton";
 import { http } from "@/shared/lib/http";
 
 const LoginPage = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
 
-  const router = useRouter();
-  const { data, isSuccess } = useMyInfo();
+  const { data, isSuccess, refetch } = useMyInfo();
   const [hasRequestedLogin, setHasRequestedLogin] = useState(false); // 중복 방지
 
   // 1. 카카오 로그인 요청
@@ -44,6 +44,7 @@ const LoginPage = () => {
           // 로컬 스토리지에 accessToken과 refreshToken 저장
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
+          await refetch();
         } else {
           console.log("로그인 실패:", res.message);
         }

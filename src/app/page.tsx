@@ -24,14 +24,12 @@ export default function Page() {
         ("standalone" in window.navigator && window.navigator.standalone === true);
 
       if (accessToken) {
-        // 로그인 되어있다만 스플래쉬 종료 후 홈으로 이동
-
-        router.replace("/home");
+        router.push("/home");
       } else if (isStandalone && !isInboardFinished) {
         router.push("/onboard");
       } else if (isStandalone && isInboardFinished) {
         router.push("/login");
-      } else if (!isStandalone && !isInboardFinished) {
+      } else {
         setShowPrompt(true);
       }
     }, 2800);
