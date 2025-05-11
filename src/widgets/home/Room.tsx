@@ -208,7 +208,7 @@ const Room = () => {
             alt="배경 필터"
             width={900}
             height={900}
-            className="absolute z-[-10] bottom-[120px] w-full h-full"
+            className="absolute z-[-10] bottom-[180px] w-full h-full"
           />
         </div>
       </motion.div>

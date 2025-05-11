@@ -3,8 +3,8 @@
 import CoupleProfile from "@/entities/user/ui/CoupleProfile";
 import useHandleMypage from "@/features/mypage/lib/hadnleMypage";
 import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
-import Image from "next/image";
 import { motion } from "framer-motion";
+import WiggleBadge from "./WiggleBadge";
 
 const TopStatusBar = () => {
   const { mode, setMode } = useHomeMode();
@@ -19,7 +19,7 @@ const TopStatusBar = () => {
   return (
     <div className="w-full relative flex flex-col justify-center items-center gap-4 z-10">
       <div className=" flex w-full items-start justify-between">
-        {/* 중앙: D-Day + 하트 */}
+        {/*  D-Day + 하트 */}
         <motion.div
           transition={{
             duration: 0.3,
@@ -27,19 +27,10 @@ const TopStatusBar = () => {
           }}
           className=" w-[140px] flex flex-col gap-2.5 rounded-lg"
         >
-          <div className="flex justify-between">
-            <div className="w-[52px] font-semibold bg-[#FFFFFFC2] border-[#EEEEEE] py-1.25 text-center rounded-full border-[1px]">
-              이별
-            </div>
-            <div className="font-semibold py-1.25 px-3.25 text-right">D-100</div>
-          </div>
-          <div className="flex justify-between">
-            <div className="w-[52px] font-semibold bg-[#FFFFFFC2] border-[#EEEEEE] py-1.25 flex justify-center items-center rounded-full border-[1px]">
-              <Image width={14.17} height={12.19} alt="하트" src="/icon/home/heartIcon.svg" />
-            </div>
-            <div className="font-semibold py-1.25 px-3.25 text-right">0</div>
-          </div>
+          <WiggleBadge value="+200" type="heart" />
+          <WiggleBadge value="-50" type="calendar" />
         </motion.div>
+
         {/* 커플 프로필 */}
         <motion.button
           onClick={() => handleMypage.navigateToMypage()}
