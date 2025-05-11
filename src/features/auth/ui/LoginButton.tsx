@@ -10,7 +10,9 @@ const LoginButton: React.FC<LoginButtonProps> = ({ provider = "kakao" }) => {
   const handleLogin = async () => {
     window.location.href =
       provider === "kakao"
-        ? `${process.env.NEXT_PUBLIC_KAKAO_URL}`
+        ? `${process.env.NEXT_PUBLIC_LOCAL_BOOLEAN}` === "true"
+          ? `${process.env.NEXT_PUBLIC_KAKAO_URL}`
+          : `${process.env.NEXT_PUBLIC_KAKAO_DEPOLY_URL}`
         : `${process.env.NEXT_PUBLIC_KAKAO_URL}`;
   };
 
