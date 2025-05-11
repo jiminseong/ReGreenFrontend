@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   async function loginHandler() {
     if (!code) return;
-
+    console.log(`${process.env.NEXT_PUBLIC_KAKAO_URL}`);
     try {
       const res = await http
         .post(`api/auth/kakao/login?code=${code}&local=${process.env.NEXT_PUBLIC_LOCAL_BOOLEAN}`)

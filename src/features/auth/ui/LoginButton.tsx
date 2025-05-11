@@ -8,6 +8,7 @@ interface LoginButtonProps {
 
 const LoginButton: React.FC<LoginButtonProps> = ({ provider = "kakao" }) => {
   const handleLogin = async () => {
+    console.log(`${process.env.NEXT_PUBLIC_KAKAO_URL}`);
     window.location.href =
       provider === "kakao"
         ? `${process.env.NEXT_PUBLIC_LOCAL_BOOLEAN}` === "true"
