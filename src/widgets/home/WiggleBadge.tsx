@@ -4,7 +4,8 @@ interface WiggleBadgeProps {
 }
 
 const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value, type }) => {
-  const length = value.length;
+  const textValue = type === "calendar" ? "D-" + value : value;
+  const length = textValue.length;
   const fontSizeClass = length <= 4 ? "text-[16px]" : length === 5 ? "text-[14px]" : "text-[12px]";
 
   const bgImage =
@@ -14,13 +15,13 @@ const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value, type }) => {
 
   const textColor = type === "heart" ? "text-ppink" : "text-black";
 
-  const paddingLeft = length <= 3 ? "pl-[20px]" : length === 4 ? "pl-[15px]" : "pl-[6px]";
+  const paddingLeft = length <= 3 ? "pl-[24px]" : length === 4 ? "pl-[15px]" : "pl-[6px]";
 
   return (
     <div
       className={`relative w-[84px] h-[32px] ${paddingLeft} ${bgImage} bg-contain bg-no-repeat flex items-center justify-center px-1`}
     >
-      <span className={`${textColor} font-bold leading-none ${fontSizeClass}`}>{value}</span>
+      <span className={`${textColor} font-bold leading-none ${fontSizeClass}`}>{textValue}</span>
     </div>
   );
 };

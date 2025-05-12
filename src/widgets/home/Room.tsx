@@ -4,7 +4,6 @@ import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import CaptureButton from "@/features/room-customizer/ui/CaptureButton";
 
 interface FurnitureItem {
   furnitureId: number;
@@ -212,7 +211,8 @@ const Room = () => {
           />
         </div>
       </motion.div>
-      <CaptureButton captureTargetRef={targetRef} />
+      {/* TODO : 캡처 버튼 */}
+      {/* <CaptureButton captureTargetRef={targetRef} /> */}
     </>
   );
 };
