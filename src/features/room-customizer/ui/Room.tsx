@@ -1,7 +1,7 @@
 "use client";
 
 import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
@@ -17,7 +17,9 @@ interface FurnitureItem {
 }
 
 const Room = () => {
+  const [windowWidth, setWindowWidth] = useState<number>(0);
   const { mode } = useHomeMode();
+
   const targetRef = useRef<HTMLDivElement>(null);
   const roomData: FurnitureItem[] = [
     {
@@ -171,13 +173,26 @@ const Room = () => {
       s3ImageUrl: "/image/home/inventory/green/window.svg",
     },
   ];
-
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+  }, []);
   return (
     <>
       <motion.div
         ref={targetRef}
         animate={{
-          y: mode === "inventory" ? -80 : 40, // 위로 살짝 올라가며 InventoryList 공간 확보
+          y:
+            mode === "inventory"
+              ? windowWidth >= 1024
+                ? -120 // lg 이상일 때
+                : windowWidth >= 768
+                ? -100 // md 이상일 때
+                : -80 // 기본
+              : windowWidth >= 1024
+              ? 60 // lg 이상일 때
+              : windowWidth >= 768
+              ? 50 // md 이상일 때
+              : 40, // 기본
         }}
         transition={{
           duration: mode === "inventory" ? 0.35 : 0.35,
@@ -207,7 +222,7 @@ const Room = () => {
             alt="배경 필터"
             width={900}
             height={900}
-            className="absolute z-[-10] bottom-[180px] w-full h-full"
+            className="absolute z-[-10] bottom-[180px] md:bottom-[320px] lg:bottom-[230px] w-full h-full"
           />
         </div>
       </motion.div>

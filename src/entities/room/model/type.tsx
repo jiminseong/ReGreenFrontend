@@ -16,9 +16,10 @@ export interface FurnitureItem {
   description: string;
   price: number;
   s3ImageUrl: string;
+  s3PreviewImageUrl: string;
   category: FurnitureCategory;
   isOwned: boolean;
-  coupleFurnitureId?: string;
+  coupleFurnitureId?: string | null;
   isPlaced?: boolean;
   zIndex?: number;
 }
