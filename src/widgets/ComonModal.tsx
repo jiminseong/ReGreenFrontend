@@ -59,8 +59,8 @@ const CommonModal: React.FC<CommonModalProps> = ({
 
   return (
     <div className="z-100 fixed inset-0  bg-black/75 flex items-center justify-center">
-      <div className="bg-white rounded-[20px] w-[280px] text-center shadow-xl mb-64">
-        <p className="pt-10 pb-6 text-base font-semibold whitespace-pre-line">{message}</p>
+      <div className="bg-white rounded-[20px] min-w-[280px] text-center shadow-xl mb-64">
+        <p className="pt-10 pb-4 w-full text-base font-semibold ">{message}</p>
 
         {subMessage && <p className="text-sm text-gray-500 mt-1">{subMessage}</p>}
 

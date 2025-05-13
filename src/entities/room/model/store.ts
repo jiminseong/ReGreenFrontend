@@ -28,6 +28,7 @@ interface FurnitureStore {
   addFurnitures: (items: FurnitureItem[]) => void;
   setCategories: (categories: FurnitureCategory[]) => void;
   getKoreanCategories: () => string[];
+  updateFurniture: (furnitureId: string, updatedFields: Partial<FurnitureItem>) => void;
 }
 
 export const useFurnitureStore = create<FurnitureStore>((set, get) => ({
@@ -45,6 +46,13 @@ export const useFurnitureStore = create<FurnitureStore>((set, get) => ({
     })),
   setCategories: (categories) => set(() => ({ currentFurnituresCategory: categories })),
   getKoreanCategories: () => get().currentFurnituresCategory.map((cat) => toKoreanCategory(cat)),
+
+  updateFurniture: (furnitureId: string, updatedFields: Partial<FurnitureItem>) =>
+    set((state) => ({
+      currentFurnitures: state.currentFurnitures.map((item) =>
+        item.furnitureId === furnitureId ? { ...item, ...updatedFields } : item
+      ),
+    })),
 }));
 
 // 사용 예시
@@ -52,3 +60,26 @@ export const useFurnitureStore = create<FurnitureStore>((set, get) => ({
 
 // const furnitures = useFurnitureStore((state) => state.currentFurnitures);
 // const koreanCategories = useFurnitureStore((state) => state.getKoreanCategories());
+
+interface FurnitureModalStore {
+  modal: boolean;
+  modalType: string | null;
+  modalItem: FurnitureItem | null;
+  setModal: (modal: boolean, modalType: string | null, modalItem: FurnitureItem | null) => void;
+  getModal: () => {
+    modal: boolean;
+    modalType: string | null;
+    modalItem: FurnitureItem | null;
+  };
+}
+export const useFurnitureModalStore = create<FurnitureModalStore>((set, get) => ({
+  setModal: (modal, modalType, modalItem) => set({ modal, modalType, modalItem }),
+  modalItem: null,
+  modalType: null,
+  modal: false,
+  getModal: () => ({
+    modal: get().modal,
+    modalType: get().modalType,
+    modalItem: get().modalItem,
+  }),
+}));

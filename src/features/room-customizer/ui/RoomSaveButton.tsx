@@ -42,7 +42,13 @@ const RoomSaveButton = () => {
         isOpen={modal}
         onCancel={handleModal}
         onConfirm={handleModal}
-        message={"아직 구매하지 않은\n상품이 있어요!"}
+        message={
+          <span>
+            아직 구매하지 않은
+            <br />
+            상품이 있어요!
+          </span>
+        }
       />
     </>
   );
