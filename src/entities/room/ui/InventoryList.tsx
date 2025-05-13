@@ -2,12 +2,47 @@
 
 import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useFurnitureStore } from "@/entities/room/model/store";
+import { FurnitureItem } from "@/entities/room/model/type";
+import CategorySwiper from "./CategorySwiper";
+// import { http } from "@/shared/lib/http";
+// import { useQuery } from "@tanstack/react-query"; // 주석용
+
+const dummyItems: FurnitureItem[] = [
+  {
+    furnitureId: "furni1",
+    name: "에코 소파",
+    description: "친환경 소재 소파",
+    price: 150,
+    s3ImageUrl: "/sample/furni1.png",
+    category: "interior",
+    isOwned: true,
+    isPlaced: false,
+  },
+  {
+    furnitureId: "furni2",
+    name: "우드 선반",
+    description: "원목 벽 선반",
+    price: 80,
+    s3ImageUrl: "/sample/furni2.png",
+    category: "storage",
+    isOwned: true,
+    isPlaced: false,
+  },
+];
 
 const InventoryListComponent = () => {
-  const [activeTab, setActiveTab] = useState("소파");
   const { mode, setMode } = useHomeMode();
+  const currentCategory = useFurnitureStore((state) => state.currentFurnituresCategory[0]);
+  const setCategories = useFurnitureStore((state) => state.setCategories);
+  const furnitures = useFurnitureStore((state) => state.currentFurnitures);
+
+  // 초기에 더미 카테고리 하나 설정
+  useEffect(() => {
+    setCategories(["interior"]); // "소파" = interior
+  }, []);
 
   function handleHomeMode() {
     if (mode === "inventory") {
@@ -15,13 +50,7 @@ const InventoryListComponent = () => {
     }
   }
 
-  const tabs = ["소파", "침대", "벽지", "선반", "커텐", "액자"];
-  const items = [
-    { id: 1, name: "노랑 소파", image: "/image/home/inventory/example.png", points: 200 },
-    { id: 2, name: "초록 소파", image: "/image/home/inventory/example.png", points: 200 },
-    { id: 3, name: "노랑 소파", image: "/image/home/inventory/example.png", points: 200 },
-    { id: 4, name: "초록 소파", image: "/image/home/inventory/example.png", points: 200 },
-  ];
+  const filteredItems = furnitures.filter((item) => item.category === currentCategory);
 
   return (
     <AnimatePresence mode="wait">
@@ -42,28 +71,14 @@ const InventoryListComponent = () => {
             height={12}
             className="absolute top-[-32px] left-[50%] translate-x-[-50%]"
           />
-          {/* 탭 메뉴 */}
-          <div className="flex border-b">
-            {tabs.map((tab) => (
-              <button
-                key={tab}
-                className={`flex-1 text-center py-2 ${
-                  activeTab === tab
-                    ? "border-b-2 border-black font-bold"
-                    : "text-[#999999] border-[#EEEEEE] border-b-1"
-                }`}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
 
+          {/* 탭 메뉴 */}
+          <CategorySwiper />
           {/* 아이템 목록 */}
           <div className="grid grid-cols-3 mt-4">
-            {items.map((item) => (
-              <div key={item.id} className="flex flex-col items-center px-6 py-5">
-                <Image width={58} height={64} src={item.image} alt={item.name} />
+            {(filteredItems.length > 0 ? filteredItems : dummyItems).map((item) => (
+              <div key={item.furnitureId} className="flex flex-col items-center px-6 py-5">
+                <Image width={58} height={64} src={item.s3ImageUrl} alt={item.name} />
                 <p className="mt-2 text-sm">{item.name}</p>
                 <div className="flex items-center justify-center gap-1">
                   <Image
@@ -72,7 +87,7 @@ const InventoryListComponent = () => {
                     width={14.17}
                     height={12.19}
                   />
-                  <p className="text-pink-500 text-sm font-semibold">+{item.points}</p>
+                  <p className="text-pink-500 text-sm font-semibold">+{item.price}</p>
                 </div>
               </div>
             ))}

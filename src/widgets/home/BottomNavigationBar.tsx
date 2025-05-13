@@ -29,7 +29,7 @@ const BottomNavigationBar = () => {
         duration: 0.3,
         ease: "easeInOut",
       }}
-      className="z-10 w-full"
+      className="z-5 w-full"
     >
       <div className="w-full flex flex-col items-start  gap-3.5">
         <div className="flex w-full justify-center gap-4 mb-9">
