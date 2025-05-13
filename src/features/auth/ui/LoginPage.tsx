@@ -58,6 +58,10 @@ const LoginPage = () => {
 
   // 2. 로그인 완료 후 유저 정보로 페이지 분기
   useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      return;
+    }
     if (!isSuccess) return;
 
     if (data?.coupleId) {

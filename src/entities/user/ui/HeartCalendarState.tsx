@@ -4,8 +4,10 @@ import Toast from "@/widgets/Toast";
 import { motion } from "framer-motion";
 import React, { useEffect } from "react";
 import { useToastStore } from "../model/store";
+import { useRouter } from "next/navigation";
 
 const HeartCalendarState = () => {
+  const router = useRouter();
   const isCoupleJoinedToast = useToastStore((state) => state.isCoupleJoinedToast);
   const setIsCoupleJoinedToast = useToastStore((state) => state.setIsCoupleJoinedToast);
 
@@ -15,6 +17,15 @@ const HeartCalendarState = () => {
     }, 2000);
 
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
+  });
+
+  useEffect(() => {
+    // 로그인 여부 우선 판단
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
   });
 
   return (

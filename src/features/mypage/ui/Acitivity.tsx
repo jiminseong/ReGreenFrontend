@@ -5,7 +5,9 @@ import React from "react";
 const Acitivity = () => {
   const router = useRouter();
 
-  const menuItems = [{ label: "인증내역", path: "/home/mypage/list" }];
+  const hadnleFinishedAcitivy = () => {
+    router.push("/home/mypage/list");
+  };
 
   return (
     <div className="py-2 flex flex-col border-b-[1px] border-b-[#EEEEEE]">
@@ -16,15 +18,12 @@ const Acitivity = () => {
 
       {/* 메뉴 리스트 */}
       <div className="flex flex-col">
-        {menuItems.map((item, index) => (
-          <button
-            key={index}
-            onClick={() => router.push(item.path)}
-            className="text-left px-5 py-5 text-lg font-medium "
-          >
-            {item.label}
-          </button>
-        ))}
+        <button
+          onClick={() => hadnleFinishedAcitivy()}
+          className="text-left px-5 py-5 text-lg font-medium "
+        >
+          인증내역
+        </button>
       </div>
     </div>
   );
