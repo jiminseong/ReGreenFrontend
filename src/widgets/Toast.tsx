@@ -11,8 +11,9 @@ const Toast: React.FC<ToastProps> = ({ message, position = "bottom" }) => {
       className={`
         fixed ${position === "top" ? "top-4" : "bottom-4"} left-1/2 
         transform -translate-x-1/2
-        bg-black text-white text-sm font-medium 
-        px-4 py-2 rounded-xl shadow-lg 
+        bg-[#000000] opacity-[86%] text-white text-sm font-medium 
+        px-4 py-3.5 rounded-xl shadow-lg 
+        w-[350px] md:w-[400px]
         z-50 transition-opacity duration-300
       `}
     >
