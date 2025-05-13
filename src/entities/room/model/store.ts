@@ -20,39 +20,17 @@ function toKoreanCategory(category: FurnitureCategory): string {
 }
 
 interface FurnitureStore {
-  currentFurnitures: FurnitureItem[];
   currentFurnituresCategory: FurnitureCategory[];
 
-  setFurnitures: (items: FurnitureItem[]) => void;
-  addFurniture: (item: FurnitureItem) => void;
-  addFurnitures: (items: FurnitureItem[]) => void;
   setCategories: (categories: FurnitureCategory[]) => void;
   getKoreanCategories: () => string[];
-  updateFurniture: (furnitureId: string, updatedFields: Partial<FurnitureItem>) => void;
 }
 
 export const useFurnitureStore = create<FurnitureStore>((set, get) => ({
-  currentFurnitures: [],
   currentFurnituresCategory: [],
 
-  setFurnitures: (items) => set({ currentFurnitures: items }),
-  addFurniture: (item) =>
-    set((state) => ({
-      currentFurnitures: [...state.currentFurnitures, item],
-    })),
-  addFurnitures: (items) =>
-    set((state) => ({
-      currentFurnitures: [...state.currentFurnitures, ...items],
-    })),
   setCategories: (categories) => set(() => ({ currentFurnituresCategory: categories })),
   getKoreanCategories: () => get().currentFurnituresCategory.map((cat) => toKoreanCategory(cat)),
-
-  updateFurniture: (furnitureId: string, updatedFields: Partial<FurnitureItem>) =>
-    set((state) => ({
-      currentFurnitures: state.currentFurnitures.map((item) =>
-        item.furnitureId === furnitureId ? { ...item, ...updatedFields } : item
-      ),
-    })),
 }));
 
 // 사용 예시

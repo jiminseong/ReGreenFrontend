@@ -58,7 +58,7 @@ const CommonModal: React.FC<CommonModalProps> = ({
   const confirmButtonStyle = danger ? "bg-pink-100 text-pink-600" : "bg-gray-100";
 
   return (
-    <div className="z-100 fixed inset-0  bg-black/75 flex items-center justify-center">
+    <div className="z-300 fixed inset-0  bg-black/75 flex items-center justify-center">
       <div className="bg-white rounded-[20px] min-w-[280px] text-center shadow-xl mb-64">
         <p className="pt-10 pb-4 w-full text-base font-semibold ">{message}</p>
 

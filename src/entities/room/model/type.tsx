@@ -20,6 +20,6 @@ export interface FurnitureItem {
   category: FurnitureCategory;
   isOwned: boolean;
   coupleFurnitureId?: string | null;
-  isPlaced?: boolean;
-  zIndex?: number;
+  isPlaced: boolean;
+  zIndex: number;
 }
