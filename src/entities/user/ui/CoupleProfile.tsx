@@ -15,7 +15,6 @@ const CoupleProfile: React.FC<CoupleProfileProps> = ({
   // couple1 = { name: "이름1", image: "/image/home/tempCouple1.png" },
   // couple2 = { name: "이름2", image: "/image/home/tempCouple2.png" },
 }) => {
-  const imageSize = size === "large" ? 99 : 134;
   // const heartWidth = size === "large" ? 15 : 10;
   // const heartHeight = size === "large" ? 14.25 : 9.25;
 
@@ -57,8 +56,8 @@ const CoupleProfile: React.FC<CoupleProfileProps> = ({
       <Image
         src="/image/home/coupleImage.png"
         alt="커플 프로필"
-        width={imageSize}
-        height={imageSize}
+        width={size === "large" ? 99 : 134}
+        height={size === "large" ? 99 : 134}
       />
     </div>
   );

@@ -13,19 +13,11 @@ const RoomSaveButton = () => {
     setModal(!modal);
   };
 
-  const handleHomeMode = () => {
-    if (mode === "inventory") {
-      setMode("home");
-    }
-  };
   const { mode, setMode } = useHomeMode();
   return (
     <>
       <motion.button
-        onClick={() => {
-          handleHomeMode();
-          handleModal();
-        }}
+        onClick={() => handleModal()}
         whileHover={{ scale: 1.05 }}
         animate={{
           opacity: mode === "inventory" ? 1 : 0,
@@ -41,8 +33,17 @@ const RoomSaveButton = () => {
       <CommonModal
         isOpen={modal}
         onCancel={handleModal}
-        onConfirm={handleModal}
-        message={"아직 구매하지 않은\n상품이 있어요!"}
+        onConfirm={() => {
+          setMode("home");
+          window.location.reload();
+        }}
+        message={
+          <span>
+            아직 구매하지 않은
+            <br />
+            상품이 있어요!
+          </span>
+        }
       />
     </>
   );

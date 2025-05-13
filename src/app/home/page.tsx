@@ -1,4 +1,4 @@
-import Room from "@/widgets/home/Room";
+import Room from "@/features/room-customizer/ui/Room";
 import BottomNavigationBar from "@/widgets/home/BottomNavigationBar";
 import TopSatatusBar from "@/widgets/home/TopSatatusBar";
 import InventoryList from "@/entities/room/ui/InventoryList";

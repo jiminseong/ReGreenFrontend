@@ -1,8 +1,22 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 const FinishedActivityList = () => {
-  const activities = [
+  const router = useRouter();
+
+  useEffect(() => {
+    // 로그인 여부 우선 판단
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+  });
+
+  const dummyActivities = [
     {
       iconSrc: "/icon/activity/cupIcon.svg",
       label: "다회용 컵 사용하기",
@@ -44,7 +58,7 @@ const FinishedActivityList = () => {
 
       {/* 활동 리스트 */}
       <div className="flex flex-col gap-4">
-        {activities.map((activity, index) => (
+        {dummyActivities.map((activity, index) => (
           <div
             key={index}
             className="flex items-center justify-between  bg-white px-4 py-6 rounded-lg"

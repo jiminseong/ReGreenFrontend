@@ -37,3 +37,12 @@ button {
 input {
   outline: none;
 }
+
+.no-scrollbar {
+  /* Webkit (크롬, 사파리 등) */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
+}
+&::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

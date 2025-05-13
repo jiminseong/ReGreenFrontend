@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Pretendard } from "./fonts/font";
 import QueryProvider from "./providers/query-provider";
 import "./globals.css";
+import SwiperBlockWrapper from "./providers/SwiperBlockWrapper";
 
 export const metadata: Metadata = {
   title: "우리는 이별을 미루기로 했다.",
@@ -29,7 +30,7 @@ export default function RootLayout({
           <div
             className={`${Pretendard.className} inset-0 z-[210] mx-auto min-h-screen max-w-[500px] w-full min-w-[320px]  bg-white `}
           >
-            {children}
+            <SwiperBlockWrapper>{children}</SwiperBlockWrapper>
           </div>
         </QueryProvider>
       </body>
