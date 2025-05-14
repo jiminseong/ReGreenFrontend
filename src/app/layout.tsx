@@ -3,6 +3,7 @@ import { Pretendard } from "./fonts/font";
 import QueryProvider from "./providers/query-provider";
 import "./globals.css";
 import SwiperBlockWrapper from "./providers/SwiperBlockWrapper";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "우리는 이별을 미루기로 했다.",
@@ -30,7 +31,10 @@ export default function RootLayout({
           <div
             className={`${Pretendard.className} inset-0 z-[210] mx-auto min-h-screen max-w-[500px] w-full min-w-[320px]  bg-white `}
           >
-            <SwiperBlockWrapper>{children}</SwiperBlockWrapper>
+            <SwiperBlockWrapper>
+              <Analytics />
+              {children}
+            </SwiperBlockWrapper>
           </div>
         </QueryProvider>
       </body>
