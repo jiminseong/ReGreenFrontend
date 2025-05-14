@@ -60,7 +60,11 @@ const CommonModal: React.FC<CommonModalProps> = ({
   return (
     <div className="z-300 fixed inset-0  bg-black/75 flex items-center justify-center">
       <div className="bg-white rounded-[20px] min-w-[280px] text-center shadow-xl mb-64">
-        <p className="pt-10 pb-4 w-full text-base font-semibold ">{message}</p>
+        {typeof message === "string" ? (
+          <p className="pt-10 pb-4 w-full text-base font-semibold ">{message}</p>
+        ) : (
+          <div className="pt-10 pb-4">{message}</div>
+        )}
 
         {subMessage && <p className="text-sm text-gray-500 mt-1">{subMessage}</p>}
 

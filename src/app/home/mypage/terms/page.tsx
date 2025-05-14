@@ -5,7 +5,7 @@ import React from "react";
 const page = () => {
   return (
     <div className="flex flex-col h-screen">
-      <TopNavigationBar title="이용약관" />
+      <TopNavigationBar title="이용약관" backPage="/home/mypage" />
       <TermsContent />
     </div>
   );

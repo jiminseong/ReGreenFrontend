@@ -24,7 +24,7 @@ const activities = [
 
 const StatusList = () => {
   return (
-    <div className="bg-[#F4F5F7] flex flex-col gap-2.5 py-8 px-5 h-screen scrollbar-hide ">
+    <div className="bg-[#F4F5F7] flex flex-col gap-2.5 py-8 px-5 h-full no-scrollbar overflow-y-scroll ">
       {activities.map((activity, index) => (
         <StatusListItem
           key={index}
