@@ -6,7 +6,7 @@ import React from "react";
 const MyPageListPage = () => {
   return (
     <div className="flex flex-col h-screen">
-      <TopNavigationBar title="인증내역" />
+      <TopNavigationBar title="인증내역" backPage="/home/mypage" />
       <FinishedActivityList />
     </div>
   );
