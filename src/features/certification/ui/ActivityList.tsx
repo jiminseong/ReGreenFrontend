@@ -4,6 +4,7 @@ import ActivityItem from "@/features/certification/ui/ActivityItem";
 import ToastButton from "@/widgets/ToastButton";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { AnimatePresence } from "framer-motion";
 // import { http } from "@/shared/lib/http";
 
 const activities = [
@@ -187,7 +188,12 @@ const ActivityList = () => {
 
   return (
     <div className="bg-white h-full overflow-y-scroll no-scrollbar">
-      {selected && <ToastButton message={TOAST_MESSAGE} onToastClick={handleCertificationClick} />}
+      <AnimatePresence>
+        {" "}
+        {selected && (
+          <ToastButton message={TOAST_MESSAGE} onToastClick={handleCertificationClick} />
+        )}
+      </AnimatePresence>
 
       {activities.map((activity) => (
         <ActivityItem
