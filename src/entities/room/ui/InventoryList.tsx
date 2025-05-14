@@ -273,7 +273,7 @@ const InventoryListComponent = () => {
           animate={{ y: 0 }}
           exit={{ y: 250 }}
           transition={{ duration: 0.2, ease: "linear" }}
-          className="z-20 w-full h-[40%] absolute bottom-0 bg-white px-5 pt-12 "
+          className="z-2 w-full h-[40%] absolute bottom-0 bg-white px-5 pt-12 "
         >
           <Image
             onClick={handleHomeMode}
