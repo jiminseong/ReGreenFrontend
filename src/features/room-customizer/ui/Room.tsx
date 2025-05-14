@@ -4,15 +4,37 @@ import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { FurnitureItem } from "@/entities/room/model/type";
 import { useRoomStore } from "../model/store";
+// TODO : useMyPlacedFurniture 훅을 사용하여 가구 데이터를 가져옵니다.
+// import { useMyPlacedFurniture } from "../lib/useMyPlacedFurniture";
+import { FurnitureItem } from "@/entities/room/model/type";
 
 const Room = () => {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const { mode } = useHomeMode();
-
   const targetRef = useRef<HTMLDivElement>(null);
 
+  // TODO : useMyPlacedFurniture 훅을 사용하여 가구 데이터를 가져옵니다.
+  //   const data = useMyPlacedFurniture();
+
+  // const setFurnitures = useRoomStore((state) => state.setCurrentRoomFurnitures);
+  // const currentFurnitures = useRoomStore((state) => state.currentRoomFurnitures);
+
+  // const filteredItems = useMemo(() => {
+  //   if (mode === "home") {
+  //     return data.data?.data.filter((item) => item.isPlaced && item.isOwned);
+  //   }
+
+  //   return currentFurnitures.filter((item) => item.isPlaced);
+  // }, [currentFurnitures]);
+
+  // useEffect(() => {
+  //   if (data.data?.data && data.data.data.length > 0) {
+  //     setFurnitures(data.data.data);
+  //   }
+  // }, [data.data]);
+
+  // 현재는 더미데이터로 구현
   //isPlaced가 true인 아이템만 필터링
   const roomData: FurnitureItem[] = [
     {
@@ -250,15 +272,24 @@ const Room = () => {
         }}
         className="relative w-full h-full flex flex-col items-center justify-center"
       >
-        {filteredItems.map((item) => (
-          <Image
-            key={item.furnitureId}
-            src={item.s3ImageUrl}
-            alt={item.name}
-            width={900}
-            height={900}
-            className={`absolute z-${item.zIndex}`}
-          />
+        <Image
+          src="/image/home/roomDefaultWall.png"
+          alt="배경"
+          width={900}
+          height={900}
+          className="absolute z-0"
+        />
+        {filteredItems?.map((item) => (
+          <>
+            <Image
+              key={item.furnitureId}
+              src={item.s3ImageUrl}
+              alt={item.name}
+              width={900}
+              height={900}
+              className={`absolute z-${item.zIndex}`}
+            />{" "}
+          </>
         ))}
         <div
           className={`${
