@@ -2,6 +2,7 @@ import Room from "@/features/room-customizer/ui/Room";
 import BottomNavigationBar from "@/widgets/home/BottomNavigationBar";
 import TopSatatusBar from "@/widgets/home/TopSatatusBar";
 import InventoryList from "@/entities/room/ui/InventoryList";
+import CoupleGuard from "@/shared/lib/CoupleGuard";
 
 const HomePage = () => {
   return (
@@ -10,6 +11,7 @@ const HomePage = () => {
       <div className="absolute bottom-0 w-full h-[50%] z-[0] bg-[#A5C939]" />
       <div className="z-[1] flex flex-col items-center justify-evenly w-full h-full">
         <div className="flex-grow" />
+        <CoupleGuard />
         <TopSatatusBar />
         <Room />
         <BottomNavigationBar />

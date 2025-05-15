@@ -118,7 +118,7 @@ const InventoryListComponent = () => {
             alt="삼각형 아이콘"
             width={25}
             height={12}
-            className="absolute top-[-32px] left-[50%] translate-x-[-50%]"
+            className="absolute z-50 cursor-pointer top-[-32px] left-[50%] translate-x-[-50%]"
           />
 
           {/* 탭 메뉴 */}

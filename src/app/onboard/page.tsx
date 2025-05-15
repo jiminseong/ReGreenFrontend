@@ -39,7 +39,7 @@ const OnboardingPage = () => {
       <div className="relative w-full flex flex-col items-center justify-center ">
         <ProgressBar step={currentStep + 1} totalSteps={4} />
         <button
-          className="absolute top-5 text-ppink text-lg font-semibold right-0"
+          className="absolute top-5 text-ppink text-lg font-semibold right-0 z-50"
           onClick={() => handleOnboardfinsh()}
         >
           skip

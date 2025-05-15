@@ -1,4 +1,3 @@
-// features/auth/api/useMyInfo.ts
 import { useQuery } from "@tanstack/react-query";
 import { http } from "@/shared/lib/http";
 
@@ -17,7 +16,7 @@ export function useMyInfo() {
       const res = await http.get("api/members/my").json<{ code: number; data: MemberInfo }>();
       return res.data;
     },
-    retry: false, // 로그인 안 돼 있으면 401이 뜨기 때문에 불필요한 재시도 방지
+    retry: false,
     refetchOnWindowFocus: false,
   });
 }

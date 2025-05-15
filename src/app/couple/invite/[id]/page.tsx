@@ -44,9 +44,14 @@ const CoupleInvitePage = () => {
         초대 코드를 함께하고 싶은
         <br />
         사람에게 공유해 보세요
+        <br />
       </h1>
       <div className="h-full w-full flex flex-col items-center mt-44 gap-4">
-        <div>{name}님 초대 코드입니다.</div>
+        <div className="text-center">
+          {name}님 초대 코드에요. <br />
+          24시간 뒤에 만료됩니다!
+        </div>
+
         <div className="text-lg font-bold w-full text-center rounded-lg bg-[#F6F6F6] py-2.5">
           {inviteCode}
         </div>

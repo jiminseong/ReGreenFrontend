@@ -38,11 +38,11 @@ const Auth = () => {
   // 회원탈퇴 처리 로직
   const handleRetire = async () => {
     try {
-      const res = await http.delete("api/members").json<{
+      const res = await http.delete("api/couples").json<{
         code: number;
         message: string;
       }>();
-      if (res.code === 2100) {
+      if (res.code === 2300) {
         await localStorage.removeItem("accessToken");
         await localStorage.removeItem("refreshToken");
         router.push("/spalsh");

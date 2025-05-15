@@ -18,15 +18,15 @@ const CoupleCheckPage = () => {
         // 발급 API 호출
         try {
           const res = await http.post("api/couples/code").json<{
-            statusCode: number;
+            code: number;
             message: string;
             data: { code: string };
           }>();
-          if (res.statusCode === 2100) {
+          if (res.code === 2300) {
             console.log("초대 코드 발급 성공");
             // 초대 코드 페이지로 이동
             router.push(`/couple/invite/${res.data.code}`);
-          } else if (res.statusCode === 409) {
+          } else if (res.code === 409) {
             console.log("이미 초대 코드가 발급되었습니다.");
           }
         } catch (error) {
@@ -40,7 +40,7 @@ const CoupleCheckPage = () => {
   // 초대 코드 발급 입력 페이지로 이동
   const handleInvited = () => {
     if (data.isSuccess) {
-      if (data.data.coupleId !== null) {
+      if (data.data.coupleId === null) {
         router.push(`/couple/invited`);
       }
       return;

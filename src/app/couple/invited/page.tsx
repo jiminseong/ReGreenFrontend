@@ -6,18 +6,19 @@ import React, { useEffect } from "react";
 import { http } from "@/shared/lib/http";
 
 import { useToastStore } from "@/entities/user/model/store";
+import { useNickName } from "@/entities/user/lib/useNickName";
 
 const CoupleInvitePage = () => {
   const router = useRouter();
   const data = useMyInfo();
-  const [inviteCode, setInviteCode] = React.useState<string>("");
+  const [inviteCode, setInviteCode] = React.useState("");
+
+  const { data: inviteNickName, isSuccess: isNickSuccess } = useNickName({ inviteCode });
 
   const setIsCoupleJoinedToast = useToastStore((state) => state.setIsCoupleJoinedToast);
 
   // 커플이라면 초대 코드 발급 누르면 발급 후
   const postInviteCode = async () => {
-    setIsCoupleJoinedToast(true);
-    router.push(`/home`);
     if (data.isSuccess) {
       if (data.data.coupleId === null) {
         // 발급 API 호출
@@ -28,7 +29,8 @@ const CoupleInvitePage = () => {
             data: { coupleId: string };
           }>();
           if (res.statusCode === 2300) {
-            console.log("참여 성공");
+            setIsCoupleJoinedToast(true);
+            router.push(`/home`);
           }
         } catch (error) {
           console.error("초대 코드 발급 요청 실패", error);
@@ -55,14 +57,15 @@ const CoupleInvitePage = () => {
     }
   });
 
-  //TODO: 초대 코드로 닉네임을 가져오는 API
-
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5 pt-24">
       {/* 로고 및 타이틀 */}
       <h1 className="text-2xl text-center w-full font-bold mb-4">환영합니다!</h1>
       <div className="h-full w-full flex flex-col items-center mt-44 gap-4">
-        <div className="font-semibold text-xl">상대방의 초대를 받고 오셨나요?</div>
+        <div className="font-semibold text-xl">
+          {inviteCode.length > 0 && isNickSuccess ? `${inviteNickName}의` : "상대방의"} 초대를 받고
+          오셨나요?
+        </div>
         <input
           value={inviteCode}
           className="text-lg font-bold w-full text-center rounded-lg bg-[#F6F6F6] py-2.5"
@@ -72,10 +75,29 @@ const CoupleInvitePage = () => {
         <div className="text-sm text-[#AFAFAF]">초대 코드는 6자리입니다.</div>
       </div>
       <div className="flex w-full gap-4">
-        <Button onClick={() => router.push("/couple")} active={false}>
-          아니오
+        <Button
+          onClick={() => {
+            if (isNickSuccess) {
+              setInviteCode("");
+            } else {
+              router.push("/couple");
+            }
+          }}
+          active={false}
+        >
+          {isNickSuccess ? "아니오" : "취소"}
         </Button>
-        <Button onClick={() => postInviteCode()}>확인</Button>
+        <Button
+          onClick={() => {
+            if (isNickSuccess) {
+              postInviteCode();
+            } else {
+              setInviteCode("");
+            }
+          }}
+        >
+          {isNickSuccess ? "맞아요" : "확인"}
+        </Button>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 
 export default function Page() {
   const router = useRouter();
-  const { data } = useMyInfo();
+  const { data, isSuccess } = useMyInfo();
   const [showPrompt, setShowPrompt] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
 
@@ -28,7 +28,7 @@ export default function Page() {
       //로컬 스토리지에 accessToken이 있다면
       if (accessToken) {
         //커플 등록 여부 체크
-        if (data?.coupleId !== null) {
+        if (isSuccess && data.coupleId !== null) {
           //커플일 시에 → /home
           router.push("/home");
         } //커플 아닐 시에 → /couple
