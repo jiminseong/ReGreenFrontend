@@ -3,15 +3,17 @@ import Button from "@/shared/ui/Button";
 import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import { http } from "@/shared/lib/http";
+import { httpNoThrow } from "@/shared/lib/http";
 
 import { useToastStore } from "@/entities/user/model/store";
 import { useNickName } from "@/entities/user/lib/useNickName";
+import CommonModal from "@/widgets/ComonModal";
 
 const CoupleInvitePage = () => {
   const router = useRouter();
   const data = useMyInfo();
   const [inviteCode, setInviteCode] = React.useState("");
+  const [modalOpen, setModalOpen] = React.useState(false);
 
   const { data: inviteNickName, isSuccess: isNickSuccess } = useNickName({ inviteCode });
 
@@ -23,16 +25,26 @@ const CoupleInvitePage = () => {
       if (data.data.coupleId === null) {
         // 발급 API 호출
         try {
-          const res = await http.post("api/couples/join", { body: inviteCode }).json<{
-            statusCode: number;
-            message: string;
-            data: { coupleId: string };
-          }>();
+          const res = await httpNoThrow
+            .post("api/couples/join", { json: { code: inviteCode } })
+            .json<{
+              statusCode: number;
+              message: string;
+              data: { coupleId: string };
+            }>();
+
           if (res.statusCode === 2300) {
             setIsCoupleJoinedToast(true);
             router.push(`/home`);
           }
+          if (res.statusCode === 400) {
+            setModalOpen(true);
+          }
+          if (res.statusCode === 500) {
+            setModalOpen(true);
+          }
         } catch (error) {
+          // 초대 코드가 유효하지 않은 경우
           console.error("초대 코드 발급 요청 실패", error);
         }
       }
@@ -59,6 +71,28 @@ const CoupleInvitePage = () => {
 
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5 pt-24">
+      {modalOpen && (
+        <CommonModal
+          isOpen={modalOpen}
+          message={
+            <div>
+              <div className="text-xl text-center w-full font-bold mb-4">
+                초대 코드가 유효하지 않아요
+              </div>
+              <div className="text-center">
+                초대 코드를 다시 확인해주세요.
+                <br />
+                초대 코드는 6자리입니다.
+              </div>
+            </div>
+          }
+          onCancel={() => {
+            setModalOpen(false);
+          }}
+          onlyCancel
+          cancelText="확인"
+        />
+      )}
       {/* 로고 및 타이틀 */}
       <h1 className="text-2xl text-center w-full font-bold mb-4">환영합니다!</h1>
       <div className="h-full w-full flex flex-col items-center mt-44 gap-4">
