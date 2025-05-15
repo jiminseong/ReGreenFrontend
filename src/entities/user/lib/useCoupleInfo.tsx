@@ -1,4 +1,3 @@
-// features/auth/api/useMyInfo.ts
 import { useQuery } from "@tanstack/react-query";
 import { http } from "@/shared/lib/http";
 

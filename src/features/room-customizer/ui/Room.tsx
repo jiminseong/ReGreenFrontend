@@ -13,7 +13,6 @@ const Room = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const query = useMyPlacedFurniture();
-  console.log("query 상태", query);
 
   const setFurnitures = useRoomStore((state) => state.setCurrentRoomFurnitures);
   const currentFurnitures = useRoomStore((state) => state.currentRoomFurnitures);

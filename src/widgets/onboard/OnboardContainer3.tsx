@@ -1,21 +1,23 @@
 import Image from "next/image";
+import { OnboardContainerProps } from "./OnboardContainer1";
+import MotionDiv from "./MotionDiv";
 
-const OnboardContainer3 = () => {
+const OnboardContainer3 = ({ imageUrl }: OnboardContainerProps) => {
   return (
-    <div className="flex flex-col gap-8 items-center justify-center">
-      <h1 className="absolute text-2xl font-bold text-center top-[101px]">
+    <MotionDiv>
+      <h1 className=" text-2xl font-bold text-center ">
         인증 후 받은 보상으로
         <br />
         상점에서 가구를 살 수 있어요!
       </h1>
       <Image
-        src="/image/onboard/3.png"
+        src={imageUrl}
         alt="온보딩 이미지"
         width={326}
         height={444}
-        className="absolute bottom-[130px] z-0"
+        className="absolute bottom-[74px] z-0"
       />
-    </div>
+    </MotionDiv>
   );
 };
 

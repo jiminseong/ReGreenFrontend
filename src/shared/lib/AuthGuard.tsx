@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const AuthGuard = ({ children }: { children: React.ReactNode }) => {
+const AuthGuard = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  return <>{children}</>;
+  return null;
 };
 
 export default AuthGuard;

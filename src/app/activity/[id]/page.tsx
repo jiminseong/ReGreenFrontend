@@ -8,6 +8,7 @@ import React from "react";
 import AuthGuard from "@/shared/lib/AuthGuard";
 import TopNavigationBar from "@/shared/ui/TopNavigationBar";
 import Toast from "@/widgets/Toast";
+import CoupleGuard from "@/shared/lib/CoupleGuard";
 
 export default function Paeg() {
   // const { id } = useParams(); // '1'
@@ -80,9 +81,12 @@ export default function Paeg() {
   };
 
   return (
-    <AuthGuard>
+    <>
+      <AuthGuard />
+      <CoupleGuard />
       {toastVisible && <Toast message={toastMessage} position="top" />}
       <TopNavigationBar title="공유하기" />
+
       <div className="flex flex-col w-full px-5 py-20 justify-between  items-center h-screen">
         <div className="flex flex-col gap-5 w-full">
           {imageUrl && (
@@ -154,6 +158,6 @@ export default function Paeg() {
           </div>
         </div>
       </div>
-    </AuthGuard>
+    </>
   );
 }
