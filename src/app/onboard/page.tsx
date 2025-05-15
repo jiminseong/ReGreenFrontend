@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import OnboardContainer1 from "@/widgets/onboard/OnboardContainer1";
@@ -46,17 +45,17 @@ const OnboardingPage = () => {
           skip
         </button>
       </div>
-      <div className="flex flex-col gap-8 items-center justify-center">
-        {currentStep === 0 ? (
-          <OnboardContainer1 />
-        ) : currentStep === 1 ? (
-          <OnboardContainer2 />
-        ) : currentStep === 2 ? (
-          <OnboardContainer3 />
-        ) : (
-          <OnboardContainer4 />
-        )}
-      </div>
+
+      {currentStep === 0 ? (
+        <OnboardContainer1 imageUrl="/image/onboard/1.png" />
+      ) : currentStep === 1 ? (
+        <OnboardContainer2 imageUrl="/image/onboard/2.png" />
+      ) : currentStep === 2 ? (
+        <OnboardContainer3 imageUrl="/image/onboard/3.png" />
+      ) : (
+        <OnboardContainer4 imageUrl="/image/onboard/4.png" />
+      )}
+
       <Button className="text-lg font-bold" onClick={handleNext}>
         {currentStep < 3 ? "다음" : "시작하기"}
       </Button>
