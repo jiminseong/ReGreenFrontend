@@ -11,6 +11,7 @@ interface PlacedFurnitureInfo {
 export function useMyPlacedFurniture() {
   return useQuery<PlacedFurnitureInfo>({
     queryKey: ["couplePlacedFurniture"],
+
     queryFn: async () => {
       try {
         const res = await http
@@ -26,6 +27,8 @@ export function useMyPlacedFurniture() {
         throw new Error("Failed to fetch furniture data");
       }
     },
+    enabled: true,
+
     retry: false,
     refetchOnWindowFocus: false,
   });

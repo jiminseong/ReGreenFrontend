@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/shared/ui/Button";
-import { useMyInfo } from "@/features/auth/lib/userMyInfo";
+import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { http } from "@/shared/lib/http";
@@ -54,6 +54,8 @@ const CoupleInvitePage = () => {
       }
     }
   });
+
+  //TODO: 초대 코드로 닉네임을 가져오는 API
 
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5 pt-24">

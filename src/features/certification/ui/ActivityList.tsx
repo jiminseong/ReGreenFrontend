@@ -187,9 +187,8 @@ const ActivityList = () => {
   ) : null;
 
   return (
-    <div className="bg-white h-full overflow-y-scroll no-scrollbar">
+    <div className="bg-white h-full overflow-y-scroll no-scrollbar relative">
       <AnimatePresence>
-        {" "}
         {selected && (
           <ToastButton message={TOAST_MESSAGE} onToastClick={handleCertificationClick} />
         )}
@@ -203,6 +202,9 @@ const ActivityList = () => {
           onChecked={handleCheckboxClick}
         />
       ))}
+      <span className="absolute z-20 w-full text-center bottom-32  font-normal text-lg">
+        업데이트 예정입니다.
+      </span>
     </div>
   );
 };

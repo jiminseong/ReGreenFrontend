@@ -5,11 +5,25 @@ import { motion } from "framer-motion";
 import React, { useEffect } from "react";
 import { useToastStore } from "../model/store";
 import { useRouter } from "next/navigation";
+import { useCoupleInfo } from "../lib/useCoupleInfo";
 
 const HeartCalendarState = () => {
   const router = useRouter();
   const isCoupleJoinedToast = useToastStore((state) => state.isCoupleJoinedToast);
   const setIsCoupleJoinedToast = useToastStore((state) => state.setIsCoupleJoinedToast);
+  const coupleQuery = useCoupleInfo();
+  const [heart, setHeart] = React.useState(0);
+  const [day, setDay] = React.useState(0);
+
+  useEffect(() => {
+    if (coupleQuery.isSuccess) {
+      const coupleData = coupleQuery.data?.data;
+      if (coupleData) {
+        setHeart(coupleData.point);
+        setDay(coupleData.breakupAt);
+      }
+    }
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -38,8 +52,8 @@ const HeartCalendarState = () => {
         }}
         className=" w-[140px] flex flex-col gap-2.5 rounded-lg"
       >
-        <WiggleBadge value="200" type="heart" />
-        <WiggleBadge value="50" type="calendar" />
+        <WiggleBadge value={String(heart)} type="heart" />
+        <WiggleBadge value={String(day)} type="calendar" />
       </motion.div>
     </>
   );

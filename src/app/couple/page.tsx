@@ -2,7 +2,7 @@
 
 import Button from "@/shared/ui/Button";
 import Image from "next/image";
-import { useMyInfo } from "@/features/auth/lib/userMyInfo";
+import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import { useRouter } from "next/navigation";
 import { http } from "@/shared/lib/http";
 import { useEffect } from "react";

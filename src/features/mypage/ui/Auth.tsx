@@ -2,7 +2,7 @@
 import { http } from "@/shared/lib/http";
 import CommonModal from "@/widgets/ComonModal";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 
 const Auth = () => {
   const router = useRouter();
@@ -10,15 +10,6 @@ const Auth = () => {
   const [retireModal, setRetireModal] = React.useState(false);
   const menuItems = [{ label: "로그아웃" }, { label: "헤어지기" }];
   const [retireReason, setRetireReason] = React.useState(0);
-
-  useEffect(() => {
-    // 로그인 여부 우선 판단
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      router.push("/login");
-      return;
-    }
-  });
 
   const handleMenuClick = async (label: string) => {
     if (label === "로그아웃") {
@@ -47,7 +38,7 @@ const Auth = () => {
   // 회원탈퇴 처리 로직
   const handleRetire = async () => {
     try {
-      const res = await http.delete("/api/members").json<{
+      const res = await http.delete("api/members").json<{
         code: number;
         message: string;
       }>();
@@ -65,15 +56,15 @@ const Auth = () => {
 
   const brokenModalInner = (
     <>
-      <h2 className="text-lg font-bold mb-4">
+      <h2 className="text-xl font-bold ">
         헤어지기<span className="font-normal">(회원탈퇴)</span>
       </h2>
-      <div className="flex flex-col justify-center items-center text-[#555555] font-medium">
+      <div className="mt-5 mb-8 flex flex-col justify-center items-center text-[#555555] font-medium">
         <p>서비스를 이용해주셔서 감사합니다.</p>
         <p> 회원님의 피드백을 알려주시면</p>
         <p> 더욱 건강한 서비스를 제공하겠습니다.</p>
       </div>
-      <div className="flex flex-col gap-2 justify-center items-center mt-4">
+      <div className="flex flex-col gap-2 justify-center items-center ">
         {/* 탈퇴 사유 선택 */}
         <input
           type="radio"
@@ -83,13 +74,13 @@ const Auth = () => {
           onChange={() => setRetireReason(1)}
           className="hidden"
         />
-        <label className="flex w-[190px] justify-start gap-4" htmlFor="reason1">
+        <label className="flex w-full justify-start items-center gap-4" htmlFor="reason1">
           <div
             className={`w-[20px] h-[20px] rounded-full cursor-pointer ${
               retireReason === 1 ? "bg-ppink" : "bg-[#E1E1E1] border-1 border-[#DEDEDE]"
             }`}
           ></div>
-          <span className="text-[#555555] font-medium">방문을 잘 하지 않아요.</span>
+          <span className="text-lg text-[#555555] font-medium">방문을 잘 하지 않아요.</span>
         </label>
         <input
           type="radio"
@@ -99,14 +90,15 @@ const Auth = () => {
           onChange={() => setRetireReason(2)}
           className="hidden"
         />
-        <label className="flex w-[190px] justify-start gap-4" htmlFor="reason2">
+        <label className="flex w-full justify-start items-center gap-4" htmlFor="reason2">
           <div
             className={`w-[20px] h-[20px] rounded-full cursor-pointer ${
               retireReason === 2 ? "bg-ppink" : "bg-[#E1E1E1] border-1 border-[#DEDEDE]"
             }`}
           ></div>
-          <span className="text-[#555555] font-medium">인증과정이 불편해요.</span>
+          <span className="text-lg text-[#555555] font-medium">인증과정이 불편해요.</span>
         </label>
+
         <input
           type="radio"
           id="reason3"
@@ -115,13 +107,13 @@ const Auth = () => {
           onChange={() => setRetireReason(3)}
           className="hidden"
         />
-        <label className="flex w-[190px] justify-start gap-4" htmlFor="reason3">
+        <label className="flex w-full justify-start  items-center gap-4" htmlFor="reason3">
           <div
             className={`w-[20px] h-[20px] rounded-full cursor-pointer ${
               retireReason === 3 ? "bg-ppink" : "bg-[#E1E1E1] border-1 border-[#DEDEDE]"
             }`}
           ></div>
-          <span className="text-[#555555] font-medium">보상이 부족해요.</span>
+          <span className="text-lg text-[#555555] font-medium">보상이 부족해요.</span>
         </label>
 
         <input
@@ -132,20 +124,20 @@ const Auth = () => {
           onChange={() => setRetireReason(4)}
           className="hidden"
         />
-        <label className="flex w-[190px] justify-start gap-4" htmlFor="reason">
+        <label className="flex w-full justify-start items-center gap-4" htmlFor="reason">
           <div
             className={`w-[20px] h-[20px] rounded-full cursor-pointer ${
               retireReason === 4 ? "bg-ppink" : "bg-[#E1E1E1] border-1 border-[#DEDEDE]"
             }`}
           ></div>
-          <span className="text-[#555555] font-medium">기타</span>
+          <span className=" text-lg text-[#555555] font-medium">기타</span>
         </label>
       </div>
     </>
   );
 
   const retireMessage = (
-    <div className="flex flex-col justify-center items-center ">
+    <div className="flex flex-col justify-center font-bold items-center ">
       <p>탈퇴 시, 계정은 삭제되며</p>
       <p>복구되지 않습니다.</p>
     </div>
@@ -169,6 +161,7 @@ const Auth = () => {
             setRetireModal(true);
             setBrokenModal(false);
           }}
+          className="pt-[60px] px-[44px]"
           cancelText="이전"
           confirmText="탈퇴하기"
           onCancel={() => setBrokenModal(false)}

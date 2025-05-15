@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { useMyInfo } from "@/features/auth/lib/userMyInfo";
+import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import LoginButton from "@/features/auth/ui/LoginButton";
 import { http } from "@/shared/lib/http";
 
