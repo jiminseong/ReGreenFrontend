@@ -6,14 +6,27 @@ interface InventoryListItemProps {
   item: FurnitureItem;
   onToggle: () => void;
   isPlaced: boolean;
+  isOwned: boolean;
 }
 
-const InventoryListItem: React.FC<InventoryListItemProps> = ({ item, onToggle, isPlaced }) => {
+const InventoryListItem: React.FC<InventoryListItemProps> = ({
+  item,
+  onToggle,
+  isPlaced,
+  isOwned,
+}) => {
+  // 이름을 적절히 줄바꿈 최대 5글자\n 5글자
+  const name = item.name.split(" ");
+  const formattedName = name.map((word, index) => (
+    <span key={index} className="block">
+      {word}
+    </span>
+  ));
   return (
     <div
       onClick={() => onToggle()}
       className={`relative ${
-        item.isOwned ? "bg-[#F5F5F5] rounded-[20px] border border-[#DEDEDE]" : ""
+        isOwned ? "bg-[#F5F5F5] rounded-[20px] border border-[#DEDEDE]" : ""
       } flex flex-col items-center px-6 py-5.5 cursor-pointer`}
     >
       {isPlaced && (
@@ -25,12 +38,16 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({ item, onToggle, i
           height={14}
         />
       )}
-      <Image width={62} height={58} src={item.s3ImageUrl} alt={item.name} />
-      <p className="mt-2 text-sm whitespace-pre-line text-center">{item.name}</p>
-      {item.isOwned ? (
-        <span className="text-[#777777] text-sm font-semibold">보유중</span>
+
+      {/* 이미지 높이 고정 */}
+      <div className="w-[62px] h-[58px] relative  flex items-center justify-center mt-2">
+        <Image src={item.s3PreviewImageUrl} fill className="object-cover" alt={item.name} />
+      </div>
+      <p className="mt-2 text-sm whitespace-pre-line text-center">{formattedName}</p>
+      {isOwned ? (
+        <span className="mt-2 text-[#777777] text-sm font-semibold">보유중</span>
       ) : (
-        <div className="flex items-center justify-center gap-1">
+        <div className="mt-2 flex items-center justify-center gap-1">
           <Image alt="하트아이콘" src="/icon/home/heartIcon.svg" width={14.17} height={12.19} />
           <p className="text-pink-500 text-sm font-semibold">
             {item.price === 0 ? "무료" : item.price}

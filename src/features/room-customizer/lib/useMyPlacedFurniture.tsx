@@ -27,8 +27,6 @@ export function useMyPlacedFurniture() {
         throw new Error("Failed to fetch furniture data");
       }
     },
-    enabled: true,
-
     retry: false,
     refetchOnWindowFocus: false,
   });

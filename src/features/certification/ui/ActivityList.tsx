@@ -1,4 +1,5 @@
 "use client";
+import { motion } from "framer-motion";
 import React, { useState } from "react";
 import ActivityItem from "@/features/certification/ui/ActivityItem";
 import ToastButton from "@/widgets/ToastButton";
@@ -221,7 +222,25 @@ const ActivityList = () => {
       )}
       <AnimatePresence>
         {selected && (
-          <ToastButton message={TOAST_MESSAGE} onToastClick={handleCertificationClick} />
+          <>
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              transition={{ duration: 0.3 }}
+              className="w-full justify-center gap-4 absolute bottom-20 flex items-center z-50"
+            >
+              <div className="flex items-center justify-center  gap-2">
+                <Image src="/icon/home/heartIcon.svg" width={24} height={24} alt="하트아이콘" />
+                <span className="text-ppink font-bold">+{selected.breakupAtPoint}</span>
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <Image src="/icon/home/calendarIcon.svg" width={24} height={24} alt="달력아이콘" />
+                <span className="font-bold">+{selected.breakupAtPoint}</span>
+              </div>
+            </motion.div>
+            <ToastButton message={TOAST_MESSAGE} onToastClick={handleCertificationClick} />
+          </>
         )}
       </AnimatePresence>
       {isSuccess &&
