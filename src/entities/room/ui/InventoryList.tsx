@@ -109,7 +109,7 @@ const InventoryListComponent = () => {
           initial={{ y: 650 }}
           animate={{ y: 0 }}
           exit={{ y: 250 }}
-          transition={{ duration: 0.2, ease: "linear" }}
+          transition={{ duration: 0.4, ease: "linear" }}
           className="z-2 w-full h-[40%] absolute bottom-0 bg-white px-5 pt-1 "
         >
           <Image
