@@ -28,19 +28,19 @@ const CoupleInvitePage = () => {
           const res = await httpNoThrow
             .post("api/couples/join", { json: { code: inviteCode } })
             .json<{
-              statusCode: number;
+              code: number;
               message: string;
               data: { coupleId: string };
             }>();
 
-          if (res.statusCode === 2300) {
+          if (res.code === 2300) {
             setIsCoupleJoinedToast(true);
             router.push(`/home`);
           }
-          if (res.statusCode === 400) {
+          if (res.code === 400) {
             setModalOpen(true);
           }
-          if (res.statusCode === 500) {
+          if (res.code === 500) {
             setModalOpen(true);
           }
         } catch (error) {
