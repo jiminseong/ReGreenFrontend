@@ -1,34 +1,39 @@
 "use client";
+import { motion } from "framer-motion";
 import React, { useState } from "react";
 import ActivityItem from "@/features/certification/ui/ActivityItem";
 import ToastButton from "@/widgets/ToastButton";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
+import { useActivityList } from "@/entities/activity/lib/useActivityList";
+import DummyActivityItem from "./DummyActivityItem";
+import { http } from "@/shared/lib/http";
+import CommonModal from "@/widgets/ComonModal";
 // import { http } from "@/shared/lib/http";
 
-const activities = [
-  {
-    id: "1",
-    iconSrc: "/icon/activity/cupIcon.svg",
-    ready: true,
-    type: "photo",
-    label: "다회용 컵 사용하기",
-  },
-  {
-    id: "2",
-    iconSrc: "/icon/activity/danguenIcon.svg",
-    ready: true,
-    type: "photo",
-    label: "중고 제품 나눔/구매 인증하기",
-  },
-  {
-    id: "3",
-    iconSrc: "/icon/activity/dateIcon.svg",
-    ready: true,
-    type: "photo",
-    label: "플로깅 데이트 인증샷",
-  },
+const dummyActivities = [
+  // {
+  //   id: "1",
+  //   iconSrc: "/icon/activity/cupIcon.svg",
+  //   ready: true,
+  //   type: "photo",
+  //   label: "다회용 컵 사용하기",
+  // },
+  // {
+  //   id: "2",
+  //   iconSrc: "/icon/activity/danguenIcon.svg",
+  //   ready: true,
+  //   type: "photo",
+  //   label: "중고 제품 나눔/구매 인증하기",
+  // },
+  // {
+  //   id: "3",
+  //   iconSrc: "/icon/activity/dateIcon.svg",
+  //   ready: true,
+  //   type: "photo",
+  //   label: "플로깅 데이트 인증샷",
+  // },
   {
     id: "4",
     iconSrc: "/icon/activity/plugIcon.svg",
@@ -103,9 +108,13 @@ const activities = [
 
 const ActivityList = () => {
   const [currentCheckedId, setCurrentCheckedId] = useState<string>("");
-  const router = useRouter();
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const selected = activities.find((a) => a.id === currentCheckedId);
+  const { data: activities, isSuccess } = useActivityList();
+  const router = useRouter();
+  const notReadyActivities = dummyActivities;
+
+  const selected = activities?.find((a) => a.ecoVerificationId === currentCheckedId);
 
   const handleCheckboxClick = (id: string) => {
     setCurrentCheckedId((prev) => (prev === id ? "" : id));
@@ -133,46 +142,59 @@ const ActivityList = () => {
 
   const uploadPhoto = async (id: string) => {
     const { file } = await openFileDialog();
+
     if (!file) return;
+    console.log(file.size);
+
+    // 용량을 303755, 즉 300KB로 제한
+    // 5MB = 5 * 1024 * 1024 = 5242880 bytes
+    // 300KB = 300 * 1024 = 307200 bytes
+
+    if (file.size > 307200) {
+      setModalOpen(true);
+      return;
+    }
 
     const formData = new FormData();
     formData.append("file", file);
 
-    // const res = await http.post("api/certification/photo", { body: formData }).json<{
-    //   statusCode: number;
-    //   message: string;
-    //   data: { imageUrl: string };
-    // }>();
+    const res = await http.post(`api/eco-verifications/${id}`, { body: formData }).json<{
+      code: number;
+      message: string;
+      data: { memberEcoVerificationId: string; status: string; s3ImageUrl: string };
+    }>();
 
-    // const imageUrl = res!.data.imageUrl
-    const imageUrl = "image/default.png";
-    router.push(`/activity/${id}?imageUrl=${encodeURIComponent(imageUrl)}`);
+    const imageUrl = res!.data.s3ImageUrl;
+
+    if (res.code !== 2400) {
+      alert("인증 사진 업로드에 실패했습니다.");
+      return;
+    }
+
+    router.push(`/activity/${id}?imageUrl=${imageUrl}`);
   };
 
   const handleCertificationClick = async () => {
     if (!selected) return;
-    const { id, type } = selected;
+    const { ecoVerificationId } = selected;
     setCurrentCheckedId("");
-
-    if (type === "photo") await uploadPhoto(id);
-    else if (type === "link") await uploadPhoto(id);
-    //  router.push(`/activity/certify/link/${id}`);
+    await uploadPhoto(ecoVerificationId);
   };
 
   const TOAST_MESSAGE = selected ? (
     <div className="flex items-center justify-center gap-2">
-      {selected.type === "photo" && (
-        <>
-          사진으로 인증하기
-          <Image
-            src="/icon/activity/certification/cameraIcon.svg"
-            width={24}
-            height={24}
-            alt="카메라아이콘"
-          />
-        </>
-      )}
-      {selected.type === "link" && (
+      {/* {selected.type === "photo" && ( */}
+      <>
+        사진으로 인증하기
+        <Image
+          src="/icon/activity/certification/cameraIcon.svg"
+          width={24}
+          height={24}
+          alt="카메라아이콘"
+        />
+      </>
+      {/* )} */}
+      {/* {selected.type === "link" && (
         <>
           링크로 인증하기
           <Image
@@ -182,29 +204,69 @@ const ActivityList = () => {
             alt="링크아이콘"
           />
         </>
-      )}
+      )} */}
     </div>
   ) : null;
 
   return (
     <div className="bg-white h-full overflow-y-scroll no-scrollbar relative">
+      {modalOpen && (
+        <CommonModal
+          isOpen={modalOpen}
+          onlyCancel
+          onCancel={() => setModalOpen(false)}
+          message={
+            <div className="font-bold px-5 py-5">이미지는 최대 300KB까지 업로드 가능합니다.</div>
+          }
+        />
+      )}
       <AnimatePresence>
         {selected && (
-          <ToastButton message={TOAST_MESSAGE} onToastClick={handleCertificationClick} />
+          <>
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 50 }}
+              transition={{ duration: 0.3 }}
+              className="w-full justify-center gap-4 absolute bottom-20 flex items-center z-50"
+            >
+              <div className="flex items-center justify-center  gap-2">
+                <Image src="/icon/home/heartIcon.svg" width={24} height={24} alt="하트아이콘" />
+                <span className="text-ppink font-bold">+{selected.breakupAtPoint}</span>
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <Image src="/icon/home/calendarIcon.svg" width={24} height={24} alt="달력아이콘" />
+                <span className="font-bold">+{selected.breakupAtPoint}</span>
+              </div>
+            </motion.div>
+            <ToastButton message={TOAST_MESSAGE} onToastClick={handleCertificationClick} />
+          </>
         )}
       </AnimatePresence>
-
-      {activities.map((activity) => (
-        <ActivityItem
-          key={activity.id}
-          {...activity}
-          currentCheckedId={currentCheckedId}
-          onChecked={handleCheckboxClick}
-        />
-      ))}
-      <span className="absolute z-20 w-full text-center bottom-32  font-normal text-lg">
-        업데이트 예정입니다.
-      </span>
+      {isSuccess &&
+        activities.map((activity) => (
+          <ActivityItem
+            key={activity.ecoVerificationId}
+            {...activity}
+            imageUrl={activity.imageUrl || ""}
+            currentCheckedId={currentCheckedId}
+            onChecked={handleCheckboxClick}
+          />
+        ))}{" "}
+      <div className="relative">
+        <span className="absolute z-20 w-full text-center bottom-64  font-normal text-lg">
+          업데이트 예정입니다.
+        </span>
+        {notReadyActivities.map((activity) => (
+          <DummyActivityItem
+            key={activity.id}
+            ecoVerificationId={activity.id}
+            imageUrl={activity.iconSrc}
+            title={activity.label}
+            {...activity}
+          />
+        ))}{" "}
+      </div>
     </div>
   );
 };

@@ -15,7 +15,7 @@ export default function Paeg() {
   const [toastVisible, setToastVisible] = React.useState(false);
   const [toastMessage, setToastMessage] = React.useState("");
   const searchParams = useSearchParams();
-  const imageUrl = searchParams.get("imageUrl"); // 'image/default.png'
+  const imageUrl = searchParams.get("imageUrl");
 
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -93,13 +93,13 @@ export default function Paeg() {
             <div className="w-full h-[350px] overflow-hidden rounded-lg relative">
               {imageUrl && (
                 <Image
-                  src={`/${imageUrl}`}
+                  src={`${imageUrl}`}
                   alt="activity image"
                   fill
                   className="object-cover rounded-lg"
                 />
               )}
-              <div className="absolute bottom-5 left-5 flex flex-col gao-4">
+              <div className="absolute bottom-5 left-5 flex flex-col gap-4">
                 {/* <div>
                 <Image
                   src="/icon/home/locationIcon.svg"

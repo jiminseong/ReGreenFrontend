@@ -10,10 +10,11 @@ const CoupleGuard = () => {
   useEffect(() => {
     if (isSuccess && data.coupleId !== null) {
       return;
+    } else if (isSuccess && data.coupleId === null) {
+      router.push("/couple");
     }
-    router.push("/couple");
   }, []);
-  return null;
+  return <div className="hidden"></div>;
 };
 
 export default CoupleGuard;

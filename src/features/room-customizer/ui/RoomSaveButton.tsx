@@ -6,49 +6,50 @@ import { useHomeMode } from "../lib/useHomeMode";
 import CommonModal from "@/widgets/ComonModal";
 import { patchRoom } from "@/entities/room/lib/patchRoom";
 import { useRoomStore } from "../model/store";
-import { useRouter } from "next/navigation";
-import { useCoupleInfo } from "@/entities/user/lib/useCoupleInfo";
+import { useMyPlacedFurniture } from "../lib/useMyPlacedFurniture";
 
 const RoomSaveButton = () => {
-  const coupleQuery = useCoupleInfo();
   const [modal, setModal] = React.useState(false);
-  const router = useRouter();
-
+  const { mode, setMode } = useHomeMode();
+  const newCoupleFurniture = useMyPlacedFurniture();
+  const setCurrentFurnitures = useRoomStore((state) => state.setCurrentRoomFurnitures);
   const currentFurnitures = useRoomStore((state) => state.currentRoomFurnitures);
-  const notIsOwnedFurnitures = currentFurnitures.filter((item) => !item.isOwned);
+  const isOwnedFurnitures = currentFurnitures.filter((item) => item.isOwned === true);
+  const coupleFurnitures = currentFurnitures.filter(
+    (item) =>
+      item.coupleFurnitureId &&
+      item.coupleFurnitureId !== null &&
+      typeof item.coupleFurnitureId === "string"
+  );
 
   const handleModal = () => {
     setModal(false);
   };
   //현재 방상태를 저장하고 만약 isOwned가 false인 경우에는 저장치 않고 구매유도 모달을 띄우는 함수
   const handleSave = async () => {
-    if (notIsOwnedFurnitures.length === 0) {
+    if (isOwnedFurnitures.length === 0) {
       setModal(true);
       return;
     }
-    const replacedFurniture = notIsOwnedFurnitures.map((item) => {
+    const replacedFurniture = coupleFurnitures.map((item) => {
       return {
-        coupleFurnitureId: item.furnitureId,
+        coupleFurnitureId: item.coupleFurnitureId !== undefined ? item.coupleFurnitureId : null,
         isPlaced: item.isPlaced,
       };
     });
 
     try {
-      const coupleData = coupleQuery.data?.data;
-      if (!coupleData) {
-        return;
-      }
-      const coupleId = coupleData.coupleId;
-      const res = await patchRoom({ coupleId, replacedFurniture });
-      if (res.statusCode === 2300) {
-        router.push("/home");
+      const res = await patchRoom({ placements: replacedFurniture });
+      if (res.code === 2500) {
+        const updated = await newCoupleFurniture.refetch();
+        setCurrentFurnitures(updated.data?.data ?? []);
+        setMode("home");
       }
     } catch (error) {
       console.error("Error saving room:", error);
     }
   };
 
-  const { mode, setMode } = useHomeMode();
   return (
     <>
       <motion.button

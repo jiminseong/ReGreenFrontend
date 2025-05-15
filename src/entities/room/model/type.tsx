@@ -24,15 +24,16 @@ export interface FurnitureItem {
   zIndex: number;
 }
 
-export interface PatchRoomRequest {
-  coupleId: string;
-  replacedFurniture: {
-    coupleFurnitureId: string;
-    isPlaced: boolean;
-  }[];
+interface PatchRoomItem {
+  coupleFurnitureId: string | null;
+  isPlaced: boolean;
 }
 
-export interface PatchRoomResonse {
-  statusCode: number;
+export interface PatchRoomRequest {
+  placements: PatchRoomItem[];
+}
+
+export interface PatchRoomResponse {
+  code: number;
   message: string;
 }

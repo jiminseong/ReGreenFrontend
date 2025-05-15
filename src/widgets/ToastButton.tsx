@@ -5,6 +5,7 @@ import React from "react";
 interface ToastProps {
   message: string | React.ReactNode;
   onToastClick: () => void;
+  otherProps?: React.ReactNode;
 }
 
 const ToastButton: React.FC<ToastProps> = ({ message, onToastClick }) => {

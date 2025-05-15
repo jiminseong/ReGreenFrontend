@@ -61,24 +61,15 @@ const Room = () => {
         }}
         className="relative w-full h-full flex flex-col items-center justify-center"
       >
-        <Image
-          src="/image/home/roomDefaultWall.png"
-          alt="배경"
-          width={900}
-          height={900}
-          className="absolute z-0"
-        />
         {filteredItems?.map((item) => (
-          <>
-            <Image
-              key={item.furnitureId}
-              src={item.s3ImageUrl}
-              alt={item.name}
-              width={900}
-              height={900}
-              className={`absolute z-${item.zIndex}`}
-            />{" "}
-          </>
+          <Image
+            key={item.furnitureId}
+            src={item.s3ImageUrl}
+            alt={item.name}
+            width={900}
+            height={900}
+            className={`absolute z-${item.zIndex}`}
+          />
         ))}
         <div
           className={`${

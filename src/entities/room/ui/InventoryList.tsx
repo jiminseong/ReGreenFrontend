@@ -24,6 +24,7 @@ const InventoryListComponent = () => {
   const currentCategory = useFurnitureStore((state) => state.currentFurnituresCategory[0]);
   const setCategories = useFurnitureStore((state) => state.setCategories);
   const currentFurnitures = useRoomStore((state) => state.currentRoomFurnitures);
+  const setCurrentFurnitures = useRoomStore((state) => state.setCurrentRoomFurnitures);
 
   const togglePlacement = useRoomStore((state) => state.toggleFurniturePlacement);
 
@@ -55,6 +56,10 @@ const InventoryListComponent = () => {
           </span>
           <span className="font-bold">친환경 활동을 하러 갈까요?</span>
         </>
+      ) : modalType === "alreadyOwned" ? (
+        <>
+          <span className="font-bold">이미 보유하고 있는 아이템이에요!</span>
+        </>
       ) : null}
     </span>
   );
@@ -73,11 +78,18 @@ const InventoryListComponent = () => {
     }
 
     const res = await buyFurniture(modalItem.furnitureId);
-    if ((res.statusCode = 2300)) {
-      setModal(true, "buyFinished", null);
+    if (res.code === 2500) {
+      setModal(true, "buyFinished", modalItem);
+      const updated = await newCoupleFurniture.refetch();
+
+      setCurrentFurnitures(updated.data?.data ?? []);
     }
+
     if (res.message === "Not enough points") {
       setModal(true, "notEnoughPoints", modalItem);
+    }
+    if (res.message === "Already owned") {
+      setModal(true, "alreadyOwned", modalItem);
     }
   };
 
@@ -129,6 +141,7 @@ const InventoryListComponent = () => {
               <div id="item" key={item.furnitureId}>
                 <InventoryListItem
                   isPlaced={item.isPlaced}
+                  isOwned={item.isOwned}
                   item={item}
                   onToggle={() => handleToggle(item)}
                 />

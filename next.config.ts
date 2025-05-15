@@ -1,5 +1,7 @@
 module.exports = {
   images: {
+    domains: ["regreen-bucket.s3.ap-northeast-2.amazonaws.com"],
+
     remotePatterns: [
       {
         protocol: "https",

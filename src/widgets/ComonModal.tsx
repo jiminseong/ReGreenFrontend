@@ -80,7 +80,7 @@ const CommonModal: React.FC<CommonModalProps> = ({
               onClick={onCancel}
               className={`${
                 onlyCancel ? "rounded-b-[20px]" : ""
-              }py-4 text-sm font-semibold rounded-bl-[20px]  bg-gray-100`}
+              } py-4 text-sm font-semibold rounded-bl-[20px]  bg-gray-100`}
             >
               {cancelText}
             </button>
