@@ -3,6 +3,7 @@
 import React from "react";
 
 interface CommonModalProps {
+  className?: string;
   isOpen: boolean;
   message: string | React.ReactNode;
   subMessage?: string;
@@ -10,6 +11,7 @@ interface CommonModalProps {
   cancelText?: string;
   onConfirm?: () => void;
   onCancel?: () => void;
+  onlyCancel?: boolean;
   onlyConfirm?: boolean;
   danger?: boolean;
 }
@@ -18,6 +20,7 @@ interface CommonModalProps {
  * 메시지와 액션을 표시하기 위한 재사용 가능한 모달 컴포넌트입니다.
  *
  * @component
+ * @param {string} className - 모달의 추가 CSS 클래스입니다.
  * @param {CommonModalProps} props
  * @param {boolean} props.isOpen - 모달의 표시 여부를 결정합니다.
  * @param {string | React.ReactNode} props.message - 모달에 표시할 주요 메시지입니다. "\n"으로 줄바꿈이 가능합니다.
@@ -26,6 +29,7 @@ interface CommonModalProps {
  * @param {string} [props.cancelText="취소"] - 취소 버튼에 표시할 텍스트입니다.
  * @param {() => void} props.onConfirm - 확인 버튼 클릭 시 호출되는 콜백 함수입니다.
  * @param {() => void} props.onCancel - 취소 버튼 클릭 시 호출되는 콜백 함수입니다.
+ * @param {boolean} [props.onlyCancel=false] - true일 경우 취소 버튼만 표시됩니다.
  * @param {boolean} [props.onlyConfirm=false] - true일 경우 확인 버튼만 표시됩니다.
  * @param {boolean} [props.danger=false] - true일 경우 확인 버튼에 위험 스타일이 적용됩니다.
  *
@@ -43,6 +47,7 @@ interface CommonModalProps {
  * />
  */
 const CommonModal: React.FC<CommonModalProps> = ({
+  className,
   isOpen,
   message,
   subMessage,
@@ -51,6 +56,7 @@ const CommonModal: React.FC<CommonModalProps> = ({
   onConfirm,
   onCancel,
   onlyConfirm = false,
+  onlyCancel = false,
   danger = false,
 }) => {
   if (!isOpen) return null;
@@ -63,28 +69,32 @@ const CommonModal: React.FC<CommonModalProps> = ({
         {typeof message === "string" ? (
           <p className="pt-10 pb-4 w-full text-base font-semibold ">{message}</p>
         ) : (
-          <div className="pt-10 pb-4">{message}</div>
+          <div className={`${className} pt-10 pb-4`}>{message}</div>
         )}
 
         {subMessage && <p className="text-sm text-gray-500 mt-1">{subMessage}</p>}
 
-        <div className={`mt-6 grid ${onlyConfirm ? "grid-cols-1" : "grid-cols-2"}`}>
+        <div className={`mt-6 grid ${onlyConfirm || onlyCancel ? "grid-cols-1" : "grid-cols-2"}`}>
           {!onlyConfirm && (
             <button
               onClick={onCancel}
-              className="py-4 text-sm font-semibold rounded-bl-[20px] bg-gray-100"
+              className={`${
+                onlyCancel ? "rounded-b-[20px]" : ""
+              }py-4 text-sm font-semibold rounded-bl-[20px]  bg-gray-100`}
             >
               {cancelText}
             </button>
           )}
-          <button
-            onClick={onConfirm}
-            className={`py-4 text-sm font-semibold text-ppink bg-lpink ${
-              onlyConfirm ? "rounded-[20px]" : "rounded-br-[20px]"
-            } ${confirmButtonStyle}`}
-          >
-            {confirmText}
-          </button>
+          {!onlyCancel && (
+            <button
+              onClick={onConfirm}
+              className={`py-4 text-sm font-semibold text-ppink bg-lpink ${
+                onlyConfirm ? "rounded-b-[20px]" : "rounded-br-[20px]"
+              } ${confirmButtonStyle}`}
+            >
+              {confirmText}
+            </button>
+          )}
         </div>
       </div>
     </div>

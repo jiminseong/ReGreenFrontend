@@ -1,5 +1,5 @@
 interface WiggleBadgeProps {
-  value: string; // ex: '+20000'
+  value: string;
   type: "heart" | "calendar";
 }
 
@@ -15,7 +15,14 @@ const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value, type }) => {
 
   const textColor = type === "heart" ? "text-ppink" : "text-black";
 
-  const paddingLeft = length <= 3 ? "pl-[24px]" : length === 4 ? "pl-[15px]" : "pl-[6px]";
+  const paddingLeft =
+    length === 1
+      ? "pl-[36px]"
+      : length <= 3
+      ? "pl-[24px]"
+      : length === 4
+      ? "pl-[15px]"
+      : "pl-[6px]";
 
   return (
     <div

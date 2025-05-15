@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SplashContent from "@/widgets/splash/SplashContent";
 import InstallPrompt from "@/features/splash/ui/InstallPrompt";
-import { useMyInfo } from "@/features/auth/lib/userMyInfo";
+import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 
 export default function Page() {
   const router = useRouter();

@@ -81,10 +81,10 @@ export const http = ky.create({
           }
 
           return http(request.url, {
+            ...options,
             method: request.method,
             headers: request.headers,
             body: request.body,
-            credentials: "include",
           });
         }
 
@@ -92,4 +92,8 @@ export const http = ky.create({
       },
     ],
   },
+});
+
+export const httpNoThrow = http.extend({
+  throwHttpErrors: false,
 });

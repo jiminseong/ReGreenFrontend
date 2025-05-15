@@ -1,5 +1,5 @@
 "use client";
-import { useMyInfo } from "@/features/auth/lib/userMyInfo";
+import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import Toast from "@/widgets/Toast";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
