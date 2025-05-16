@@ -17,7 +17,7 @@ const BottomNavigationBar = () => {
   };
 
   const buttonClass =
-    "font-bold text-lg md:text-xl flex w-[50%] cursor-pointer flex-col rounded-[22px] bg-white px-7 py-5 text-center shadow-[0px_6px_0px_0px_rgba(0,0,0,0.25)]";
+    " font-bold text-lg md:text-xl flex w-full justify-center items-center cursor-pointer flex-col rounded-[22px] bg-white px-7 py-5  shadow-[0px_6px_0px_0px_rgba(0,0,0,0.25)] ";
 
   return (
     <motion.div
@@ -37,7 +37,6 @@ const BottomNavigationBar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            whileTap={{ style: { boxShadow: "none" } }}
             whileHover={{ scale: 1.025 }}
             exit={{ opacity: 0, y: -50 }}
             type="button"
@@ -50,7 +49,6 @@ const BottomNavigationBar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            whileTap={{ style: { boxShadow: "none" } }}
             whileHover={{ scale: 1.025 }}
             exit={{ opacity: 0, y: -50 }}
             type="button"
