@@ -11,6 +11,7 @@ import DummyActivityItem from "./DummyActivityItem";
 import { http } from "@/shared/lib/http";
 import CommonModal from "@/widgets/ComonModal";
 import Loading from "@/widgets/Loading";
+import Toast from "@/widgets/Toast";
 // import { http } from "@/shared/lib/http";
 
 const dummyActivities = [
@@ -114,6 +115,7 @@ const ActivityList = () => {
   const { data: activities, isSuccess } = useActivityList();
   const router = useRouter();
   const notReadyActivities = dummyActivities;
+  const [toast, setToast] = useState(false);
 
   const selected = activities?.find((a) => a.ecoVerificationId === currentCheckedId);
 
@@ -151,7 +153,7 @@ const ActivityList = () => {
     // 5MB = 5 * 1024 * 1024 = 5242880 bytes
     // 300KB = 300 * 1024 = 307200 bytes
 
-    if (file.size > 307200) {
+    if (file.size > 5242880) {
       setModalOpen(true);
       return;
     }
@@ -175,8 +177,15 @@ const ActivityList = () => {
       return;
     }
 
-    setLoading(false);
-    router.push(`/activity/${memberEcoVerificationId}?imageUrl=${imageUrl}`);
+    if (res.code === 2400) {
+      setToast(true);
+      setTimeout(() => {
+        setToast(false);
+      }, 2000);
+
+      setLoading(false);
+      router.push(`/activity/${memberEcoVerificationId}?imageUrl=${imageUrl}`);
+    }
   };
 
   const handleCertificationClick = async () => {
@@ -215,6 +224,12 @@ const ActivityList = () => {
 
   return (
     <div className="bg-white h-full overflow-y-scroll no-scrollbar relative">
+      {toast && (
+        <Toast
+          message="인증이 완료! 자정에 자동 검토되어 하트가 적립돼요!\
+    ]=[-ㅔ0ㅁㅂ1  "
+        />
+      )}
       {loading && <Loading />}
       {modalOpen && (
         <CommonModal
@@ -222,7 +237,7 @@ const ActivityList = () => {
           onlyCancel
           onCancel={() => setModalOpen(false)}
           message={
-            <div className="font-bold px-5 py-5">이미지는 최대 300KB까지 업로드 가능합니다.</div>
+            <div className="font-bold px-5 py-5">이미지는 최대 5MB까지 업로드 가능합니다.</div>
           }
         />
       )}

@@ -45,7 +45,7 @@ const Auth = () => {
       if (res.code === 2300) {
         await localStorage.removeItem("accessToken");
         await localStorage.removeItem("refreshToken");
-        router.push("/spalsh");
+        router.push("/");
       } else {
         console.log("회원탈퇴 실패:", res.message);
       }
