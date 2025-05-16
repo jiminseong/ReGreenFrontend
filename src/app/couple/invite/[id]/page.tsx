@@ -1,5 +1,6 @@
 "use client";
 import { useMyInfo } from "@/entities/user/lib/userMyInfo";
+import Button from "@/shared/ui/Button";
 import Toast from "@/widgets/Toast";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -58,7 +59,8 @@ const CoupleInvitePage = () => {
         <button onClick={handleCopyToClipboard} className="text-ppink underline font-bold">
           복사하기
         </button>
-      </div>
+      </div>{" "}
+      <Button onClick={() => router.push("/home")}>초대하러 가기 </Button>
     </div>
   );
 };

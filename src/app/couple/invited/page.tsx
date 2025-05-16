@@ -28,27 +28,32 @@ const CoupleInvitePage = () => {
         // 발급 API 호출
         try {
           setLoading(true);
-          const res = await httpNoThrow
+          await httpNoThrow
             .post("api/couples/join", { json: { code: inviteCode } })
             .json<{
               code: number;
               message: string;
               data: { coupleId: string };
-            }>();
-
-          if (res.code === 2300) {
-            setLoading(false);
-            setIsCoupleJoinedToast(true);
-            router.push(`/home`);
-          }
-          if (res.code === 400) {
-            setLoading(false);
-            setModalOpen(true);
-          }
-          if (res.code === 500) {
-            setLoading(false);
-            setModalOpen(true);
-          }
+            }>()
+            .then((res) => {
+              if (res.code === 2100) {
+                setLoading(false);
+                console.log("초대 코드 발급 성공");
+                // 초대 코드 페이지로 이동
+                setIsCoupleJoinedToast(true);
+                router.push(`/home`);
+              } else if (res.code === 400) {
+                setLoading(false);
+                setModalOpen(true);
+              } else if (res.code === 409) {
+                setLoading(false);
+                setModalOpen(true);
+              }
+              if (res.code === 500) {
+                setLoading(false);
+                setModalOpen(true);
+              }
+            });
         } catch (error) {
           // 초대 코드가 유효하지 않은 경우
           console.error("초대 코드 발급 요청 실패", error);
