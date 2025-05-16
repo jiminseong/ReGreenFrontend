@@ -40,7 +40,7 @@ const LoginPage = () => {
           }>();
 
         if (res.code === 2100) {
-          setLoading(false);
+          await setLoading(false);
           console.log("로그인 성공");
           setHasRequestedLogin(true);
           // 로컬 스토리지에 accessToken과 refreshToken 저장
@@ -51,7 +51,7 @@ const LoginPage = () => {
           console.log("로그인 실패:", res.message);
         }
       } catch (error) {
-        setLoading(false);
+        await setLoading(false);
         console.error("로그인 요청 실패", error);
       }
     };

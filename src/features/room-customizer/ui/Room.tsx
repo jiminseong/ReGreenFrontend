@@ -6,21 +6,22 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRoomStore } from "../model/store";
 import { useMyPlacedFurniture } from "../lib/useMyPlacedFurniture";
+import Loading from "@/widgets/Loading";
 
 const Room = () => {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const { mode } = useHomeMode();
   const targetRef = useRef<HTMLDivElement>(null);
 
-  const query = useMyPlacedFurniture();
+  const { data, isSuccess, isPending } = useMyPlacedFurniture();
 
   const setFurnitures = useRoomStore((state) => state.setCurrentRoomFurnitures);
   const currentFurnitures = useRoomStore((state) => state.currentRoomFurnitures);
 
   const filteredItems = useMemo(() => {
     if (mode === "home") {
-      if (query.data?.data && query.data.data.length > 0) {
-        return query.data?.data.filter((item) => item.isPlaced && item.isOwned);
+      if (data?.data && data.data.length > 0) {
+        return data?.data.filter((item) => item.isPlaced && item.isOwned);
       }
     }
 
@@ -29,10 +30,10 @@ const Room = () => {
   const sortedItems = [...filteredItems].sort((a, b) => a.zIndex - b.zIndex);
 
   useEffect(() => {
-    if (mode === "home" && query.isSuccess && query.data?.data) {
-      setFurnitures(query.data.data);
+    if (mode === "home" && isSuccess && data?.data) {
+      setFurnitures(data.data);
     }
-  }, [query.isSuccess, query.data, mode, setFurnitures]);
+  }, [isSuccess, data, mode, setFurnitures]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -41,6 +42,7 @@ const Room = () => {
   }, []);
   return (
     <>
+      {isPending && <Loading />}
       <motion.div
         ref={targetRef}
         animate={{
@@ -63,6 +65,13 @@ const Room = () => {
         }}
         className="relative w-full h-full flex flex-col items-center justify-center"
       >
+        <Image
+          src="https://regreen-bucket.s3.ap-northeast-2.amazonaws.com/images/constant/furniture/green00.png"
+          alt="배경"
+          width={1000}
+          height={1000}
+          className={`z-0 absolute `}
+        />
         {sortedItems?.map((item) => (
           <Image
             key={item.furnitureId}

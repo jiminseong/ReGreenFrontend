@@ -173,7 +173,7 @@ const ActivityList = () => {
 
     if (res.code !== 2400) {
       alert("인증 사진 업로드에 실패했습니다.");
-      setLoading(false);
+      await setLoading(false);
       return;
     }
 
@@ -183,7 +183,7 @@ const ActivityList = () => {
         setToast(false);
       }, 2000);
 
-      setLoading(false);
+      await setLoading(false);
       router.push(`/activity/${memberEcoVerificationId}?imageUrl=${imageUrl}`);
     }
   };

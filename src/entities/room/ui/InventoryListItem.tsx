@@ -17,14 +17,26 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
 }) => {
   return (
     <div
-      onClick={() => onToggle()}
+      onClick={item.name === "기본 룸쉘" ? () => {} : () => onToggle()}
       className={`relative ${
-        isOwned ? "bg-[#F5F5F5] rounded-[20px] border border-[#DEDEDE]" : ""
+        isOwned || item.name === "기본 룸쉘"
+          ? "bg-[#F5F5F5] rounded-[20px] border border-[#DEDEDE]"
+          : ""
       } flex flex-col items-center px-6 py-3 md:py-5.5 cursor-pointer`}
     >
+      {/* isPlaced가 true이거나 item.name === "기본 룸쉘" 인 경우 체크 표시 */}
       {isPlaced && (
         <Image
           className={`absolute top-3.5 right-3.75 ${isPlaced === true ? "visible" : "hidden"}`}
+          src="/icon/home/checkIcon.svg"
+          alt="체크아이콘"
+          width={14}
+          height={14}
+        />
+      )}
+      {item.name === "기본 룸쉘" && (
+        <Image
+          className={`absolute top-3.5 right-3.75 visible"`}
           src="/icon/home/checkIcon.svg"
           alt="체크아이콘"
           width={14}
@@ -37,7 +49,7 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
         <Image src={item.s3PreviewImageUrl} fill className="object-cover" alt={item.name} />
       </div>
       <p className="mt-2 text-sm whitespace-pre-line text-center">{item.name}</p>
-      {isOwned ? (
+      {isOwned || item.name === "기본 룸쉘" ? (
         <span className="mt-2 text-[#777777] text-sm font-semibold">보유중</span>
       ) : (
         <div className="mt-2 flex items-center justify-center gap-1">

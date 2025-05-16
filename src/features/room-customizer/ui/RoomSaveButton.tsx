@@ -32,7 +32,7 @@ const RoomSaveButton = () => {
     setLoading(true);
 
     if (isOwnedFurnitures.length === 0) {
-      setLoading(false);
+      await setLoading(false);
       setModal(true);
       return;
     }
@@ -46,13 +46,13 @@ const RoomSaveButton = () => {
     try {
       const res = await patchRoom({ placements: replacedFurniture });
       if (res.code === 2500) {
-        setLoading(false);
+        await setLoading(false);
         const updated = await newCoupleFurniture.refetch();
         setCurrentFurnitures(updated.data?.data ?? []);
         setMode("home");
       }
     } catch (error) {
-      setLoading(false);
+      await setLoading(false);
       console.error("Error saving room:", error);
     }
   };
