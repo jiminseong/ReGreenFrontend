@@ -64,8 +64,7 @@ export default function Paeg() {
 
       if (isValidUrl(inputValue)) {
         // 유효한 URL인 경우
-        console.log("Valid URL:", inputValue);
-        handleToast("링크가 전송되었습니다!");
+        handleSendButtonClick();
       } else {
         // 유효하지 않은 URL인 경우
         console.log("Invalid URL:", inputValue);
@@ -80,7 +79,9 @@ export default function Paeg() {
     if (isValidUrl(inputValue)) {
       // 유효한 URL인 경우
       const res = await http
-        .patch(`api/eco-verifications/my/${memberEcoVerificationId}/link`)
+        .patch(`api/eco-verifications/my/${memberEcoVerificationId}/link`, {
+          json: { url: inputValue },
+        })
         .json<{
           code: number;
           message: string;
