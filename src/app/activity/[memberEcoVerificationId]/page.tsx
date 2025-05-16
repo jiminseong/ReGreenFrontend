@@ -11,6 +11,7 @@ import TopNavigationBar from "@/shared/ui/TopNavigationBar";
 import Toast from "@/widgets/Toast";
 import CoupleGuard from "@/shared/lib/CoupleGuard";
 import { http } from "@/shared/lib/http";
+import html2canvas from "html2canvas";
 
 export default function Paeg() {
   const { memberEcoVerificationId } = useParams();
@@ -29,6 +30,22 @@ export default function Paeg() {
   const formattedDate = `${year}.${month}.${day} ${dayName}요일`;
 
   const [inputValue, setInputValue] = React.useState("");
+
+  //해당 ref에 해당하는 컴포넌트를 이미지 형태로 다운로드 하는 함수
+  const ref = React.useRef<HTMLDivElement>(null);
+  const handleSaveButtonClick = async () => {
+    if (ref.current) {
+      const canvas = await html2canvas(ref.current, {
+        useCORS: true,
+        scale: 2, // 해상도 조정
+      });
+      const dataUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = "activity_image.png"; // 다운로드할 파일 이름
+      link.click();
+    }
+  };
 
   // 정규식 검사 함수
   const isValidUrl = (url: string) => {
@@ -102,7 +119,7 @@ export default function Paeg() {
       <div className="flex flex-col w-full px-5 py-20 justify-between  items-center h-screen">
         <div className="flex flex-col gap-5 w-full">
           {imageUrl && (
-            <div className="w-full h-[350px] overflow-hidden rounded-lg relative">
+            <div ref={ref} className="w-full h-[350px] overflow-hidden rounded-lg relative">
               {imageUrl && (
                 <Image
                   src={`${imageUrl}`}
@@ -132,7 +149,10 @@ export default function Paeg() {
             </div>
           )}
 
-          <button className=" w-full bg-[#222222] py-4 rounded-lg  flex gap-1.5 justify-center items-center text-white font-bold text-lg">
+          <button
+            onClick={handleSaveButtonClick}
+            className=" w-full bg-[#222222] py-4 rounded-lg  flex gap-1.5 justify-center items-center text-white font-bold text-lg"
+          >
             저장하기
             <Image
               src="/icon/activity/certification/downloadIcon.svg"
