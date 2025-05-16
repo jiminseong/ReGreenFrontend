@@ -91,7 +91,13 @@ const FinishedActivityList = () => {
                 alt={activity.title}
               />
               <div className="flex flex-col">
-                <span className="text-left text-lg font-semibold">{activity.title}</span>
+                {activity.title.length > 10 ? (
+                  <span className="text-lg font-semibold truncate max-w-[150px] md:max-w-[220px] block">
+                    {activity.title}
+                  </span>
+                ) : (
+                  <span className="text-lg font-semibold">{activity.title}</span>
+                )}
                 <span className="text-sm text-[#777777]">신청일 : {activity.createdAt}</span>
               </div>
             </div>
