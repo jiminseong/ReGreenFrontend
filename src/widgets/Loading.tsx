@@ -5,9 +5,9 @@ import React from "react";
 
 const Loading = () => {
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="fixed z-210  min-h-screen max-w-[500px] w-full min-w-[320px]  h-full flex items-center pb-20 justify-center">
       <motion.div
-        className="w-16 h-16 border-4 border-ppink border-l-transparent border-b-transparent rounded-full"
+        className="w-16 h-16 border-4 border-ppink border-l-transparent border-b-transparent rounded-full "
         animate={{ rotate: 360 }}
         transition={{
           repeat: Infinity,

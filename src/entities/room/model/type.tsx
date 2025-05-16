@@ -37,3 +37,18 @@ export interface PatchRoomResponse {
   code: number;
   message: string;
 }
+
+export interface BuyFurnitureResponse {
+  code: number;
+  message: string;
+  data?: {
+    coupeFurnitureId: string;
+  };
+}
+
+export interface ErrorResponse {
+  statusCode: number;
+  timestamp: string;
+  path: string;
+  error: string;
+}

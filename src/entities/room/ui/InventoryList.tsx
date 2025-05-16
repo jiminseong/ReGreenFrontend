@@ -5,20 +5,26 @@ import Image from "next/image";
 import React, { useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useFurnitureModalStore, useFurnitureStore } from "@/entities/room/model/store";
-import { FurnitureItem } from "@/entities/room/model/type";
+import { BuyFurnitureResponse, FurnitureItem } from "@/entities/room/model/type";
 import CategorySwiper from "./CategorySwiper";
 import InventoryListItem from "./InventoryListItem";
 import CommonModal from "@/widgets/ComonModal";
 import { useRoomStore } from "@/features/room-customizer/model/store";
-import { buyFurniture } from "@/entities/room/lib/buyFurniture";
 import { useRouter } from "next/navigation";
 import { useCoupleInfo } from "@/entities/user/lib/useCoupleInfo";
 import { useMyPlacedFurniture } from "@/features/room-customizer/lib/useMyPlacedFurniture";
+import { httpNoThrow } from "@/shared/lib/http";
+import Loading from "@/widgets/Loading";
 
 const InventoryListComponent = () => {
   const router = useRouter();
-  const coupleQuery = useCoupleInfo();
-  const newCoupleFurniture = useMyPlacedFurniture();
+  const [loading, setLoading] = React.useState(false);
+  const { data: coupleInfo, refetch: coupleRefetch } = useCoupleInfo();
+  const {
+    data: newCoupleFurniture,
+    refetch: furnituresRefetch,
+    isSuccess: furnitureSuccess,
+  } = useMyPlacedFurniture();
 
   const { mode, setMode } = useHomeMode();
   const currentCategory = useFurnitureStore((state) => state.currentFurnituresCategory[0]);
@@ -65,32 +71,48 @@ const InventoryListComponent = () => {
   );
 
   const handleBuy = async () => {
-    const coupleData = coupleQuery.data?.data;
+    const coupleData = coupleInfo;
     if (!coupleData || !modalItem) {
-      console.error("커플 데이터 또는 모달 아이템이 없습니다." + coupleQuery + modalItem);
+      console.error("커플 데이터 또는 모달 아이템이 없습니다." + coupleInfo + modalItem);
       return;
     }
 
-    if (Number(coupleData.point) < modalItem.price) {
-      console.log(coupleData.point);
+    if (Number(coupleInfo.data.point) < modalItem.price) {
+      console.log(coupleInfo.data.point);
       setModal(true, "notEnoughPoints", modalItem);
       return;
     }
 
-    const res = await buyFurniture(modalItem.furnitureId);
-    if (res.code === 2500) {
-      setModal(true, "buyFinished", modalItem);
-      const updated = await newCoupleFurniture.refetch();
+    const buyFurnitures = async () => {
+      try {
+        setLoading(true);
+        const res = await httpNoThrow
+          .post(`api/furniture/${modalItem.furnitureId}`)
+          .json<BuyFurnitureResponse>();
+        setLoading(false);
+        if ("code" in res && res.code === 2500) {
+          setModal(true, "buyFinished", modalItem);
+          const updated = await furnituresRefetch();
+          coupleRefetch();
+          setCurrentFurnitures(updated.data?.data ?? []);
+        }
+        if (res.statusCode === 400) {
+          setLoading(false);
+          setModal(true, "notEnoughPoints", modalItem);
+          coupleRefetch();
+        } else if (res.statusCode === 409) {
+          setLoading(false);
+          setModal(true, "alreadyOwned", modalItem);
+          coupleRefetch();
+        } else {
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error("Error buying furniture:", error);
+      }
+    };
 
-      setCurrentFurnitures(updated.data?.data ?? []);
-    }
-
-    if (res.message === "Not enough points") {
-      setModal(true, "notEnoughPoints", modalItem);
-    }
-    if (res.message === "Already owned") {
-      setModal(true, "alreadyOwned", modalItem);
-    }
+    buyFurnitures();
   };
 
   // 초기에 카테고리 하나 설정
@@ -100,8 +122,8 @@ const InventoryListComponent = () => {
 
   function handleHomeMode() {
     if (mode === "inventory") {
-      if (newCoupleFurniture.isSuccess) {
-        if (newCoupleFurniture.data?.data.length > 0) {
+      if (furnitureSuccess) {
+        if (newCoupleFurniture.data.length > 0) {
           setMode("home");
         }
       }
@@ -115,6 +137,7 @@ const InventoryListComponent = () => {
 
   return (
     <AnimatePresence mode="wait">
+      {loading && <Loading />}
       {mode === "inventory" && (
         <motion.div
           key="inventory-list"
@@ -176,13 +199,28 @@ const InventoryListComponent = () => {
           confirmText="네"
           cancelText="아니오"
         />
+      )}{" "}
+      {modal && modalType === "alreadyOwned" && (
+        <CommonModal
+          isOpen={modal}
+          message={messageSpan}
+          onConfirm={() => {
+            router.push("/activity/list");
+            setModal(false, null, null);
+          }}
+          onCancel={() => {
+            setModal(false, null, null);
+          }}
+          confirmText="네"
+          cancelText="아니오"
+        />
       )}
       {modal && modalType === "buyFinished" && (
         <CommonModal
           isOpen={modal}
           message={
             <span className="text-[16px] font-medium">
-              <span className="font-bold">[{modalItem?.name}]</span>를 구매했습니다!
+              <span className="font-bold">[{modalItem?.name}]</span>를 이미 구매했어요.
             </span>
           }
           onCancel={() => {
