@@ -10,6 +10,7 @@ import { useActivityList } from "@/entities/activity/lib/useActivityList";
 import DummyActivityItem from "./DummyActivityItem";
 import { http } from "@/shared/lib/http";
 import CommonModal from "@/widgets/ComonModal";
+import Loading from "@/widgets/Loading";
 // import { http } from "@/shared/lib/http";
 
 const dummyActivities = [
@@ -109,7 +110,7 @@ const dummyActivities = [
 const ActivityList = () => {
   const [currentCheckedId, setCurrentCheckedId] = useState<string>("");
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const { data: activities, isSuccess } = useActivityList();
   const router = useRouter();
   const notReadyActivities = dummyActivities;
@@ -155,6 +156,7 @@ const ActivityList = () => {
       return;
     }
 
+    await setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
 
@@ -165,13 +167,16 @@ const ActivityList = () => {
     }>();
 
     const imageUrl = res!.data.s3ImageUrl;
+    const memberEcoVerificationId = res!.data.memberEcoVerificationId;
 
     if (res.code !== 2400) {
       alert("인증 사진 업로드에 실패했습니다.");
+      setLoading(false);
       return;
     }
 
-    router.push(`/activity/${id}?imageUrl=${imageUrl}`);
+    setLoading(false);
+    router.push(`/activity/${memberEcoVerificationId}?imageUrl=${imageUrl}`);
   };
 
   const handleCertificationClick = async () => {
@@ -210,6 +215,7 @@ const ActivityList = () => {
 
   return (
     <div className="bg-white h-full overflow-y-scroll no-scrollbar relative">
+      {loading && <Loading />}
       {modalOpen && (
         <CommonModal
           isOpen={modalOpen}

@@ -1,5 +1,6 @@
 "use client";
 import {
+  useParams,
   //  useParams,
   useSearchParams,
 } from "next/navigation";
@@ -9,9 +10,10 @@ import AuthGuard from "@/shared/lib/AuthGuard";
 import TopNavigationBar from "@/shared/ui/TopNavigationBar";
 import Toast from "@/widgets/Toast";
 import CoupleGuard from "@/shared/lib/CoupleGuard";
+import { http } from "@/shared/lib/http";
 
 export default function Paeg() {
-  // const { id } = useParams(); // '1'
+  const { memberEcoVerificationId } = useParams();
   const [toastVisible, setToastVisible] = React.useState(false);
   const [toastMessage, setToastMessage] = React.useState("");
   const searchParams = useSearchParams();
@@ -57,18 +59,28 @@ export default function Paeg() {
     }
   };
 
-  const handleSendButtonClick = () => {
-    console.log("Send button clicked:", inputValue);
+  const handleSendButtonClick = async () => {
     if (isValidUrl(inputValue)) {
       // 유효한 URL인 경우
-      console.log("Valid URL:", inputValue);
-      // 여기에 URL을 처리하는 로직을 추가하세요.
-      handleToast("링크가 전송되었습니다!");
+      const res = await http
+        .patch(`api/eco-verifications/my/${memberEcoVerificationId}/link`)
+        .json<{
+          code: number;
+          message: string;
+        }>();
+
+      if (res.code !== 2400) {
+        handleToast("링크 전송에 실패했습니다.");
+        return;
+      }
+
+      if (res.code === 2400) {
+        handleToast("링크가 전송되었습니다!");
+      }
     } else {
       // 유효하지 않은 URL인 경우
       console.log("Invalid URL:", inputValue);
       handleToast("유효하지 않은 URL입니다.");
-      // 여기에 에러 처리 로직을 추가하세요.
     }
   };
 
