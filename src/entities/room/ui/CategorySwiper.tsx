@@ -11,7 +11,7 @@ const categoryNameToTypeMap: Record<string, FurnitureCategory> = {
   침대: "bed",
   벽지: "flooring",
   선반: "storage",
-  커텐: "fabric",
+  패브릭: "fabric",
   조명: "lighting",
   책상: "desk",
   의자: "chair",

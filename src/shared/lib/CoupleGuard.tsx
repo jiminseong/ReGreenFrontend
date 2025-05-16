@@ -9,14 +9,11 @@ const CoupleGuard = () => {
 
   useEffect(() => {
     if (!isSuccess) return;
-
-    if (isSuccess && data.coupleId === null) {
-      console.error("커플이 없습니다.");
-      router.push("/couple");
-    } else {
-      console.error("이미 커플이 있습니다.");
+    if (data?.coupleId === null) {
+      console.warn("커플이 없어 /couple로 이동");
+      router.replace("/couple");
     }
-  }, [isSuccess, data, router]);
+  }, [isSuccess, data?.coupleId, router]);
 
   return null;
 };

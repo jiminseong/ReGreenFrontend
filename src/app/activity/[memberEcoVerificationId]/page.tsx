@@ -37,7 +37,7 @@ export default function Paeg() {
     if (ref.current) {
       const canvas = await html2canvas(ref.current, {
         useCORS: true,
-        scale: 2, // 해상도 조정
+        scale: 1,
       });
       const dataUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");

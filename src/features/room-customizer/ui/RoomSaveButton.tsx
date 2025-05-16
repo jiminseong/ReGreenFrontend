@@ -7,10 +7,12 @@ import CommonModal from "@/widgets/ComonModal";
 import { patchRoom } from "@/entities/room/lib/patchRoom";
 import { useRoomStore } from "../model/store";
 import { useMyPlacedFurniture } from "../lib/useMyPlacedFurniture";
+import Loading from "@/widgets/Loading";
 
 const RoomSaveButton = () => {
   const [modal, setModal] = React.useState(false);
   const { mode, setMode } = useHomeMode();
+  const [loading, setLoading] = React.useState(false);
   const newCoupleFurniture = useMyPlacedFurniture();
   const setCurrentFurnitures = useRoomStore((state) => state.setCurrentRoomFurnitures);
   const currentFurnitures = useRoomStore((state) => state.currentRoomFurnitures);
@@ -27,7 +29,10 @@ const RoomSaveButton = () => {
   };
   //현재 방상태를 저장하고 만약 isOwned가 false인 경우에는 저장치 않고 구매유도 모달을 띄우는 함수
   const handleSave = async () => {
+    setLoading(true);
+
     if (isOwnedFurnitures.length === 0) {
+      setLoading(false);
       setModal(true);
       return;
     }
@@ -41,17 +46,20 @@ const RoomSaveButton = () => {
     try {
       const res = await patchRoom({ placements: replacedFurniture });
       if (res.code === 2500) {
+        setLoading(false);
         const updated = await newCoupleFurniture.refetch();
         setCurrentFurnitures(updated.data?.data ?? []);
         setMode("home");
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error saving room:", error);
     }
   };
 
   return (
     <>
+      {loading && <Loading />}
       <motion.button
         onClick={() => handleSave()}
         whileHover={{ scale: 1.05 }}
@@ -62,7 +70,7 @@ const RoomSaveButton = () => {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className={`${
           mode === "inventory" ? "visible" : "hidden"
-        } font-extrabold px-4   text-lg rounded-lg`}
+        } font-extrabold    text-lg rounded-l `}
       >
         저장
       </motion.button>

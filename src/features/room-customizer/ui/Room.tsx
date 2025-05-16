@@ -23,8 +23,10 @@ const Room = () => {
         return query.data?.data.filter((item) => item.isPlaced && item.isOwned);
       }
     }
+
     return currentFurnitures.filter((item) => item.isPlaced);
   }, [currentFurnitures]);
+  const sortedItems = [...filteredItems].sort((a, b) => a.zIndex - b.zIndex);
 
   useEffect(() => {
     if (mode === "home" && query.isSuccess && query.data?.data) {
@@ -61,14 +63,14 @@ const Room = () => {
         }}
         className="relative w-full h-full flex flex-col items-center justify-center"
       >
-        {filteredItems?.map((item) => (
+        {sortedItems?.map((item) => (
           <Image
             key={item.furnitureId}
             src={item.s3ImageUrl}
             alt={item.name}
-            width={900}
-            height={900}
-            className={`absolute z-${item.zIndex}`}
+            width={1000}
+            height={1000}
+            className={`z-${item.zIndex} absolute `}
           />
         ))}
         <div
@@ -79,8 +81,8 @@ const Room = () => {
           <Image
             src="/image/home/backgroundFillter.png"
             alt="배경 필터"
-            width={900}
-            height={900}
+            width={1000}
+            height={1000}
             className="absolute z-[-10] bottom-[180px] md:bottom-[320px] lg:bottom-[230px] w-full h-full"
           />
         </div>
