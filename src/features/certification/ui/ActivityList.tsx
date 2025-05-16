@@ -10,6 +10,7 @@ import { useActivityList } from "@/entities/activity/lib/useActivityList";
 import DummyActivityItem from "./DummyActivityItem";
 import { http } from "@/shared/lib/http";
 import CommonModal from "@/widgets/ComonModal";
+import Loading from "@/widgets/Loading";
 // import { http } from "@/shared/lib/http";
 
 const dummyActivities = [
@@ -109,7 +110,7 @@ const dummyActivities = [
 const ActivityList = () => {
   const [currentCheckedId, setCurrentCheckedId] = useState<string>("");
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const { data: activities, isSuccess } = useActivityList();
   const router = useRouter();
   const notReadyActivities = dummyActivities;
@@ -155,6 +156,7 @@ const ActivityList = () => {
       return;
     }
 
+    await setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
 
@@ -165,13 +167,16 @@ const ActivityList = () => {
     }>();
 
     const imageUrl = res!.data.s3ImageUrl;
+    const memberEcoVerificationId = res!.data.memberEcoVerificationId;
 
     if (res.code !== 2400) {
       alert("인증 사진 업로드에 실패했습니다.");
+      setLoading(false);
       return;
     }
 
-    router.push(`/activity/${id}?imageUrl=${imageUrl}`);
+    setLoading(false);
+    router.push(`/activity/${memberEcoVerificationId}?imageUrl=${imageUrl}`);
   };
 
   const handleCertificationClick = async () => {
@@ -210,6 +215,7 @@ const ActivityList = () => {
 
   return (
     <div className="bg-white h-full overflow-y-scroll no-scrollbar relative">
+      {loading && <Loading />}
       {modalOpen && (
         <CommonModal
           isOpen={modalOpen}
@@ -228,7 +234,7 @@ const ActivityList = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 50 }}
               transition={{ duration: 0.3 }}
-              className="w-full justify-center gap-4 absolute bottom-20 flex items-center z-50"
+              className="w-full fixed bottom-20 left-1/2  transform -translate-x-1/2  justify-center gap-4 flex items-center z-50"
             >
               <div className="flex items-center justify-center  gap-2">
                 <Image src="/icon/home/heartIcon.svg" width={24} height={24} alt="하트아이콘" />
@@ -248,13 +254,21 @@ const ActivityList = () => {
           <ActivityItem
             key={activity.ecoVerificationId}
             {...activity}
-            imageUrl={activity.imageUrl || ""}
+            imageUrl={
+              activity.imageUrl || activity.title === "다회용 컵 이용하기"
+                ? "/icon/activity/cupIcon.svg"
+                : activity.title === "중고 제품 나눔/구매 인증하기"
+                ? "/icon/activity/danguenIcon.svg"
+                : activity.title === "플로깅 데이트하기"
+                ? "/icon/activity/trashIcon.svg"
+                : ""
+            }
             currentCheckedId={currentCheckedId}
             onChecked={handleCheckboxClick}
           />
         ))}{" "}
       <div className="relative">
-        <span className="absolute z-20 w-full text-center bottom-64  font-normal text-lg">
+        <span className="absolute z-20 w-full text-center bottom-110  md:bottom-64  font-normal text-lg">
           업데이트 예정입니다.
         </span>
         {notReadyActivities.map((activity) => (

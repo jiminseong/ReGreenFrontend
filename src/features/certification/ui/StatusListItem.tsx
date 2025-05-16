@@ -6,6 +6,7 @@ interface StatusListItemProp {
   label: string; // 라벨 텍스트
   status: "submit" | "review" | "success"; // 현재 상태
   date: Date;
+  pending?: boolean; // 로딩 상태
 }
 
 const statusMap = {
@@ -23,26 +24,39 @@ const statusMap = {
   },
 };
 
-const StatusListItem: React.FC<StatusListItemProp> = ({ iconSrc, label, status, date }) => {
+const StatusListItem: React.FC<StatusListItemProp> = ({
+  pending,
+  iconSrc,
+  label,
+  status,
+  date,
+}) => {
   const { label: statusLabel, className } = statusMap[status];
 
   return (
-    <div className="flex items-center justify-between bg-[#FFFFFF] px-4 py-6 rounded-2xl">
-      {/* 왼쪽 아이콘과 텍스트 */}
-      <div className="flex items-center gap-4">
-        <Image src={iconSrc} alt={label} width={36} height={36} />
-        <div className="flex flex-col">
-          <span className="text-lg font-semibold">{label}</span>
-          <span className="text-sm font-normal text-[#777777]">
-            신청일 : {date.toISOString().split("T")[0]}
+    // pending 상태일 때 스켈레톤 UI를 보여줌
+    <div className={`relative ${pending ? "animate-pulse" : ""}`}>
+      {pending ? (
+        <div className="w-full h-[88px] bg-[#F4F5F7] rounded-2xl animate-pulse" />
+      ) : (
+        <div className="flex items-center justify-between bg-[#FFFFFF] px-4 py-6 rounded-2xl ">
+          {/* 아이콘 + 텍스트 */}
+          <div className="flex items-center gap-4">
+            <Image src={iconSrc} alt={label} width={56} height={56} />
+            <div className="flex flex-col">
+              <span className="text-lg font-semibold">{label}</span>
+              <span className="text-sm font-normal text-[#777777]">
+                신청일 : {date.toISOString().split("T")[0]}
+              </span>
+            </div>
+          </div>
+
+          {/* 상태 뱃지 */}
+          <span className={`text-sm font-semibold px-3 py-1 rounded-md ${className}`}>
+            {statusLabel}
           </span>
         </div>
-      </div>
-
-      {/* 상태 뱃지 */}
-      <span className={`text-sm font-semibold px-3 py-1 rounded-md ${className}`}>
-        {statusLabel}
-      </span>
+      )}
     </div>
   );
 };
