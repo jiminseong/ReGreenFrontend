@@ -41,7 +41,9 @@ const CoupleInvitePage = () => {
                 console.log("초대 코드 발급 성공");
                 // 초대 코드 페이지로 이동
                 setIsCoupleJoinedToast(true);
+                // 커플이 생겼으니 홈으로 이동
                 router.push(`/home`);
+                // 커플이 생겼으니 홈으로 이동
                 refetch();
               } else if (res.code === 400) {
                 setLoading(false);
