@@ -15,19 +15,12 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
   isPlaced,
   isOwned,
 }) => {
-  // 이름을 적절히 줄바꿈 최대 5글자\n 5글자
-  const name = item.name.split(" ");
-  const formattedName = name.map((word, index) => (
-    <span key={index} className="block">
-      {word}
-    </span>
-  ));
   return (
     <div
       onClick={() => onToggle()}
       className={`relative ${
         isOwned ? "bg-[#F5F5F5] rounded-[20px] border border-[#DEDEDE]" : ""
-      } flex flex-col items-center px-6 py-5.5 cursor-pointer`}
+      } flex flex-col items-center px-6 py-3 md:py-5.5 cursor-pointer`}
     >
       {isPlaced && (
         <Image
@@ -43,7 +36,7 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
       <div className="w-[62px] h-[58px] relative  flex items-center justify-center mt-2">
         <Image src={item.s3PreviewImageUrl} fill className="object-cover" alt={item.name} />
       </div>
-      <p className="mt-2 text-sm whitespace-pre-line text-center">{formattedName}</p>
+      <p className="mt-2 text-sm whitespace-pre-line text-center">{item.name}</p>
       {isOwned ? (
         <span className="mt-2 text-[#777777] text-sm font-semibold">보유중</span>
       ) : (

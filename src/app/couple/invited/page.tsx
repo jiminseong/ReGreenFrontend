@@ -13,7 +13,7 @@ import Loading from "@/widgets/Loading";
 const CoupleInvitePage = () => {
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
-  const data = useMyInfo();
+  const { data, refetch, isSuccess } = useMyInfo();
   const [inviteCode, setInviteCode] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
 
@@ -23,11 +23,11 @@ const CoupleInvitePage = () => {
 
   // 커플이라면 초대 코드 발급 누르면 발급 후
   const postInviteCode = async () => {
-    if (data.isSuccess) {
-      if (data.data.coupleId === null) {
+    setLoading(true);
+    if (isSuccess) {
+      if (data?.coupleId === null) {
         // 발급 API 호출
         try {
-          setLoading(true);
           await httpNoThrow
             .post("api/couples/join", { json: { code: inviteCode } })
             .json<{
@@ -42,6 +42,7 @@ const CoupleInvitePage = () => {
                 // 초대 코드 페이지로 이동
                 setIsCoupleJoinedToast(true);
                 router.push(`/home`);
+                refetch();
               } else if (res.code === 400) {
                 setLoading(false);
                 setModalOpen(true);
@@ -64,21 +65,19 @@ const CoupleInvitePage = () => {
   };
 
   useEffect(() => {
-    // 로그인 여부 우선 판단
+    if (!isSuccess) return;
+
     const token = localStorage.getItem("accessToken");
     if (!token) {
-      router.push("/login");
+      router.replace("/login");
       return;
     }
-    if (data.isSuccess) {
-      if (data.data.coupleId) {
-        // 커플이 이미 존재하는 경우
-        router.push("/home");
-      } else {
-        return;
-      }
+
+    if (data?.coupleId) {
+      router.replace("/home");
     }
-  });
+    // 커플 없으면 그대로 초대코드 입력화면 유지
+  }, [data?.coupleId, isSuccess]);
 
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5 pt-24">

@@ -153,16 +153,16 @@ const ActivityList = () => {
     // 5MB = 5 * 1024 * 1024 = 5242880 bytes
     // 300KB = 300 * 1024 = 307200 bytes
 
-    if (file.size > 5242880) {
+    if (file.size > 7242880) {
       setModalOpen(true);
       return;
     }
 
-    await setLoading(true);
+    setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await http.post(`api/eco-verifications/${id}`, { body: formData }).json<{
+    const res = await http.post(`api/eco-verifications/${id}`, { json: formData }).json<{
       code: number;
       message: string;
       data: { memberEcoVerificationId: string; status: string; s3ImageUrl: string };

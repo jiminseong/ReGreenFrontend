@@ -64,7 +64,7 @@ const FinishedActivityList = () => {
       ) : (
         !isPending && (
           <div className="text-right text-md font-medium mb-2.5 mt-6">
-            얻은 하트 : {heart !== 0 ? heart - 14 : 0}
+            얻은 하트 : {heart !== 0 ? heart - 50 : 0}
           </div>
         )
       )}
@@ -104,7 +104,7 @@ const FinishedActivityList = () => {
 
             <div className="flex flex-col items-center gap-2 w-[71px]">
               {activity.point && (
-                <div className="flex items-center justify-center px-2 gap-1 text-ppink bg-[#FF387F1A] w-full py-0.75 rounded-[3.54px] text-sm font-medium">
+                <div className="flex items-center justify-between px-2 gap-1 text-ppink bg-[#FF387F1A] w-full py-0.75 rounded-[3.54px] text-sm font-medium">
                   <Image
                     width={16}
                     height={16}

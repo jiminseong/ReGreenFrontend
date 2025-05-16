@@ -136,7 +136,7 @@ const InventoryListComponent = () => {
           {/* 탭 메뉴 */}
           <CategorySwiper />
           {/* 아이템 목록 */}
-          <div className="grid grid-cols-3 mt-4 overflow-y-scroll no-scrollbar h-full gap-2 pt-4 pb-16">
+          <div className="grid grid-cols-3 mt-3 overflow-y-scroll no-scrollbar h-full gap-2 pb-16">
             {filteredItems.map((item) => (
               <div id="item" key={item.furnitureId}>
                 <InventoryListItem
