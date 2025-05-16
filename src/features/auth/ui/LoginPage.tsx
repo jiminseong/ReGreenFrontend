@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import LoginButton from "@/features/auth/ui/LoginButton";
 import { http } from "@/shared/lib/http";
+import Loading from "@/widgets/Loading";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -12,6 +13,7 @@ const LoginPage = () => {
   const code = searchParams.get("code");
 
   const [hasRequestedLogin, setHasRequestedLogin] = useState(false); // 중복 방지
+  const [loading, setLoading] = useState(false); // 로딩 상태
 
   // 1. 카카오 로그인 요청
   //    - code가 없거나 이미 로그인 요청을 했다면 아무것도 하지 않음
@@ -28,6 +30,7 @@ const LoginPage = () => {
 
     const loginHandler = async () => {
       try {
+        setLoading(true);
         const res = await http
           .post(`api/auth/kakao/login?code=${code}&local=${process.env.NEXT_PUBLIC_LOCAL_BOOLEAN}`)
           .json<{
@@ -37,6 +40,7 @@ const LoginPage = () => {
           }>();
 
         if (res.code === 2100) {
+          setLoading(false);
           console.log("로그인 성공");
           setHasRequestedLogin(true);
           // 로컬 스토리지에 accessToken과 refreshToken 저장
@@ -47,6 +51,7 @@ const LoginPage = () => {
           console.log("로그인 실패:", res.message);
         }
       } catch (error) {
+        setLoading(false);
         console.error("로그인 요청 실패", error);
       }
     };
@@ -63,6 +68,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5 ">
+      {loading && <Loading />}
       {/* 로고 및 타이틀 */}
       <div className="text-center h-[80%] flex flex-col items-center justify-center ">
         <h1 className="text-4xl font-bold text-ppink">wooimi</h1>
