@@ -8,8 +8,10 @@ import { httpNoThrow } from "@/shared/lib/http";
 import { useToastStore } from "@/entities/user/model/store";
 import { useNickName } from "@/entities/user/lib/useNickName";
 import CommonModal from "@/widgets/ComonModal";
+import Loading from "@/widgets/Loading";
 
 const CoupleInvitePage = () => {
+  const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const data = useMyInfo();
   const [inviteCode, setInviteCode] = React.useState("");
@@ -25,6 +27,7 @@ const CoupleInvitePage = () => {
       if (data.data.coupleId === null) {
         // 발급 API 호출
         try {
+          setLoading(true);
           const res = await httpNoThrow
             .post("api/couples/join", { json: { code: inviteCode } })
             .json<{
@@ -34,13 +37,16 @@ const CoupleInvitePage = () => {
             }>();
 
           if (res.code === 2300) {
+            setLoading(false);
             setIsCoupleJoinedToast(true);
             router.push(`/home`);
           }
           if (res.code === 400) {
+            setLoading(false);
             setModalOpen(true);
           }
           if (res.code === 500) {
+            setLoading(false);
             setModalOpen(true);
           }
         } catch (error) {
@@ -71,6 +77,7 @@ const CoupleInvitePage = () => {
 
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5 pt-24">
+      {loading && <Loading />}
       {modalOpen && (
         <CommonModal
           isOpen={modalOpen}
