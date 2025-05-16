@@ -40,6 +40,7 @@ export interface PatchRoomResponse {
 
 export interface BuyFurnitureResponse {
   code: number;
+  statusCode?: number;
   message: string;
   data?: {
     coupeFurnitureId: string;
