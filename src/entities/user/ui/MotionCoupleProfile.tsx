@@ -12,13 +12,6 @@ const MotionCoupleProfile = () => {
   return (
     <motion.button
       onClick={() => handleMypage.navigateToMypage()}
-      // 5초 누르고 있으면 발동
-      onTouchStart={(e) => {
-        e.currentTarget.setAttribute("data-pressed", "true");
-      }}
-      onTouchEnd={(e) => {
-        e.currentTarget.removeAttribute("data-pressed");
-      }}
       whileHover={{ scale: 1.05 }}
       animate={{
         opacity: mode === "inventory" ? 0 : 1,

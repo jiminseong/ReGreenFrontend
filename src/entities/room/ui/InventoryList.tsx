@@ -91,6 +91,8 @@ const InventoryListComponent = () => {
           .json<BuyFurnitureResponse>();
         setLoading(false);
         if ("code" in res && res.code === 2500) {
+          setLoading(false);
+
           setModal(true, "buyFinished", modalItem);
           const updated = await furnituresRefetch();
           coupleRefetch();
@@ -105,6 +107,7 @@ const InventoryListComponent = () => {
           setModal(true, "alreadyOwned", modalItem);
           coupleRefetch();
         } else {
+          setLoading(false);
         }
       } catch (error) {
         setLoading(false);
@@ -136,101 +139,104 @@ const InventoryListComponent = () => {
   );
 
   return (
-    <AnimatePresence mode="wait">
+    <>
+      {" "}
       {loading && <Loading />}
-      {mode === "inventory" && (
-        <motion.div
-          key="inventory-list"
-          initial={{ y: 650 }}
-          animate={{ y: 0 }}
-          exit={{ y: 250 }}
-          transition={{ duration: 0.4, ease: "linear" }}
-          className="z-2 w-full h-[40%] absolute bottom-0 bg-white px-5 pt-1 "
-        >
-          <Image
-            onClick={handleHomeMode}
-            src="icon/home/underTriangleIcon.svg"
-            alt="삼각형 아이콘"
-            width={25}
-            height={12}
-            className="absolute z-50 cursor-pointer top-[-32px] left-[50%] translate-x-[-50%]"
-          />
+      <AnimatePresence mode="wait">
+        {mode === "inventory" && (
+          <motion.div
+            key="inventory-list"
+            initial={{ y: 650 }}
+            animate={{ y: 0 }}
+            exit={{ y: 250 }}
+            transition={{ duration: 0.4, ease: "linear" }}
+            className="z-2 w-full h-[40%] absolute bottom-0 bg-white px-5 pt-1 "
+          >
+            <Image
+              onClick={handleHomeMode}
+              src="icon/home/underTriangleIcon.svg"
+              alt="삼각형 아이콘"
+              width={25}
+              height={12}
+              className="absolute z-50 cursor-pointer top-[-32px] left-[50%] translate-x-[-50%]"
+            />
 
-          {/* 탭 메뉴 */}
-          <CategorySwiper />
-          {/* 아이템 목록 */}
-          <div className="grid grid-cols-3 mt-3 overflow-y-scroll no-scrollbar h-full gap-2 pb-16">
-            {filteredItems.map((item) => (
-              <div id="item" key={item.furnitureId}>
-                <InventoryListItem
-                  isPlaced={item.isPlaced}
-                  isOwned={item.isOwned}
-                  item={item}
-                  onToggle={() => handleToggle(item)}
-                />
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      )}{" "}
-      {modal && modalType === "buy" && (
-        <CommonModal
-          isOpen={modal}
-          message={messageSpan}
-          onConfirm={() => handleBuy()}
-          onCancel={() => {
-            setModal(false, null, null);
-          }}
-          cancelText="아니오"
-          confirmText="네"
-        />
-      )}
-      {modal && modalType === "notEnoughPoints" && (
-        <CommonModal
-          isOpen={modal}
-          message={messageSpan}
-          onConfirm={() => {
-            router.push("/activity/list");
-            setModal(false, null, null);
-          }}
-          onCancel={() => {
-            setModal(false, null, null);
-          }}
-          confirmText="네"
-          cancelText="아니오"
-        />
-      )}{" "}
-      {modal && modalType === "alreadyOwned" && (
-        <CommonModal
-          isOpen={modal}
-          message={
-            <span className="text-[16px] font-medium">
-              <span className="font-bold">[{modalItem?.name}]</span>를 이미 구매했어요.
-            </span>
-          }
-          onCancel={() => {
-            setModal(false, null, null);
-          }}
-          onlyCancel={true}
-          cancelText="확인"
-        />
-      )}
-      {modal && modalType === "buyFinished" && (
-        <CommonModal
-          isOpen={modal}
-          message={
-            <span className="text-[16px] font-medium">
-              <span className="font-bold">[{modalItem?.name}]</span>를 구매했어요!
-            </span>
-          }
-          onCancel={() => {
-            setModal(false, null, null);
-          }}
-          onlyCancel={true}
-          cancelText="확인"
-        />
-      )}
-    </AnimatePresence>
+            {/* 탭 메뉴 */}
+            <CategorySwiper />
+            {/* 아이템 목록 */}
+            <div className="grid grid-cols-3 mt-3 overflow-y-scroll no-scrollbar h-full gap-2 pb-16">
+              {filteredItems.map((item) => (
+                <div id="item" key={item.furnitureId}>
+                  <InventoryListItem
+                    isPlaced={item.isPlaced}
+                    isOwned={item.isOwned}
+                    item={item}
+                    onToggle={() => handleToggle(item)}
+                  />
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}{" "}
+        {modal && modalType === "buy" && (
+          <CommonModal
+            isOpen={modal}
+            message={messageSpan}
+            onConfirm={() => handleBuy()}
+            onCancel={() => {
+              setModal(false, null, null);
+            }}
+            cancelText="아니오"
+            confirmText="네"
+          />
+        )}
+        {modal && modalType === "notEnoughPoints" && (
+          <CommonModal
+            isOpen={modal}
+            message={messageSpan}
+            onConfirm={() => {
+              router.push("/activity/list");
+              setModal(false, null, null);
+            }}
+            onCancel={() => {
+              setModal(false, null, null);
+            }}
+            confirmText="네"
+            cancelText="아니오"
+          />
+        )}{" "}
+        {modal && modalType === "alreadyOwned" && (
+          <CommonModal
+            isOpen={modal}
+            message={
+              <span className="text-[16px] font-medium">
+                <span className="font-bold">[{modalItem?.name}]</span>를 이미 구매했어요.
+              </span>
+            }
+            onCancel={() => {
+              setModal(false, null, null);
+            }}
+            onlyCancel={true}
+            cancelText="확인"
+          />
+        )}
+        {modal && modalType === "buyFinished" && (
+          <CommonModal
+            isOpen={modal}
+            message={
+              <span className="text-[16px] font-medium">
+                <span className="font-bold">[{modalItem?.name}]</span>를 구매했어요!
+              </span>
+            }
+            onCancel={() => {
+              setModal(false, null, null);
+            }}
+            onlyCancel={true}
+            cancelText="확인"
+          />
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
