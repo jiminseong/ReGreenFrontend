@@ -22,7 +22,7 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
         isOwned || item.name === "기본 룸쉘"
           ? "bg-[#F5F5F5] rounded-[20px] border border-[#DEDEDE]"
           : ""
-      } flex flex-col items-center px-6 py-3 md:py-5.5 cursor-pointer`}
+      } flex flex-col items-center  px-6 py-3 md:py-5.5 cursor-pointer`}
     >
       {/* isPlaced가 true이거나 item.name === "기본 룸쉘" 인 경우 체크 표시 */}
       {isPlaced && (
@@ -48,7 +48,17 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
       <div className="w-[62px] h-[58px] relative  flex items-center justify-center mt-2">
         <Image src={item.s3PreviewImageUrl} fill className="object-cover" alt={item.name} />
       </div>
-      <p className="mt-2 text-sm whitespace-pre-line text-center">{item.name}</p>
+      <p
+        className={`${
+          item.name.length >= 8 && item.name.length < 9
+            ? "text-xs"
+            : item.name.length >= 9
+            ? "text-[11px]"
+            : ""
+        } mt-2 text-sm whitespace-pre-line py-auto text-center w-[80px]`}
+      >
+        {item.name}
+      </p>
       {isOwned || item.name === "기본 룸쉘" ? (
         <span className="mt-2 text-[#777777] text-sm font-semibold">보유중</span>
       ) : (

@@ -60,7 +60,7 @@ const CoupleInvitePage = () => {
           복사하기
         </button>
       </div>{" "}
-      <Button onClick={() => router.push("/home")}>초대하러 가기 </Button>
+      <Button onClick={() => router.push("/home")}>홈으로 가기</Button>
     </div>
   );
 };
