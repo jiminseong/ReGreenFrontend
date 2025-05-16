@@ -228,7 +228,7 @@ const ActivityList = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 50 }}
               transition={{ duration: 0.3 }}
-              className="w-full justify-center gap-4 absolute bottom-20 flex items-center z-50"
+              className="w-full fixed bottom-20 left-1/2  transform -translate-x-1/2  justify-center gap-4 flex items-center z-50"
             >
               <div className="flex items-center justify-center  gap-2">
                 <Image src="/icon/home/heartIcon.svg" width={24} height={24} alt="하트아이콘" />
