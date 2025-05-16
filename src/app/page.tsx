@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import SplashContent from "@/widgets/splash/SplashContent";
 import InstallPrompt from "@/features/splash/ui/InstallPrompt";
 import { useMyInfo } from "@/entities/user/lib/userMyInfo";
+import Loading from "@/widgets/Loading";
 
 export default function Page() {
   const router = useRouter();
-  const { data, isSuccess } = useMyInfo();
+  const { data, isSuccess, isPending } = useMyInfo();
   const [showPrompt, setShowPrompt] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
 
@@ -28,7 +29,7 @@ export default function Page() {
       //로컬 스토리지에 accessToken이 있다면
       if (accessToken) {
         //커플 등록 여부 체크
-        if (isSuccess && data.coupleId !== null) {
+        if (data?.coupleId !== null) {
           //커플일 시에 → /home
           router.push("/home");
         } //커플 아닐 시에 → /couple
@@ -55,6 +56,7 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-white flex items-center justify-center px-4">
+      {isPending && <Loading />}
       {showPrompt ? <InstallPrompt isIOS={isIOS} /> : <SplashContent />}
     </main>
   );
