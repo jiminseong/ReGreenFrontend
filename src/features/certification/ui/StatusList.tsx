@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
 import StatusListItem from "./StatusListItem";
+import SkeletonStatusItem from "@/widgets/SkeletonStatusItem";
 import { useSubmitActivityList } from "../lib/useSubmitActivities";
 import { SubmitActivitiesItem } from "../model/store";
 
@@ -36,37 +37,36 @@ const StatusList = () => {
 
   return (
     <div className="bg-[#F4F5F7] flex flex-col gap-2.5 py-8 px-5 h-full no-scrollbar overflow-y-scroll">
-      {items.map((activity, index) => (
-        <StatusListItem
-          key={index}
-          iconSrc={
-            (activity.title as string) === "다회용 컵 이용하기"
-              ? "/icon/activity/cupIcon2.svg"
-              : (activity.title as string) === "중고 제품 나눔/구매 인증하기"
-              ? "/icon/activity/danguenIcon2.svg"
-              : (activity.title as string) === "플로깅 데이트하기"
-              ? "/icon/activity/trashIcon2.svg"
-              : ""
-          }
-          label={activity.title}
-          status={activity.status}
-          date={new Date(activity.createdAt)}
-        />
-      ))}
+      {!isPending && items.length === 0 ? (
+        <div className="text-center text-lg font-semibold text-[#777777] flex items-center justify-center h-full pb-48">
+          아직 모인 활동이 없어요! <br />
+          다양한 활동에 참여해보세요!
+        </div>
+      ) : (
+        !isPending &&
+        items &&
+        items.map((activity, index) => (
+          <StatusListItem
+            key={index}
+            iconSrc={
+              (activity.title as string) === "다회용 컵 이용하기"
+                ? "/icon/activity/cupIcon2.svg"
+                : activity.title === "중고 제품 나눔/구매 인증하기"
+                ? "/icon/activity/danguenIcon2.svg"
+                : activity.title === "플로깅 데이트하기"
+                ? "/icon/activity/trashIcon2.svg"
+                : ""
+            }
+            label={activity.title}
+            status={activity.status}
+            date={new Date(activity.createdAt)}
+          />
+        ))
+      )}
 
       {/* 스켈레톤 UI */}
       {isPending &&
-        Array.from({ length: 3 }).map((_, idx) => (
-          <StatusListItem
-            key={`skeleton-${idx}`}
-            pending
-            iconSrc=""
-            label=""
-            status="submit"
-            date={new Date()}
-          />
-        ))}
-
+        Array.from({ length: 3 }).map((_, idx) => <SkeletonStatusItem key={`skeleton-${idx}`} />)}
       {hasNextPage && <div ref={loader} className="h-6" />}
     </div>
   );

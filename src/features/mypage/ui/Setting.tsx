@@ -8,6 +8,7 @@ const Setting = () => {
 
   const menuItems = [
     { label: "건의하기", path: "/feedback" },
+    { label: "오류 문의하기", path: "/cs" },
     { label: "이용약관", path: "/home/mypage/terms" },
   ];
 
@@ -19,7 +20,10 @@ const Setting = () => {
       );
       return;
     }
-    // 메뉴 클릭 시 해당 경로로 이동
+    if (path === "/cs") {
+      window.open(`${process.env.NEXT_PUBLIC_KAKAO_CHANNEL_URL}`, "_blank");
+      return;
+    }
 
     router.push(path);
   };
