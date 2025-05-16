@@ -1,6 +1,11 @@
 module.exports = {
   images: {
-    domains: ["regreen-bucket.s3.ap-northeast-2.amazonaws.com"],
+    domains: [
+      "regreen-bucket.s3.ap-northeast-2.amazonaws.com",
+      "k.kakaocdn.net",
+      "img1.kakaocdn.net",
+      "t1.kakaocdn.net",
+    ],
 
     remotePatterns: [
       {

@@ -1,4 +1,5 @@
 export interface CoupleType {
-  name: string;
-  image: string;
+  memberId: string;
+  nickname: string;
+  profileImageUrl: string;
 }

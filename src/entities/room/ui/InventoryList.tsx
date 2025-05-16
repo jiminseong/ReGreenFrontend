@@ -203,16 +203,16 @@ const InventoryListComponent = () => {
       {modal && modalType === "alreadyOwned" && (
         <CommonModal
           isOpen={modal}
-          message={messageSpan}
-          onConfirm={() => {
-            router.push("/activity/list");
-            setModal(false, null, null);
-          }}
+          message={
+            <span className="text-[16px] font-medium">
+              <span className="font-bold">[{modalItem?.name}]</span>를 이미 구매했어요.
+            </span>
+          }
           onCancel={() => {
             setModal(false, null, null);
           }}
-          confirmText="네"
-          cancelText="아니오"
+          onlyCancel={true}
+          cancelText="확인"
         />
       )}
       {modal && modalType === "buyFinished" && (

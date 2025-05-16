@@ -13,7 +13,7 @@ const RoomSaveButton = () => {
   const [modal, setModal] = React.useState(false);
   const { mode, setMode } = useHomeMode();
   const [loading, setLoading] = React.useState(false);
-  const newCoupleFurniture = useMyPlacedFurniture();
+  const { data, refetch } = useMyPlacedFurniture();
   const setCurrentFurnitures = useRoomStore((state) => state.setCurrentRoomFurnitures);
   const currentFurnitures = useRoomStore((state) => state.currentRoomFurnitures);
   const isOwnedFurnitures = currentFurnitures.filter((item) => item.isOwned === true);
@@ -47,8 +47,9 @@ const RoomSaveButton = () => {
       const res = await patchRoom({ placements: replacedFurniture });
       if (res.code === 2500) {
         await setLoading(false);
-        const updated = await newCoupleFurniture.refetch();
-        setCurrentFurnitures(updated.data?.data ?? []);
+        await refetch();
+
+        setCurrentFurnitures(data?.data ?? []);
         setMode("home");
       }
     } catch (error) {

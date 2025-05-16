@@ -32,7 +32,7 @@ export default function Page() {
           //커플일 시에 → /home
           router.push("/home");
         } //커플 아닐 시에 → /couple
-        else {
+        else if (isSuccess && data.coupleId === null) {
           router.push("/couple");
         }
         //로컬 스토리지에 accessToken이 없다면

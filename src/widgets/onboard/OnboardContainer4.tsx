@@ -8,7 +8,7 @@ const OnboardContainer4 = ({ imageUrl }: OnboardContainerProps) => {
       <h1 className="text-2xl font-bold text-center ">
         구매한 가구로
         <br />
-        우리만의 아지트를 꾸며보자!
+        우리만의 아지트를 꾸며보세요!
       </h1>
       <Image
         src={imageUrl}

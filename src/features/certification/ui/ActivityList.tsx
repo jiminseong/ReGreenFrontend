@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import { useActivityList } from "@/entities/activity/lib/useActivityList";
 import DummyActivityItem from "./DummyActivityItem";
-import { http } from "@/shared/lib/http";
+import { httpNoThrow } from "@/shared/lib/http";
 import CommonModal from "@/widgets/ComonModal";
 import Loading from "@/widgets/Loading";
 import Toast from "@/widgets/Toast";
@@ -142,18 +142,13 @@ const ActivityList = () => {
       input.click();
     });
   };
+  const MAX_FILE_SIZE = 8 * 1024 * 1024;
 
   const uploadPhoto = async (id: string) => {
     const { file } = await openFileDialog();
-
     if (!file) return;
-    console.log(file.size);
 
-    // 용량을 303755, 즉 300KB로 제한
-    // 5MB = 5 * 1024 * 1024 = 5242880 bytes
-    // 300KB = 300 * 1024 = 307200 bytes
-
-    if (file.size > 7242880) {
+    if (file.size > MAX_FILE_SIZE) {
       setModalOpen(true);
       return;
     }
@@ -162,29 +157,35 @@ const ActivityList = () => {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await http.post(`api/eco-verifications/${id}`, { json: formData }).json<{
-      code: number;
-      message: string;
-      data: { memberEcoVerificationId: string; status: string; s3ImageUrl: string };
-    }>();
+    try {
+      const res = await httpNoThrow
+        .post(`api/eco-verifications/${id}`, {
+          body: formData,
+        })
+        .json<{
+          code: number;
+          statusCode?: number;
+          message: string;
+          data: { memberEcoVerificationId: string; status: string; s3ImageUrl: string };
+        }>();
 
-    const imageUrl = res!.data.s3ImageUrl;
-    const memberEcoVerificationId = res!.data.memberEcoVerificationId;
+      setLoading(false);
 
-    if (res.code !== 2400) {
-      alert("인증 사진 업로드에 실패했습니다.");
-      await setLoading(false);
-      return;
-    }
+      if (res.statusCode === 413 || res.statusCode === 400) {
+        setModalOpen(true);
+        return;
+      }
 
-    if (res.code === 2400) {
-      setToast(true);
-      setTimeout(() => {
-        setToast(false);
-      }, 2000);
-
-      await setLoading(false);
-      router.push(`/activity/${memberEcoVerificationId}?imageUrl=${imageUrl}`);
+      if (res.code === 2400) {
+        const { memberEcoVerificationId, s3ImageUrl } = res.data;
+        setToast(true);
+        setTimeout(() => setToast(false), 2000);
+        router.push(`/activity/${memberEcoVerificationId}?imageUrl=${s3ImageUrl}`);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("❌ 인증 사진 업로드 요청 실패", error);
+      setModalOpen(true);
     }
   };
 
@@ -224,12 +225,7 @@ const ActivityList = () => {
 
   return (
     <div className="bg-white h-full overflow-y-scroll no-scrollbar relative">
-      {toast && (
-        <Toast
-          message="인증이 완료! 자정에 자동 검토되어 하트가 적립돼요!\
-    ]=[-ㅔ0ㅁㅂ1  "
-        />
-      )}
+      {toast && <Toast message="인증이 완료! 자정에 자동 검토되어 하트가 적립돼요!" />}
       {loading && <Loading />}
       {modalOpen && (
         <CommonModal

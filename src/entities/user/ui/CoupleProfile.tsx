@@ -1,64 +1,50 @@
+"use client";
 import Image from "next/image";
 import React from "react";
-import { CoupleType } from "../model/type";
+import { useCoupleInfo } from "../lib/useCoupleInfo";
 
-interface CoupleProfileProps {
-  size?: "large" | "small";
-  className?: string;
-  couple1?: CoupleType;
-  couple2?: CoupleType;
-}
+const CoupleProfile = () => {
+  const { data, isPending } = useCoupleInfo();
 
-const CoupleProfile: React.FC<CoupleProfileProps> = ({
-  size = "small",
-  className = "",
-  // couple1 = { name: "이름1", image: "/image/home/tempCouple1.png" },
-  // couple2 = { name: "이름2", image: "/image/home/tempCouple2.png" },
-}) => {
-  // const heartWidth = size === "large" ? 15 : 10;
-  // const heartHeight = size === "large" ? 14.25 : 9.25;
+  const renderProfile = (memberIndex: number) => {
+    if (isPending || !data?.data.members[memberIndex]) {
+      return (
+        <div className="flex flex-col items-center gap-2.5 animate-pulse">
+          <div className={`bg-gray-300 rounded-full`} style={{ width: 100, height: 100 }} />
+          <div className={`bg-gray-300 w-24 h-4rounded`} />
+        </div>
+      );
+    }
+
+    const member = data.data.members[memberIndex];
+    return (
+      <div className="relative flex   w-[100px] h-[100px] flex-col items-center gap-2.5">
+        <Image
+          className="rounded-full object-cover"
+          src={member.profileImageUrl ?? "/default/profile.png"}
+          alt="커플 프로필"
+          fill
+        />
+        <p className={`font-bold text-[#121212] absolute bottom-[-32px]`}>{member.nickname}</p>
+      </div>
+    );
+  };
 
   return (
-    <div className={`flex items-end justify-center ${className}`}>
-      {/* 커플 1 */}
-      {/* <div className="flex flex-col items-center gap-2.5">
-        <Image
-          className="rounded-full"
-          src={couple1.image}
-          alt="커플 프로필"
-          width={imageSize}
-          height={imageSize}
-        />
-        <p className={`font-bold ${size === "large" ? "" : "text-sm"}`}>{couple1.name}</p>
-      </div>
+    <div className={`mt-6 mb-6 relative flex items-end justify-center gap-3 `}>
+      {renderProfile(0)}
 
-      
-      <div className="py-1 flex items-center justify-center">
+      <div className="py-1 flex items-end justify-center">
         <Image
           src="/icon/home/lightHeartIcon.svg"
           alt="하트 아이콘"
-          width={heartWidth}
-          height={heartHeight}
+          width={20}
+          height={20}
+          className="absolute z-1 bottom-[-28px]"
         />
       </div>
 
-      
-      <div className="flex flex-col items-center gap-2.5">
-        <Image
-          className="rounded-full"
-          src={couple2.image}
-          alt="커플 프로필"
-          width={imageSize}
-          height={imageSize}
-        />
-        <p className={`font-bold ${size === "large" ? "" : "text-sm"}`}>{couple2.name}</p>
-      </div> */}
-      <Image
-        src="/image/home/coupleImage.png"
-        alt="커플 프로필"
-        width={size === "large" ? 99 : 134}
-        height={size === "large" ? 99 : 134}
-      />
+      {renderProfile(1)}
     </div>
   );
 };
