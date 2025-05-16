@@ -70,7 +70,7 @@ const Room = () => {
           alt="배경"
           width={1000}
           height={1000}
-          className={`z-0 absolute `}
+          className={`absolute `}
         />
         {sortedItems?.map((item) => (
           <Image
@@ -79,7 +79,7 @@ const Room = () => {
             alt={item.name}
             width={1000}
             height={1000}
-            className={`z-${item.zIndex} absolute `}
+            style={{ zIndex: item.zIndex, position: "absolute" }}
           />
         ))}
         <div

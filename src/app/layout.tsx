@@ -29,7 +29,7 @@ export default function RootLayout({
       <body className="antialiased overflow-hidden">
         <QueryProvider>
           <div
-            className={`${Pretendard.className} inset-0 z-[210] mx-auto min-h-screen max-w-[500px] w-full min-w-[320px]  bg-white `}
+            className={`${Pretendard.className} inset-0  mx-auto min-h-screen max-w-[500px] w-full min-w-[320px]  bg-white `}
           >
             <SwiperBlockWrapper>
               <Analytics />
