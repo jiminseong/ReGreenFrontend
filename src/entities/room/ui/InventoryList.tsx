@@ -220,7 +220,7 @@ const InventoryListComponent = () => {
           isOpen={modal}
           message={
             <span className="text-[16px] font-medium">
-              <span className="font-bold">[{modalItem?.name}]</span>를 이미 구매했어요.
+              <span className="font-bold">[{modalItem?.name}]</span>를 구매했어요!
             </span>
           }
           onCancel={() => {

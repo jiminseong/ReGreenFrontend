@@ -1,9 +1,10 @@
 interface WiggleBadgeProps {
   value: string;
   type: "heart" | "calendar";
+  onClick?: () => void;
 }
 
-const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value, type }) => {
+const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value, type, onClick }) => {
   const textValue = type === "calendar" ? "D-" + value : value;
   const length = textValue.length;
   const fontSizeClass = length <= 4 ? "text-[16px]" : length === 5 ? "text-[14px]" : "text-[12px]";
@@ -27,6 +28,7 @@ const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value, type }) => {
   return (
     <div
       className={`relative w-[84px] h-[32px] ${paddingLeft} ${bgImage} bg-contain bg-no-repeat flex items-center justify-center px-1`}
+      onClick={onClick}
     >
       <span className={`${textColor} font-bold leading-none ${fontSizeClass}`}>{textValue}</span>
     </div>

@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { useToastStore } from "../model/store";
 import { useRouter } from "next/navigation";
 import { useCoupleInfo } from "../lib/useCoupleInfo";
+import CommonModal from "@/widgets/ComonModal";
 
 const HeartCalendarState = () => {
   const router = useRouter();
@@ -14,7 +15,8 @@ const HeartCalendarState = () => {
   const coupleQuery = useCoupleInfo();
   const [heart, setHeart] = React.useState(0);
   const [day, setDay] = React.useState(0);
-
+  const [easterEgg, setEasterEgg] = React.useState(0);
+  const [modalOpen, setModalOpen] = React.useState(false);
   useEffect(() => {
     if (coupleQuery.isSuccess) {
       const coupleData = coupleQuery.data?.data;
@@ -42,8 +44,32 @@ const HeartCalendarState = () => {
     }
   });
 
+  function handleEasterEgg() {
+    setEasterEgg((prev) => prev + 1);
+    console.log(easterEgg);
+    if (easterEgg === 4) {
+      //TODO: 이스터에그 발견시 하트 추가 API 호출
+      setModalOpen(true);
+      setEasterEgg(0);
+    }
+  }
+
+  const EASTER_EGG_MESSAGE = (
+    <div className="flex flex-col gap-2 justify-center items-center">
+      <span className="text-ppink font-bold">히든 미션 클리어! 🎉 </span>
+      <span className="text-[#444444] font-normal">하트 100개를 획득하셨습니다!</span>
+    </div>
+  );
   return (
     <>
+      {modalOpen && (
+        <CommonModal
+          isOpen={modalOpen}
+          message={EASTER_EGG_MESSAGE}
+          onlyConfirm
+          onConfirm={() => setModalOpen(false)}
+        />
+      )}
       {isCoupleJoinedToast && <Toast message="연결에 성공했습니다! 🎉" position="top" />}
       <motion.div
         transition={{
@@ -52,7 +78,7 @@ const HeartCalendarState = () => {
         }}
         className=" w-[140px] flex flex-col gap-2.5 rounded-lg"
       >
-        <WiggleBadge value={String(heart)} type="heart" />
+        <WiggleBadge onClick={() => handleEasterEgg()} value={String(heart)} type="heart" />
         <WiggleBadge value={String(day)} type="calendar" />
       </motion.div>
     </>
