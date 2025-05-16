@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import LoginButton from "@/features/auth/ui/LoginButton";
 import { http } from "@/shared/lib/http";
 
@@ -12,7 +11,6 @@ const LoginPage = () => {
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
 
-  const { data, isSuccess, refetch } = useMyInfo();
   const [hasRequestedLogin, setHasRequestedLogin] = useState(false); // 중복 방지
 
   // 1. 카카오 로그인 요청
@@ -44,7 +42,7 @@ const LoginPage = () => {
           // 로컬 스토리지에 accessToken과 refreshToken 저장
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
-          await refetch();
+          router.push("/home");
         } else {
           console.log("로그인 실패:", res.message);
         }
@@ -56,40 +54,32 @@ const LoginPage = () => {
     loginHandler();
   }, [code, hasRequestedLogin]);
 
-  // 2. 로그인 완료 후 유저 정보로 페이지 분기
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
       return;
     }
-    if (!isSuccess) return;
-
-    if (data?.coupleId) {
-      router.push("/home");
-    } else {
-      router.push("/couple");
-    }
-  }, [isSuccess, data]);
+  }, []);
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen p-5">
+    <div className="flex flex-col items-center justify-between h-screen p-5 ">
       {/* 로고 및 타이틀 */}
-      <div className="text-center h-[60%] flex flex-col items-center justify-center">
+      <div className="text-center h-[80%] flex flex-col items-center justify-center ">
         <h1 className="text-4xl font-bold text-ppink">wooimi</h1>
         <p className="text-xl">우리는 이별을 미루기로 했다.</p>
       </div>
 
-      <div className="w-full items-center justify-center flex flex-col gap-4">
+      <div className="w-full items-center justify-center flex flex-col gap-4 mb-12.5">
         <LoginButton provider="kakao" />
         {/* <LoginButton provider="naver" /> */}
-      </div>
 
-      <button
-        onClick={() => window.open(`${process.env.NEXT_PUBLIC_KAKAO_CHANNEL_URL}`, "_blank")}
-        className="underline text-sm text-gray-500 mt-4"
-      >
-        로그인에 어려움이 있나요?
-      </button>
+        <button
+          onClick={() => window.open(`${process.env.NEXT_PUBLIC_KAKAO_CHANNEL_URL}`, "_blank")}
+          className="underline text-sm text-gray-500 "
+        >
+          로그인에 어려움이 있나요?
+        </button>
+      </div>
     </div>
   );
 };
