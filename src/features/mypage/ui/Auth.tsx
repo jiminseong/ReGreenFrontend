@@ -38,7 +38,7 @@ const Auth = () => {
   // 회원탈퇴 처리 로직
   const handleRetire = async () => {
     try {
-      const res = await http.delete("api/couples").json<{
+      const res = await http.delete("api/couples/my").json<{
         code: number;
         message: string;
       }>();

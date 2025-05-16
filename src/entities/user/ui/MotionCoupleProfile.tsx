@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import useHandleMypage from "@/features/mypage/lib/hadnleMypage";
 import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
-import CoupleProfile from "./CoupleProfile";
+import DustProfile from "./DustProfile";
 
 const MotionCoupleProfile = () => {
   const { mode } = useHomeMode();
@@ -20,7 +20,7 @@ const MotionCoupleProfile = () => {
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className={`${mode === "inventory" ? "hidden" : "visibile"}`}
     >
-      <CoupleProfile size="small" />
+      <DustProfile size="small" />
     </motion.button>
   );
 };
