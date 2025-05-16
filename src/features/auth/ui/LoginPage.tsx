@@ -84,7 +84,12 @@ const LoginPage = () => {
         {/* <LoginButton provider="naver" /> */}
       </div>
 
-      <button className="underline text-sm text-gray-500 mt-4">로그인에 어려움이 있나요?</button>
+      <button
+        onClick={() => window.open(`${process.env.NEXT_PUBLIC_KAKAO_CHANNEL_URL}`, "_blank")}
+        className="underline text-sm text-gray-500 mt-4"
+      >
+        로그인에 어려움이 있나요?
+      </button>
     </div>
   );
 };
