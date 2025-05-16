@@ -70,7 +70,7 @@ const CoupleCheckPage = () => {
         친구, 연인을 <br />
         초대해 주세요!
       </h1>
-      <Image src="/image/couple/coupleInvite.svg" width={255} height={260} alt="일러스트" />
+      <Image src="/image/couple/coupleInvite.png" width={255} height={260} alt="일러스트" />
       <div className="w-full flex flex-col gap-2">
         <Button onClick={() => handleInvite()}>초대하러 가기 </Button>
         <Button primary={false} onClick={() => handleInvited()}>
