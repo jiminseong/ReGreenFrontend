@@ -98,7 +98,9 @@ const FinishedActivityList = () => {
                 ) : (
                   <span className="text-lg font-semibold">{activity.title}</span>
                 )}
-                <span className="text-sm text-[#777777]">신청일 : {activity.createdAt}</span>
+                <span className="text-sm text-[#777777]">
+                  신청일 : {activity.createdAt.split("T")[0]}
+                </span>
               </div>
             </div>
 
