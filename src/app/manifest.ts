@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "우리는 이별을 미루기로 했다.",
     start_url: "/",
     display: "standalone",
-    background_color: "#3c3c3c",
+    background_color: "#ffffff",
     orientation: "portrait",
     theme_color: "#ffffff",
     categories: ["social networking"],
@@ -15,7 +15,7 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         src: "/192.webp",
         sizes: "192x192",
-        type: "image/png",
+        type: "image/webp",
       },
       {
         src: "/512.webp",
