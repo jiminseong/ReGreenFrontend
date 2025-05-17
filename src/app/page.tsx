@@ -26,7 +26,7 @@ export default function Page() {
         ("standalone" in window.navigator && window.navigator.standalone === true);
 
       //로컬 스토리지에 accessToken이 있다면
-      if (accessToken) {
+      if (accessToken && isSuccess) {
         //커플 등록 여부 체크
         if (data?.coupleId !== null) {
           //커플일 시에 → /home
