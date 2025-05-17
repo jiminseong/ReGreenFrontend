@@ -5,11 +5,10 @@ import { useRouter } from "next/navigation";
 import SplashContent from "@/widgets/splash/SplashContent";
 import InstallPrompt from "@/features/splash/ui/InstallPrompt";
 import { useMyInfo } from "@/entities/user/lib/userMyInfo";
-import Loading from "@/widgets/Loading";
 
 export default function Page() {
   const router = useRouter();
-  const { data, isSuccess, isPending } = useMyInfo();
+  const { data, isSuccess } = useMyInfo();
   const [showPrompt, setShowPrompt] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
 
@@ -56,7 +55,6 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-white flex items-center justify-center px-4">
-      {isPending && <Loading />}
       {showPrompt ? <InstallPrompt isIOS={isIOS} /> : <SplashContent />}
     </main>
   );

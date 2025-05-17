@@ -8,7 +8,9 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     display: "standalone",
     background_color: "#3c3c3c",
+    orientation: "portrait",
     theme_color: "#ffffff",
+    categories: ["social networking"],
     icons: [
       {
         src: "/192.webp",
