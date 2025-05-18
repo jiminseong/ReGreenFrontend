@@ -9,14 +9,19 @@ export const metadata: Metadata = {
   title: "우리는 이별을 미루기로 했다.",
   description: "우리는 이별을 미루기로 했다.",
   manifest: "/manifest.json",
+  themeColor: "#ffffff",
   icons: {
     icon: "/192.png",
     shortcut: "/192.png",
     apple: "/192.png",
-    other: {
-      rel: "apple-touch-icon-precomposed",
-      url: "/192.png",
-    },
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "우리는 이별을 미루기로 했다.",
+  },
+  other: {
+    "apple-mobile-web-app-capable": "yes",
   },
 };
 
