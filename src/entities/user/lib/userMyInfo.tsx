@@ -13,7 +13,6 @@ export function useMyInfo() {
   return useQuery<MemberInfo>({
     queryKey: ["myInfo"],
     queryFn: async () => {
-      //accessToken이 없을 시에 userInfo를 가져오지 않는다.
       const accessToken = localStorage.getItem("accessToken");
       if (!accessToken) {
         return {
