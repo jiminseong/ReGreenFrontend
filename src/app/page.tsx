@@ -13,11 +13,7 @@ export default function Page() {
   const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      handleRouting();
-    }, 2000);
-
-    return () => clearTimeout(timer);
+    handleRouting();
   }, [isSuccess, data]);
 
   const handleRouting = () => {
@@ -27,10 +23,11 @@ export default function Page() {
       window.matchMedia("(display-mode: standalone)").matches ||
       ("standalone" in window.navigator && window.navigator.standalone === true);
 
+    setShowPrompt(isStandalone);
     setIsIOS(isIOSDevice);
 
     if (isSuccess) {
-      if (data?.coupleId) {
+      if (data.coupleId) {
         router.push("/home");
       } else {
         router.push("/couple");
