@@ -9,6 +9,7 @@ import { useInstallPromptStore } from "@/features/splash/ui/model/store";
 export default function Page() {
   const router = useRouter();
   const { data, isSuccess, isPending } = useMyInfo();
+  
 
   const {
     isIOS,
@@ -26,7 +27,7 @@ export default function Page() {
 
   useEffect(() => {
     if (isPending) return;
-
+    const accessToken = localStorage.getItem("accessToken")
     const onboarded = localStorage.getItem("onboarded");
 
     // PWA 미설치 + 아직 "웹으로 시작" 선택 안한 경우: 설치 안내만 보여줌
@@ -46,7 +47,7 @@ export default function Page() {
       router.push("/home");
     }
     // 로그인 되었고 coupleId 없음 + 온보딩 완료
-    else if (!data?.coupleId && onboarded === "true") {
+    else if (accessToken && !data?.coupleId && onboarded === "true") {
       router.push("/couple");
     }
     // 로그인 되었으나 온보딩 아직 안한 경우
