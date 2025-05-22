@@ -1,50 +1,71 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import InstallPrompt from "@/features/splash/ui/InstallPrompt";
 import { useMyInfo } from "@/entities/user/lib/userMyInfo";
+import InstallPrompt from "@/features/splash/ui/InstallPrompt";
+import { useInstallPromptStore } from "@/features/splash/ui/model/store";
 
 export default function Page() {
   const router = useRouter();
-  const { data, isSuccess } = useMyInfo();
+  const { data, isSuccess, isPending } = useMyInfo();
 
-  const [showPrompt, setShowPrompt] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [didRedirect, setDidRedirect] = useState(false);
+  const {
+    isIOS,
+    isStandalone,
+    promptVisible,
+    promptSkipped,
+    setPromptSkipped,
+    initEnvironment,
+    setPromptVisible,
+  } = useInstallPromptStore();
 
   useEffect(() => {
-    if (didRedirect) return;
+    initEnvironment();
+  }, []);
+
+  useEffect(() => {
+    if (isPending) return;
 
     const onboarded = localStorage.getItem("onboarded");
-    const isIOSDevice = /iPhone|iPad|iPod/.test(navigator.userAgent) && !("MSStream" in window);
-    const isStandalone =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      ("standalone" in window.navigator && window.navigator.standalone === true);
 
-    setIsIOS(isIOSDevice);
-
-    if (isSuccess) {
-      setDidRedirect(true);
-      if (data?.coupleId) {
-        router.push("/home");
-      } else {
-        router.push("/couple");
-      }
-    } else if (isStandalone && !onboarded) {
-      setDidRedirect(true);
-      router.push("/onboard");
-    } else if (!isSuccess && onboarded) {
-      setDidRedirect(true);
-      router.push("/login");
-    } else {
-      setShowPrompt(true);
+    // PWA 미설치 + 아직 "웹으로 시작" 선택 안한 경우: 설치 안내만 보여줌
+    if (!isStandalone && !promptSkipped) {
+      setPromptVisible(true);
+      return;
     }
-  }, [isSuccess, data, didRedirect]);
+
+    // 로그인 안 된 상태
+    if (!isSuccess) {
+      router.push("/login");
+      return;
+    }
+
+    // 로그인 되었고 coupleId 있음 + 온보딩 완료
+    if (data?.coupleId && onboarded === "true") {
+      router.push("/home");
+    }
+    // 로그인 되었고 coupleId 없음 + 온보딩 완료
+    else if (!data?.coupleId && onboarded === "true") {
+      router.push("/couple");
+    }
+    // 로그인 되었으나 온보딩 아직 안한 경우
+    else {
+      router.push("/onboard");
+    }
+  }, [isPending, isSuccess, data, isStandalone, promptSkipped]);
 
   return (
     <main className="min-h-screen bg-white flex items-center justify-center px-4">
-      {showPrompt && <InstallPrompt isIOS={isIOS} />}
+      {promptVisible && (
+        <InstallPrompt
+          isIOS={isIOS}
+          onSkip={() => {
+            setPromptSkipped();
+            setPromptVisible(false);
+          }}
+        />
+      )}
     </main>
   );
 }

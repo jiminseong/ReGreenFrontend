@@ -1,18 +1,6 @@
-"use client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
-const InstallPrompt = ({ isIOS }: { isIOS: boolean }) => {
-  const router = useRouter();
-
-  function checkOnboarded() {
-    const isInboardFinished = localStorage.getItem("onboarded");
-    if (isInboardFinished) {
-      router.push("/login");
-    } else {
-      router.push("/onboard");
-    }
-  }
+const InstallPrompt = ({ isIOS, onSkip }: { isIOS: boolean; onSkip: () => void }) => {
   return (
     <div className="max-w-md mx-auto mb-32 md:mb-0 p-6 bg-white rounded-2xl shadow-lg text-center border">
       {isIOS ? (
@@ -33,10 +21,8 @@ const InstallPrompt = ({ isIOS }: { isIOS: boolean }) => {
           수 있어요.
         </p>
       )}
-      {isIOS ? (
-        <></>
-      ) : (
-        <button onClick={() => checkOnboarded()} className="mt-6 px-4 py-2 underline text-sm">
+      {!isIOS && (
+        <button onClick={onSkip} className="mt-6 px-4 py-2 underline text-sm">
           웹으로 그냥 시작하기
         </button>
       )}
