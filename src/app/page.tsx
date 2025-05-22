@@ -11,35 +11,36 @@ export default function Page() {
 
   const [showPrompt, setShowPrompt] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
+  const [didRedirect, setDidRedirect] = useState(false);
 
   useEffect(() => {
-    handleRouting();
-  }, [isSuccess, data]);
+    if (didRedirect) return;
 
-  const handleRouting = () => {
     const onboarded = localStorage.getItem("onboarded");
     const isIOSDevice = /iPhone|iPad|iPod/.test(navigator.userAgent) && !("MSStream" in window);
     const isStandalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       ("standalone" in window.navigator && window.navigator.standalone === true);
 
-    setShowPrompt(isStandalone);
     setIsIOS(isIOSDevice);
 
     if (isSuccess) {
-      if (data.coupleId) {
+      setDidRedirect(true);
+      if (data?.coupleId) {
         router.push("/home");
       } else {
         router.push("/couple");
       }
     } else if (isStandalone && !onboarded) {
+      setDidRedirect(true);
       router.push("/onboard");
-    } else if (isStandalone && onboarded) {
+    } else if (!isSuccess && onboarded) {
+      setDidRedirect(true);
       router.push("/login");
     } else {
       setShowPrompt(true);
     }
-  };
+  }, [isSuccess, data, didRedirect]);
 
   return (
     <main className="min-h-screen bg-white flex items-center justify-center px-4">
