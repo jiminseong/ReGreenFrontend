@@ -8,15 +8,15 @@ import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 
 export default function Page() {
   const router = useRouter();
+
   const { data, isSuccess } = useMyInfo();
+
   const [showPrompt, setShowPrompt] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-
     const timer = setTimeout(() => {
-      // 로컬 스토리지에 온보딩 열람 상태 있다면
+      const accessToken = localStorage.getItem("accessToken");
       const isInboardFinished = localStorage.getItem("onboarded");
       const isIOSDevice = /iPhone|iPad|iPod/.test(navigator.userAgent) && !("MSStream" in window);
       setIsIOS(isIOSDevice);
@@ -48,14 +48,15 @@ export default function Page() {
       } else {
         setShowPrompt(true);
       }
-    }, 2800);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [router]);
 
   return (
     <main className="min-h-screen bg-white flex items-center justify-center px-4">
-      {showPrompt ? <InstallPrompt isIOS={isIOS} /> : <SplashContent />}
+      <SplashContent isSplash={showPrompt} />
+      {showPrompt && <InstallPrompt isIOS={isIOS} />}
     </main>
   );
 }
