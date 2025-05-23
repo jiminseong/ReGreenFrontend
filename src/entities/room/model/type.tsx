@@ -11,21 +11,21 @@ export type FurnitureCategory =
   | "chair";
 
 export interface FurnitureItem {
-  furnitureId: string;
+  itemId: string;
   name: string;
   description: string;
   price: number;
-  s3ImageUrl: string;
-  s3PreviewImageUrl: string;
+  imageUrl: string;
+  previewImageUrl: string;
   category: FurnitureCategory;
   isOwned: boolean;
-  coupleFurnitureId?: string | null;
+  coupleItemId?: string | null;
   isPlaced: boolean;
   zIndex: number;
 }
 
 interface PatchRoomItem {
-  coupleFurnitureId: string | null;
+  coupleItemId: string | null;
   isPlaced: boolean;
 }
 
