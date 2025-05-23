@@ -9,6 +9,7 @@ import { useInstallPromptStore } from "@/features/splash/ui/model/store";
 export default function Page() {
   const router = useRouter();
   const { data, isSuccess, isPending } = useMyInfo();
+  
 
   const {
     isIOS,
