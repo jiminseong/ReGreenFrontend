@@ -19,9 +19,7 @@ const RoomSaveButton = () => {
   const isOwnedFurnitures = currentFurnitures.filter((item) => item.isOwned === true);
   const coupleFurnitures = currentFurnitures.filter(
     (item) =>
-      item.coupleFurnitureId &&
-      item.coupleFurnitureId !== null &&
-      typeof item.coupleFurnitureId === "string"
+      item.coupleItemId && item.coupleItemId !== null && typeof item.coupleItemId === "string"
   );
 
   const handleModal = () => {
@@ -38,14 +36,14 @@ const RoomSaveButton = () => {
     }
     const replacedFurniture = coupleFurnitures.map((item) => {
       return {
-        coupleFurnitureId: item.coupleFurnitureId !== undefined ? item.coupleFurnitureId : null,
+        coupleItemId: item.coupleItemId !== undefined ? item.coupleItemId : null,
         isPlaced: item.isPlaced,
       };
     });
 
     try {
       const res = await patchRoom({ placements: replacedFurniture });
-      if (res.code === 2500) {
+      if (res.code === 2000) {
         await setLoading(false);
         await refetch();
 

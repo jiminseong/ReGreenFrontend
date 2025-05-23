@@ -74,8 +74,8 @@ const Room = () => {
         />
         {sortedItems?.map((item) => (
           <Image
-            key={item.furnitureId}
-            src={item.s3ImageUrl}
+            key={item.coupleItemId}
+            src={item.description}
             alt={item.name}
             width={1000}
             height={1000}
