@@ -3,8 +3,8 @@ import { http } from "@/shared/lib/http";
 
 interface CoupleInfo {
   coupleId: string;
-  point: number;
-  breakupAt: number;
+  ecoLovePoint: number;
+  breakupBufferPoint: number;
   members: [
     {
       memberId: string;

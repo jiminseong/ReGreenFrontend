@@ -77,8 +77,8 @@ const InventoryListComponent = () => {
       return;
     }
 
-    if (Number(coupleInfo.data.point) < modalItem.price) {
-      console.log(coupleInfo.data.point);
+    if (Number(coupleInfo.data.ecoLovePoint) < modalItem.price) {
+      console.log(coupleInfo.data.ecoLovePoint);
       setModal(true, "notEnoughPoints", modalItem);
       return;
     }
@@ -87,10 +87,10 @@ const InventoryListComponent = () => {
       try {
         setLoading(true);
         const res = await httpNoThrow
-          .post(`api/furniture/${modalItem.furnitureId}`)
+          .post(`api/items/${modalItem.coupleItemId}`)
           .json<BuyFurnitureResponse>();
         setLoading(false);
-        if ("code" in res && res.code === 2500) {
+        if ("code" in res && res.code === 2000) {
           setLoading(false);
 
           setModal(true, "buyFinished", modalItem);
@@ -98,11 +98,11 @@ const InventoryListComponent = () => {
           coupleRefetch();
           setCurrentFurnitures(updated.data?.data ?? []);
         }
-        if (res.statusCode === 400) {
+        if (res.statusCode === 45003) {
           setLoading(false);
           setModal(true, "notEnoughPoints", modalItem);
           coupleRefetch();
-        } else if (res.statusCode === 409) {
+        } else if (res.statusCode === 45002) {
           setLoading(false);
           setModal(true, "alreadyOwned", modalItem);
           coupleRefetch();
@@ -118,18 +118,15 @@ const InventoryListComponent = () => {
     buyFurnitures();
   };
 
-  // 초기에 카테고리 하나 설정
   useEffect(() => {
-    setCategories(["interior"]);
-  }, []);
-
+    if (furnitureSuccess && newCoupleFurniture?.data?.length > 0) {
+      const firstCategory = newCoupleFurniture.data[0].category;
+      setCategories([firstCategory]);
+    }
+  }, [furnitureSuccess, newCoupleFurniture]);
   function handleHomeMode() {
-    if (mode === "inventory") {
-      if (furnitureSuccess) {
-        if (newCoupleFurniture.data.length > 0) {
-          setMode("home");
-        }
-      }
+    if (mode === "inventory" && furnitureSuccess && newCoupleFurniture.data.length > 0) {
+      setMode("home");
     }
   }
 
@@ -166,7 +163,7 @@ const InventoryListComponent = () => {
             {/* 아이템 목록 */}
             <div className="grid grid-cols-3 mt-3 overflow-y-scroll no-scrollbar h-full gap-2 pb-16">
               {filteredItems.map((item) => (
-                <div id="item" key={item.furnitureId}>
+                <div id="item" key={item.coupleItemId}>
                   <InventoryListItem
                     isPlaced={item.isPlaced}
                     isOwned={item.isOwned}

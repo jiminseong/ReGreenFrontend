@@ -16,13 +16,13 @@ export const useRoomStore = create<RoomStore>((set) => ({
   toggleFurniturePlacement: (furniture) =>
     set((state) => {
       const existingFurniture = state.currentRoomFurnitures.find(
-        (item) => item.furnitureId === furniture.furnitureId
+        (item) => item.coupleItemId === furniture.coupleItemId
       );
 
       if (existingFurniture) {
         return {
           currentRoomFurnitures: state.currentRoomFurnitures.map((item) =>
-            item.furnitureId === furniture.furnitureId
+            item.coupleItemId === furniture.coupleItemId
               ? { ...item, isPlaced: !item.isPlaced }
               : item
           ),

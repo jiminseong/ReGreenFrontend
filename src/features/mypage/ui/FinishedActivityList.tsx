@@ -23,7 +23,7 @@ const SkeletonCard = () => (
 
 const FinishedActivityList = () => {
   const { data } = useCoupleInfo();
-  const heart = data?.data.point || 0;
+  const heart = data?.data.ecoLovePoint || 0;
   const [page, setPage] = useState(1);
   const [items, setItems] = useState<SubmitActivitiesItem[]>([]);
   const [hasNextPage, setHasNextPage] = useState(true);

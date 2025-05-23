@@ -15,7 +15,7 @@ export function useMyPlacedFurniture() {
     queryFn: async () => {
       try {
         const res = await http
-          .get("api/furniture")
+          .get("api/items")
           .json<{ code: string; message: string; data: FurnitureItem[] }>();
         return {
           code: res.code,

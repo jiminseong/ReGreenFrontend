@@ -36,7 +36,7 @@ const CoupleInvitePage = () => {
               data: { coupleId: string };
             }>()
             .then((res) => {
-              if (res.code === 2100) {
+              if (res.code === 2000) {
                 setLoading(false);
                 console.log("초대 코드 발급 성공");
                 // 초대 코드 페이지로 이동
@@ -45,10 +45,7 @@ const CoupleInvitePage = () => {
                 router.push(`/home`);
                 // 커플이 생겼으니 홈으로 이동
                 refetch();
-              } else if (res.code === 400) {
-                setLoading(false);
-                setModalOpen(true);
-              } else if (res.code === 409) {
+              } else if (res.code === 42003 || res.code === 42002 || res.code === 42004) {
                 setLoading(false);
                 setModalOpen(true);
               }

@@ -46,7 +46,7 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
 
       {/* 이미지 높이 고정 */}
       <div className="w-[62px] h-[58px] relative  flex items-center justify-center mt-2">
-        <Image src={item.s3PreviewImageUrl} fill className="object-cover" alt={item.name} />
+        <Image src={item.previewImageUrl} fill className="object-cover" alt={item.name} />
       </div>
       <p
         className={`${
