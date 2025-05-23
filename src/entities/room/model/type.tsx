@@ -1,14 +1,4 @@
-export type FurnitureCategory =
-  | "interior"
-  | "decor"
-  | "storage"
-  | "window"
-  | "fabric"
-  | "flooring"
-  | "lighting"
-  | "bed"
-  | "desk"
-  | "chair";
+export type FurnitureCategory = "wallPaper" | "floor" | "furniture" | "window" | "decor";
 
 export interface FurnitureItem {
   itemId: string;

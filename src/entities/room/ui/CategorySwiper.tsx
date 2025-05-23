@@ -6,15 +6,11 @@ import { useFurnitureStore } from "@/entities/room/model/store";
 import { FurnitureCategory } from "@/entities/room/model/type";
 import { useDragScroll } from "../lib/useDragScroll";
 
+// export type FurnitureCategory = "wallPaper" | "floor" | "furniture" | "window" | "decor";
 const categoryNameToTypeMap: Record<string, FurnitureCategory> = {
-  소파: "interior",
-  침대: "bed",
-  벽지: "flooring",
-  선반: "storage",
-  패브릭: "fabric",
-  조명: "lighting",
-  책상: "desk",
-  의자: "chair",
+  벽지: "wallPaper",
+  바닥: "floor",
+  가구: "furniture",
   창문: "window",
   소품: "decor",
 };
@@ -41,7 +37,7 @@ const CategorySwiper = () => {
           return (
             <button
               key={tab}
-              className={` px-4 py-2 whitespace-nowrap transition-all duration-150 min-w-[64px] ${
+              className={` px-8 py-2 whitespace-nowrap transition-all duration-150 min-w-[64px] ${
                 isActive
                   ? "border-b-2 border-black font-bold"
                   : "text-[#999999] border-[#EEEEEE] border-b-2"
