@@ -7,8 +7,8 @@ interface ActivityItemProp {
   title: string; // 라벨 텍스트
   currentCheckedId: string; // 현재 체크된 아이템 ID
   onChecked: (ecoVerificationId: string) => void; // 체크 상태 변경 함수
-  point: number; // 포인트
-  breakupAtPoint: number; // 날짜 포인트
+  ecoLovePoint: number; // 포인트
+  breakupBufferPoint: number; // 날짜 포인트
 }
 
 const ActivityItem = ({

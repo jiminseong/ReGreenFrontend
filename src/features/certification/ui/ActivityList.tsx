@@ -171,12 +171,12 @@ const ActivityList = () => {
 
       setLoading(false);
 
-      if (res.statusCode === 413 || res.statusCode === 400) {
+      if (res.statusCode === 54001 || res.statusCode === 47003) {
         setModalOpen(true);
         return;
       }
 
-      if (res.code === 2400) {
+      if (res.code === 2000) {
         const { memberEcoVerificationId, s3ImageUrl } = res.data;
         setToast(true);
         setTimeout(() => setToast(false), 2000);
@@ -249,11 +249,11 @@ const ActivityList = () => {
             >
               <div className="flex items-center justify-center  gap-2">
                 <Image src="/icon/home/heartIcon.svg" width={24} height={24} alt="하트아이콘" />
-                <span className="text-ppink font-bold">+{selected.breakupAtPoint}</span>
+                <span className="text-ppink font-bold">+{selected.breakupBufferPoint}</span>
               </div>
               <div className="flex items-center justify-center gap-2">
                 <Image src="/icon/home/calendarIcon.svg" width={24} height={24} alt="달력아이콘" />
-                <span className="font-bold">+{selected.breakupAtPoint}</span>
+                <span className="font-bold">+{selected.breakupBufferPoint}</span>
               </div>
             </motion.div>
             <ToastButton message={TOAST_MESSAGE} onToastClick={handleCertificationClick} />
@@ -264,9 +264,12 @@ const ActivityList = () => {
         activities.map((activity) => (
           <ActivityItem
             key={activity.ecoVerificationId}
-            {...activity}
+            ecoVerificationId={activity.ecoVerificationId}
+            title={activity.title}
+            ecoLovePoint={activity.ecoLovePoint}
+            breakupBufferPoint={activity.breakupBufferPoint}
             imageUrl={
-              activity.imageUrl || activity.title === "다회용 컵 이용하기"
+              activity.iconImageUrl || activity.title === "다회용 컵 이용하기"
                 ? "/icon/activity/cupIcon.svg"
                 : activity.title === "중고 제품 나눔/구매 인증하기"
                 ? "/icon/activity/danguenIcon.svg"

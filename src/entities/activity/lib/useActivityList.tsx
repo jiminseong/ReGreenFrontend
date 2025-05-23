@@ -7,10 +7,10 @@ export function useActivityList() {
     queryKey: ["activityList"],
     queryFn: async () => {
       const res = await http.get("api/eco-verifications").json<ActivityItemResponse>();
-      if (res.code !== 2400) {
+      if (res.code !== 2000) {
         throw new Error("Failed to fetch activity list");
       }
-      // const res = await http.get("api/eco-verifications").json<ActivityItem[]>();
+
       return res.data;
     },
     retry: false,

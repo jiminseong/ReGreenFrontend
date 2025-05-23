@@ -6,7 +6,7 @@ export interface ActivityItemResponse {
 interface ActivityItem {
   ecoVerificationId: string;
   title: string;
-  imageUrl?: string;
-  point: number;
-  breakupAtPoint: number;
+  ecoLovePoint: number;
+  breakupBufferPoint: number;
+  iconImageUrl?: string;
 }
