@@ -4,7 +4,7 @@ import { http } from "@/shared/lib/http";
 export const patchRoom = async (data: PatchRoomRequest) => {
   try {
     const response = await http
-      .patch("api/items", {
+      .patch("/api/items/placements", {
         json: data,
       })
       .json<PatchRoomResponse>();
