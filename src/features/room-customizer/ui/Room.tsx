@@ -66,7 +66,7 @@ const Room = () => {
         className="relative w-full h-full flex flex-col items-center justify-center"
       >
         <Image
-          src="https://regreen-bucket.s3.ap-northeast-2.amazonaws.com/images/constant/furniture/green00.png"
+          src="/image/home/roomDefaultWall.png"
           alt="배경"
           width={1000}
           height={1000}
@@ -75,7 +75,7 @@ const Room = () => {
         {sortedItems?.map((item) => (
           <Image
             key={item.coupleItemId}
-            src={item.description}
+            src={item.imageUrl}
             alt={item.name}
             width={1000}
             height={1000}
