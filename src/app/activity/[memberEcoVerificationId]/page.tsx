@@ -87,12 +87,12 @@ export default function Paeg() {
           message: string;
         }>();
 
-      if (res.code !== 2400) {
+      if (res.code !== 2000) {
         handleToast("링크 전송에 실패했습니다.");
         return;
       }
 
-      if (res.code === 2400) {
+      if (res.code === 2000) {
         handleToast("링크가 전송되었습니다!");
       }
     } else {

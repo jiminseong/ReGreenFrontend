@@ -19,7 +19,7 @@ const Auth = () => {
           code: number;
           message: string;
         }>();
-        if (res.code === 2100) {
+        if (res.code === 2000) {
           await localStorage.removeItem("accessToken");
           await localStorage.removeItem("refreshToken");
           router.push("/login");
@@ -42,7 +42,7 @@ const Auth = () => {
         code: number;
         message: string;
       }>();
-      if (res.code === 2300) {
+      if (res.code === 2000) {
         await localStorage.removeItem("accessToken");
         await localStorage.removeItem("refreshToken");
         router.push("/");
