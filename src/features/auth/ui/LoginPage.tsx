@@ -39,7 +39,7 @@ const LoginPage = () => {
             data: { accessToken: string; refreshToken: string };
           }>();
 
-        if (res.code === 2100) {
+        if (res.code === 2000) {
           await setLoading(false);
           console.log("로그인 성공");
           setHasRequestedLogin(true);
