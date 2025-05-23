@@ -118,11 +118,12 @@ const InventoryListComponent = () => {
     buyFurnitures();
   };
 
-  // 초기에 카테고리 하나 설정
   useEffect(() => {
-    setCategories(["interior"]);
-  }, []);
-
+    if (furnitureSuccess && newCoupleFurniture?.data?.length > 0) {
+      const firstCategory = newCoupleFurniture.data[0].category;
+      setCategories([firstCategory]);
+    }
+  }, [furnitureSuccess, newCoupleFurniture]);
   function handleHomeMode() {
     if (mode === "inventory" && furnitureSuccess && newCoupleFurniture.data.length > 0) {
       setMode("home");
