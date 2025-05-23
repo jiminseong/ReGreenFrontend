@@ -77,8 +77,8 @@ const InventoryListComponent = () => {
       return;
     }
 
-    if (Number(coupleInfo.data.point) < modalItem.price) {
-      console.log(coupleInfo.data.point);
+    if (Number(coupleInfo.data.ecoLovePoint) < modalItem.price) {
+      console.log(coupleInfo.data.ecoLovePoint);
       setModal(true, "notEnoughPoints", modalItem);
       return;
     }
@@ -87,7 +87,7 @@ const InventoryListComponent = () => {
       try {
         setLoading(true);
         const res = await httpNoThrow
-          .post(`/api/items/${modalItem.coupleItemId}`)
+          .post(`api/items/${modalItem.coupleItemId}`)
           .json<BuyFurnitureResponse>();
         setLoading(false);
         if ("code" in res && res.code === 2000) {
@@ -124,12 +124,8 @@ const InventoryListComponent = () => {
   }, []);
 
   function handleHomeMode() {
-    if (mode === "inventory") {
-      if (furnitureSuccess) {
-        if (newCoupleFurniture.data.length > 0) {
-          setMode("home");
-        }
-      }
+    if (mode === "inventory" && furnitureSuccess && newCoupleFurniture.data.length > 0) {
+      setMode("home");
     }
   }
 

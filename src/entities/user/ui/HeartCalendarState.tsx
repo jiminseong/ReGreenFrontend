@@ -21,8 +21,8 @@ const HeartCalendarState = () => {
     if (coupleQuery.isSuccess) {
       const coupleData = coupleQuery.data?.data;
       if (coupleData) {
-        setHeart(coupleData.point);
-        setDay(coupleData.breakupAt);
+        setHeart(coupleData.ecoLovePoint);
+        setDay(coupleData.breakupBufferPoint);
       }
     }
   });
