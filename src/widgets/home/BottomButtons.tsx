@@ -41,7 +41,7 @@ const BottomButtons = ({ type = null }: BottomButtonsProps) => {
       <div className="w-full flex flex-col items-start  gap-3.5">
         <div
           className={`flex ${
-            type === "description" ? "w-[50%]" : "w-full"
+            type === "description" ? "w-[48%]" : "w-full"
           }  justify-center gap-4 mb-9 `}
         >
           <button
