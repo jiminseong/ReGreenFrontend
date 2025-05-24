@@ -46,22 +46,21 @@ const Room = () => {
   }, []);
 
   const getRoomScale = (mode: string): number => {
-    if (mode !== "home" && windowWidth >= 768) return 0.9;
+    if (mode !== "home" && windowWidth >= 500) return 0.8;
     if (mode !== "home") return 1;
-    if (windowWidth >= 1024) return 1.25; // 데스크탑
+    if (windowWidth >= 1024) return 1.125; // 데스크탑
     if (windowWidth >= 768) return 1.25; // 태블릿
     return 1.25;
   };
 
   const getRoomY = (mode: string, width: number): number => {
     if (mode === "inventory") {
-      if (width >= 1024) return -120; // 데스크탑
-      if (width >= 768) return -110; // 태블릿
-      return -120; // 모바일
+      if (width >= 500) return -40; // 태블릿
+      return -100; // 모바일
     } else {
-      if (width >= 1024) return -120; // 데스크탑
+      if (width >= 1024) return -90; // 데스크탑
       if (width >= 768) return -100; // 태블릿
-      return -120; // 모바일
+      return -90; // 모바일
     }
   };
 
@@ -104,14 +103,14 @@ const Room = () => {
         <div
           className={`${
             mode === "inventory" ? "visible" : "hidden"
-          } w-full h-[162px] absolute z-[-1] bottom-[-50px] md:bottom-[-120px] flex justify-center items-center`}
+          } w-full h-[162px] absolute z-[-1] bottom-[-20px] sm:bottom-[-80px] md:bottom-[-80px]  flex justify-center items-center`}
         >
           <Image
             src="/image/home/backgroundFillter.png"
             alt="배경 필터"
             width={1000}
             height={1000}
-            className="absolute z-[-10] bottom-[130px] md:bottom-[160px]  w-full h-full"
+            className="absolute z-[-10] bottom-[130px] md:bottom-[100px]   w-full h-full"
           />
         </div>
       </motion.div>
