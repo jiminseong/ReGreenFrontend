@@ -120,7 +120,7 @@ const ActivityList = () => {
   const router = useRouter();
   const notReadyActivities = dummyActivities;
   const [toast, setToast] = useState(false);
-
+  const [isAlreadyToast, setIsAlreadyToast] = useState(false);
   const selected = activities?.find((a) => a.ecoVerificationId === currentCheckedId);
 
   const isActivityTourSeen = localStorage.getItem("activityTourSeen");
@@ -177,21 +177,33 @@ const ActivityList = () => {
           code: number;
           statusCode?: number;
           message: string;
-          data: { memberEcoVerificationId: string; status: string; s3ImageUrl: string };
+          data: {
+            memberEcoVerificationId: string;
+            imageUrl: string;
+            status: string;
+            aiReasonOfStatus: string;
+          };
         }>();
 
       setLoading(false);
 
+      if (res.code === 47003) {
+        setIsAlreadyToast(true);
+        setTimeout(() => setIsAlreadyToast(false), 1500);
+        return;
+      }
       if (res.statusCode === 54001 || res.statusCode === 47003) {
         setModalOpen(true);
         return;
       }
 
-      if (res.code === 2000) {
-        const { memberEcoVerificationId, s3ImageUrl } = res.data;
+      if (res.code === 2000 && selected) {
+        const { memberEcoVerificationId, imageUrl } = res.data;
         setToast(true);
         setTimeout(() => setToast(false), 2000);
-        router.push(`/activity/${memberEcoVerificationId}?imageUrl=${s3ImageUrl}`);
+        router.push(
+          `/activity/${memberEcoVerificationId}?imageUrl=${imageUrl}&title=${selected.title}`
+        );
       }
     } catch (error) {
       setLoading(false);
@@ -250,6 +262,12 @@ const ActivityList = () => {
           message={
             <div className="font-bold px-5 py-5">이미지는 최대 5MB까지 업로드 가능합니다.</div>
           }
+        />
+      )}
+      {isAlreadyToast && (
+        <Toast
+          message="이미 인증했어요! 자정에 초기화 되어 다시 인증할 수 있어요!"
+          position="top"
         />
       )}
       <AnimatePresence>
