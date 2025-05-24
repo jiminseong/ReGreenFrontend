@@ -47,16 +47,16 @@ const Room = () => {
 
   const getRoomScale = (mode: string): number => {
     if (mode !== "home" && windowWidth >= 500) return 0.8;
-    if (mode !== "home") return 1;
-    if (windowWidth >= 1024) return 1.125; // 데스크탑
-    if (windowWidth >= 768) return 1.25; // 태블릿
-    return 1.25;
+    if (mode !== "home") return 0.8;
+    if (windowWidth >= 1024) return 1.08125; // 데스크탑
+    if (windowWidth >= 768) return 1.125; // 태블릿
+    return 1.125;
   };
 
   const getRoomY = (mode: string, width: number): number => {
     if (mode === "inventory") {
       if (width >= 500) return -40; // 태블릿
-      return -100; // 모바일
+      return -60; // 모바일
     } else {
       if (width >= 1024) return -90; // 데스크탑
       if (width >= 768) return -100; // 태블릿
@@ -84,8 +84,15 @@ const Room = () => {
         className="relative w-full h-full flex flex-col items-center justify-center  overflow-hidden"
       >
         <Image
-          src="/image/home/roomDefaultWall.png"
+          src="https://regreen-bucket.s3.ap-northeast-2.amazonaws.com/images/constant/furniture/20250524-00.png"
           alt="배경"
+          width={1000}
+          height={1000}
+          className={`absolute `}
+        />
+        <Image
+          src="https://regreen-bucket.s3.ap-northeast-2.amazonaws.com/images/constant/furniture/20250524-01.png"
+          alt="방 배경"
           width={1000}
           height={1000}
           className={`absolute `}
@@ -110,7 +117,7 @@ const Room = () => {
             alt="배경 필터"
             width={1000}
             height={1000}
-            className="absolute z-[-10] bottom-[130px] md:bottom-[150px]   w-full h-full"
+            className="absolute z-[-10] bottom-[80px] md:bottom-[150px]   w-full h-full"
           />
         </div>
       </motion.div>
