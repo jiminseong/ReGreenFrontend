@@ -12,6 +12,8 @@ import { httpNoThrow } from "@/shared/lib/http";
 import CommonModal from "@/widgets/ComonModal";
 import Loading from "@/widgets/Loading";
 import Toast from "@/widgets/Toast";
+import { useCertificationStore } from "@/features/description/lib/store";
+
 // import { http } from "@/shared/lib/http";
 
 const dummyActivities = [
@@ -109,6 +111,8 @@ const dummyActivities = [
 ];
 
 const ActivityList = () => {
+  const plusProgress = useCertificationStore((state) => state.plusProgress);
+
   const [currentCheckedId, setCurrentCheckedId] = useState<string>("");
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -119,7 +123,14 @@ const ActivityList = () => {
 
   const selected = activities?.find((a) => a.ecoVerificationId === currentCheckedId);
 
+  const isActivityTourSeen = localStorage.getItem("activityTourSeen");
+
   const handleCheckboxClick = (id: string) => {
+    if (isActivityTourSeen !== "true") {
+      plusProgress?.(1);
+      setCurrentCheckedId((prev) => (prev === id ? "" : id));
+      return;
+    }
     setCurrentCheckedId((prev) => (prev === id ? "" : id));
   };
 
@@ -190,6 +201,10 @@ const ActivityList = () => {
   };
 
   const handleCertificationClick = async () => {
+    if (isActivityTourSeen !== "true") {
+      plusProgress?.(1);
+      return;
+    }
     if (!selected) return;
     const { ecoVerificationId } = selected;
     setCurrentCheckedId("");
