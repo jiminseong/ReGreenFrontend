@@ -72,9 +72,9 @@ const Room = () => {
           height={1000}
           className={`absolute `}
         />
-        {sortedItems?.map((item) => (
+        {sortedItems.map((item) => (
           <Image
-            key={item.coupleItemId}
+            key={item.itemId}
             src={item.imageUrl}
             alt={item.name}
             width={1000}

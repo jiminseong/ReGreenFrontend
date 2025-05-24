@@ -1,9 +1,8 @@
-export type FurnitureCategory = "wallPaper" | "floor" | "furniture" | "window" | "decor";
+export type FurnitureCategory = "wallPaper" | "floor" | "furniture" | "window" | "prop";
 
 export interface FurnitureItem {
   itemId: string;
   name: string;
-  description: string;
   price: number;
   imageUrl: string;
   previewImageUrl: string;
@@ -29,17 +28,10 @@ export interface PatchRoomResponse {
 }
 
 export interface BuyFurnitureResponse {
-  code: number;
-  statusCode?: number;
+  code: 2000;
+  statusCode: 45001 | 45002 | 45003;
   message: string;
   data?: {
-    coupeFurnitureId: string;
+    coupleItemId: string;
   };
-}
-
-export interface ErrorResponse {
-  statusCode: number;
-  timestamp: string;
-  path: string;
-  error: string;
 }

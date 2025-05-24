@@ -47,6 +47,7 @@ const InventoryListComponent = () => {
       setModal(true, "buy", item);
     }
   }
+
   const messageSpan = (
     <span className="text-[16px] font-medium">
       {modalType === "buy" ? (
@@ -87,7 +88,7 @@ const InventoryListComponent = () => {
       try {
         setLoading(true);
         const res = await httpNoThrow
-          .post(`api/items/${modalItem.coupleItemId}`)
+          .post(`api/items/${modalItem.itemId}/purchase`)
           .json<BuyFurnitureResponse>();
         setLoading(false);
         if ("code" in res && res.code === 2000) {
@@ -124,6 +125,7 @@ const InventoryListComponent = () => {
       setCategories([firstCategory]);
     }
   }, [furnitureSuccess, newCoupleFurniture]);
+
   function handleHomeMode() {
     if (mode === "inventory" && furnitureSuccess && newCoupleFurniture.data.length > 0) {
       setMode("home");
@@ -163,7 +165,7 @@ const InventoryListComponent = () => {
             {/* 아이템 목록 */}
             <div className="grid grid-cols-3 mt-3 overflow-y-scroll no-scrollbar h-full gap-2 pb-16">
               {filteredItems.map((item) => (
-                <div id="item" key={item.coupleItemId}>
+                <div id="item" key={item.itemId}>
                   <InventoryListItem
                     isPlaced={item.isPlaced}
                     isOwned={item.isOwned}

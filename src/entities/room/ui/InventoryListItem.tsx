@@ -17,9 +17,11 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
 }) => {
   return (
     <div
-      onClick={item.name === "기본 룸쉘" ? () => {} : () => onToggle()}
+      onClick={
+        item.name === "기본 벽지" || item.name === "기본 바닥재" ? () => {} : () => onToggle()
+      }
       className={`relative ${
-        isOwned || item.name === "기본 룸쉘"
+        isOwned || item.name === "기본 벽지" || item.name === "기본 바닥재"
           ? "bg-[#F5F5F5] rounded-[20px] border border-[#DEDEDE]"
           : ""
       } flex flex-col items-center  px-6 py-3 md:py-5.5 cursor-pointer`}
@@ -34,15 +36,16 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
           height={14}
         />
       )}
-      {item.name === "기본 룸쉘" && (
-        <Image
-          className={`absolute top-3.5 right-3.75 visible"`}
-          src="/icon/home/checkIcon.svg"
-          alt="체크아이콘"
-          width={14}
-          height={14}
-        />
-      )}
+      {item.name === "기본 벽지" ||
+        (item.name === "기본 바닥재 " && (
+          <Image
+            className={`absolute top-3.5 right-3.75 visible"`}
+            src="/icon/home/checkIcon.svg"
+            alt="체크아이콘"
+            width={14}
+            height={14}
+          />
+        ))}
 
       {/* 이미지 높이 고정 */}
       <div className="w-[62px] h-[58px] relative  flex items-center justify-center mt-2">

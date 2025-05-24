@@ -12,7 +12,7 @@ const categoryNameToTypeMap: Record<string, FurnitureCategory> = {
   바닥: "floor",
   가구: "furniture",
   창문: "window",
-  소품: "decor",
+  소품: "prop",
 };
 
 const tabs = Object.keys(categoryNameToTypeMap);
