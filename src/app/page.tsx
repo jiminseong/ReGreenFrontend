@@ -67,7 +67,7 @@ export default function Page() {
   }, [isPending, isSuccess, data, isStandalone, promptSkipped]);
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center px-4">
+    <main className="min-h-screen bg-white flex  items-center justify-center px-4">
       {promptVisible && (
         <InstallPrompt
           isIOS={isIOS}

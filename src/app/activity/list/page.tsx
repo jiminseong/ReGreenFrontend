@@ -2,14 +2,29 @@
 import StatusList from "@/features/certification/ui/StatusList";
 import TopNavigationBar from "@/shared/ui/TopNavigationBar";
 import ActivityList from "@/features/certification/ui/ActivityList";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AuthGuard from "@/shared/lib/AuthGuard";
+import ActivityDescription from "@/features/description/ui/ActivityDescription";
 
 const ActivitySelectPage = () => {
   const [activeTab, setActiveTab] = useState("select");
+  const [showTour, setShowTour] = useState(false);
+
+  useEffect(() => {
+    const isSeen = localStorage.getItem("activityTourSeen");
+    if (!isSeen) {
+      setShowTour(true);
+    }
+  }, []);
+
+  const handleTourFinish = () => {
+    setShowTour(false);
+    localStorage.setItem("activityTourSeen", "true");
+  };
 
   return (
     <div className="flex flex-col h-screen">
+      {showTour && <ActivityDescription onFinish={handleTourFinish} />}
       {/* 상단 네비게이션 바 */}
       <AuthGuard />
       <TopNavigationBar title="인증하기" />

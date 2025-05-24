@@ -17,9 +17,11 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
 }) => {
   return (
     <div
-      onClick={item.name === "기본 룸쉘" ? () => {} : () => onToggle()}
+      onClick={
+        item.name === "기본 벽지" || item.name === "기본 바닥재" ? () => {} : () => onToggle()
+      }
       className={`relative ${
-        isOwned || item.name === "기본 룸쉘"
+        isOwned || item.name === "기본 벽지" || item.name === "기본 바닥재"
           ? "bg-[#F5F5F5] rounded-[20px] border border-[#DEDEDE]"
           : ""
       } flex flex-col items-center  px-6 py-3 md:py-5.5 cursor-pointer`}
@@ -34,31 +36,22 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
           height={14}
         />
       )}
-      {item.name === "기본 룸쉘" && (
-        <Image
-          className={`absolute top-3.5 right-3.75 visible"`}
-          src="/icon/home/checkIcon.svg"
-          alt="체크아이콘"
-          width={14}
-          height={14}
-        />
-      )}
+      {item.name === "기본 벽지" ||
+        (item.name === "기본 바닥재 " && (
+          <Image
+            className={`absolute top-3.5 right-3.75 visible"`}
+            src="/icon/home/checkIcon.svg"
+            alt="체크아이콘"
+            width={14}
+            height={14}
+          />
+        ))}
 
       {/* 이미지 높이 고정 */}
       <div className="w-[62px] h-[58px] relative  flex items-center justify-center mt-2">
         <Image src={item.previewImageUrl} fill className="object-cover" alt={item.name} />
       </div>
-      <p
-        className={`${
-          item.name.length >= 8 && item.name.length < 9
-            ? "text-xs"
-            : item.name.length >= 9
-            ? "text-[11px]"
-            : ""
-        } mt-2 text-sm whitespace-pre-line py-auto text-center w-[80px]`}
-      >
-        {item.name}
-      </p>
+      <p className={` mt-2 text-sm py-auto text-center w-[80px]`}>{item.name}</p>
       {isOwned || item.name === "기본 룸쉘" ? (
         <span className="mt-2 text-[#777777] text-sm font-semibold">보유중</span>
       ) : (

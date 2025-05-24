@@ -37,33 +37,51 @@ const Room = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setWindowWidth(window.innerWidth);
+      const handleResize = () => setWindowWidth(window.innerWidth);
+      handleResize(); // 최초 한 번 설정
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
     }
   }, []);
+
+  const getRoomScale = (mode: string): number => {
+    if (mode !== "home" && windowWidth >= 500) return 0.8;
+    if (mode !== "home") return 1;
+    if (windowWidth >= 1024) return 1.125; // 데스크탑
+    if (windowWidth >= 768) return 1.25; // 태블릿
+    return 1.25;
+  };
+
+  const getRoomY = (mode: string, width: number): number => {
+    if (mode === "inventory") {
+      if (width >= 500) return -40; // 태블릿
+      return -100; // 모바일
+    } else {
+      if (width >= 1024) return -90; // 데스크탑
+      if (width >= 768) return -100; // 태블릿
+      return -90; // 모바일
+    }
+  };
+
   return (
     <>
       {isPending && <Loading />}
+
       <motion.div
         ref={targetRef}
         animate={{
-          y:
-            mode === "inventory"
-              ? windowWidth >= 1024
-                ? -120 // lg 이상일 때
-                : windowWidth >= 768
-                ? -100 // md 이상일 때
-                : -80 // 기본
-              : windowWidth >= 1024
-              ? 60 // lg 이상일 때
-              : windowWidth >= 768
-              ? 50 // md 이상일 때
-              : 40, // 기본
+          scale: getRoomScale(mode),
+          y: getRoomY(mode, windowWidth),
+        }}
+        style={{
+          transformOrigin: "top center",
         }}
         transition={{
           duration: mode === "inventory" ? 0.35 : 0.35,
           ease: "linear",
         }}
-        className="relative w-full h-full flex flex-col items-center justify-center"
+        className="relative w-full h-full flex flex-col items-center justify-center  overflow-hidden"
       >
         <Image
           src="/image/home/roomDefaultWall.png"
@@ -72,9 +90,9 @@ const Room = () => {
           height={1000}
           className={`absolute `}
         />
-        {sortedItems?.map((item) => (
+        {sortedItems.map((item) => (
           <Image
-            key={item.coupleItemId}
+            key={item.itemId}
             src={item.imageUrl}
             alt={item.name}
             width={1000}
@@ -85,17 +103,18 @@ const Room = () => {
         <div
           className={`${
             mode === "inventory" ? "visible" : "hidden"
-          } w-full h-[162px] absolute z-[-1] bottom-[-50px] md:bottom-[-120px] flex justify-center items-center`}
+          } w-full h-[162px] absolute z-[-1] bottom-[-20px] sm:bottom-[-80px] md:bottom-[-80px]  flex justify-center items-center`}
         >
           <Image
             src="/image/home/backgroundFillter.png"
             alt="배경 필터"
             width={1000}
             height={1000}
-            className="absolute z-[-10] bottom-[180px] md:bottom-[320px] lg:bottom-[230px] w-full h-full"
+            className="absolute z-[-10] bottom-[130px] md:bottom-[150px]   w-full h-full"
           />
         </div>
       </motion.div>
+
       {/* TODO : 캡처 버튼 */}
       {/* <CaptureButton captureTargetRef={targetRef} /> */}
     </>

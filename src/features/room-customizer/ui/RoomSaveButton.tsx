@@ -69,7 +69,7 @@ const RoomSaveButton = () => {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className={`${
           mode === "inventory" ? "visible" : "hidden"
-        } font-extrabold    text-lg rounded-l `}
+        } w-full text-right justify-end font-extrabold    text-lg rounded-l `}
       >
         저장
       </motion.button>

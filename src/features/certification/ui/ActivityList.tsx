@@ -112,7 +112,7 @@ const ActivityList = () => {
   const [currentCheckedId, setCurrentCheckedId] = useState<string>("");
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { data: activities, isSuccess } = useActivityList();
+  const { data: activities, isSuccess, isPending } = useActivityList();
   const router = useRouter();
   const notReadyActivities = dummyActivities;
   const [toast, setToast] = useState(false);
@@ -260,6 +260,11 @@ const ActivityList = () => {
           </>
         )}
       </AnimatePresence>
+      {isPending && (
+        <div className="flex items-center justify-center h-screen">
+          <Loading />
+        </div>
+      )}
       {isSuccess &&
         activities.map((activity) => (
           <ActivityItem

@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import StatusListItem from "./StatusListItem";
 import SkeletonStatusItem from "@/widgets/SkeletonStatusItem";
 import { useSubmitActivityList } from "../lib/useSubmitActivities";
-import { SubmitActivitiesItem } from "../model/store";
+import { SubmitActivitiesItem } from "../model/type";
 
 const StatusList = () => {
   const [page, setPage] = useState(1);

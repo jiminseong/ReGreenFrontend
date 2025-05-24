@@ -1,6 +1,7 @@
 import RoomSaveButton from "@/features/room-customizer/ui/RoomSaveButton";
-import MotionCoupleProfile from "@/entities/user/ui/MotionCoupleProfile";
 import HeartCalendarState from "@/entities/user/ui/HeartCalendarState";
+
+import MotionCoupleProfile from "@/entities/user/ui/MotionCoupleProfile";
 
 const TopStatusBar = () => {
   return (
