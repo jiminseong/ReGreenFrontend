@@ -6,7 +6,7 @@ interface TextBoxProps {
   progress?: number;
   maxProgress?: number;
   // 말풍선 삼각형 꼭지 위치
-  trianglePosition?: "leftTop" | "rightTop" | "bottomLeft" | "bottomRight";
+  trianglePosition?: "leftTop" | "rightTop" | "bottomLeft" | "bottomRight" | "bottomCenter";
   //추가 스타일
   className?: string;
 }
@@ -32,6 +32,8 @@ const TextBox = ({
             ? "bottom-[-8px] right-5"
             : trianglePosition === "rightTop"
             ? "-top-2 right-5"
+            : trianglePosition === "bottomCenter"
+            ? "bottom-[-8px] left-1/2 transform -translate-x-1/2"
             : ""
         }  w-4 h-4 bg-white rotate-45`}
       />

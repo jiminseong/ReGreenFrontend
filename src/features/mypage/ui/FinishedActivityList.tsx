@@ -1,7 +1,7 @@
 "use client";
 import { useCoupleInfo } from "@/entities/user/lib/useCoupleInfo";
 import { useSubmitActivityList } from "@/features/certification/lib/useSubmitActivities";
-import { SubmitActivitiesItem } from "@/features/certification/model/store";
+import { SubmitActivitiesItem } from "@/features/certification/model/type";
 import Image from "next/image";
 import React, { useState, useRef, useEffect } from "react";
 

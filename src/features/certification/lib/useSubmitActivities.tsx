@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { http } from "@/shared/lib/http";
-import { SubmitActivitiesResponse } from "../model/store";
+import { SubmitActivitiesResponse } from "../model/type";
 
 export function useSubmitActivityList({ page, limit }: { page: number; limit: number }) {
   return useQuery({
