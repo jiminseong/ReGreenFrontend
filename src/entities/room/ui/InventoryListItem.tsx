@@ -51,17 +51,7 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
       <div className="w-[62px] h-[58px] relative  flex items-center justify-center mt-2">
         <Image src={item.previewImageUrl} fill className="object-cover" alt={item.name} />
       </div>
-      <p
-        className={`${
-          item.name.length >= 8 && item.name.length < 9
-            ? "text-xs"
-            : item.name.length >= 9
-            ? "text-[11px]"
-            : ""
-        } mt-2 text-sm whitespace-pre-line py-auto text-center w-[80px]`}
-      >
-        {item.name}
-      </p>
+      <p className={` mt-2 text-sm py-auto text-center w-[80px]`}>{item.name}</p>
       {isOwned || item.name === "기본 룸쉘" ? (
         <span className="mt-2 text-[#777777] text-sm font-semibold">보유중</span>
       ) : (
