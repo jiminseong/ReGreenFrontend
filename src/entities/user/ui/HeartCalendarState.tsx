@@ -76,7 +76,7 @@ const HeartCalendarState = () => {
           duration: 0.3,
           ease: "easeInOut",
         }}
-        className=" w-[140px] flex flex-col gap-2.5 rounded-lg"
+        className=" w-full flex gap-3 rounded-lg"
       >
         <WiggleBadge onClick={() => handleEasterEgg()} value={String(heart)} type="heart" />
         <WiggleBadge value={String(day)} type="calendar" />

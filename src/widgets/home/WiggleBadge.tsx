@@ -5,9 +5,15 @@ interface WiggleBadgeProps {
 }
 
 const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value, type, onClick }) => {
+  // type이 heart일때 value가 1자리수, 2자리수, 3자리수일 경우 앞에 0을 붙여서 4자리로 맞춤
+  // type이 calendar일때 value가 1자리수, 2자리수, 2자리수일 경우 앞에 0을 붙여서 3자리로 맞춤
+  if (type === "heart") {
+    value = value.padStart(4, "0");
+  } else {
+    value = value.padStart(3, "0");
+  }
+
   const textValue = type === "calendar" ? "D-" + value : value;
-  const length = textValue.length;
-  const fontSizeClass = length <= 4 ? "text-[16px]" : length === 5 ? "text-[14px]" : "text-[12px]";
 
   const bgImage =
     type === "heart"
@@ -16,21 +22,12 @@ const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value, type, onClick }) => {
 
   const textColor = type === "heart" ? "text-ppink" : "text-black";
 
-  const paddingLeft =
-    length === 1
-      ? "pl-[36px]"
-      : length <= 3
-      ? "pl-[24px]"
-      : length === 4
-      ? "pl-[15px]"
-      : "pl-[6px]";
-
   return (
     <div
-      className={`relative w-[84px] h-[32px] ${paddingLeft} ${bgImage} bg-contain bg-no-repeat flex items-center justify-center px-1`}
+      className={`relative w-[110px] h-[40px]  ${bgImage} bg-cover bg-no-repeat flex items-center justify-end `}
       onClick={onClick}
     >
-      <span className={`${textColor} font-bold leading-none ${fontSizeClass}`}>{textValue}</span>
+      <span className={`${textColor} mr-2.5 font-bold leading-none text-xl`}>{textValue}</span>
     </div>
   );
 };
