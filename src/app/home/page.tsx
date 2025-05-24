@@ -6,14 +6,20 @@ import CoupleGuard from "@/shared/lib/CoupleGuard";
 
 const HomePage = () => {
   return (
-    <div className="p-5 relative flex flex-col items-center justify-evenly h-screen w-full">
+    <div className="py-5 relative flex flex-col items-center justify-evenly h-screen w-full">
       <div className="absolute top-0 w-full h-[50%] z-[0] bg-gradient-to-b from-white to-[#C2F1EE]" />
-      <div className="absolute bottom-0 w-full h-[50%] z-[0] bg-[#A5C939]" />
-      <div className="flex flex-col items-center justify-evenly w-full h-full">
+      <div className=" absolute bottom-0 w-full h-[50%] z-[0] bg-[#A5C939]" />
+      <div className="flex flex-col items-center justify-evenly w-full h-full overflow-hidden">
         <CoupleGuard />
-        <TopSatatusBar />
+        <div className="px-5 flex justify-between items-center w-full">
+          <TopSatatusBar />
+        </div>
+
         <Room />
-        <BottomNavigationBar />
+        <div className="px-5 flex justify-between items-center w-full">
+          <BottomNavigationBar />
+        </div>
+
         <InventoryList />
       </div>
     </div>
