@@ -25,7 +25,8 @@ const CoupleCheckPage = () => {
           if (res.code === 2000) {
             console.log("초대 코드 발급 성공");
             // 초대 코드 페이지로 이동
-            router.push(`/couple/invite/${res.data.code}`);
+            const URLDecodedInviteCode = encodeURIComponent(res.data.code);
+            router.push(`/couple/invite/${URLDecodedInviteCode}`);
           } else if (res.code === 42002) {
             console.log("이미 초대 코드가 발급되었습니다.");
           }

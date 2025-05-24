@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/shared/ui/Button";
 import { useMyInfo } from "@/entities/user/lib/userMyInfo";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { httpNoThrow } from "@/shared/lib/http";
 
@@ -11,17 +11,19 @@ import CommonModal from "@/widgets/ComonModal";
 import Loading from "@/widgets/Loading";
 
 const CoupleInvitePage = () => {
+  const { id: inviteCode } = useParams();
+  const URLDecodedInviteCode = decodeURIComponent(inviteCode as string);
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
   const { data, refetch, isSuccess } = useMyInfo();
-  const [inviteCode, setInviteCode] = React.useState("");
   const [modalOpen, setModalOpen] = React.useState(false);
 
-  const { data: inviteNickName, isSuccess: isNickSuccess } = useNickName({ inviteCode });
+  const { data: inviteNickName, isSuccess: isNickSuccess } = useNickName({
+    inviteCode: String(URLDecodedInviteCode),
+  });
 
   const setIsCoupleJoinedToast = useToastStore((state) => state.setIsCoupleJoinedToast);
 
-  // 커플이라면 초대 코드 발급 누르면 발급 후
   const postInviteCode = async () => {
     setLoading(true);
     if (isSuccess) {
@@ -107,14 +109,14 @@ const CoupleInvitePage = () => {
       <h1 className="text-2xl text-center w-full font-bold mb-4">환영합니다!</h1>
       <div className="h-full w-full flex flex-col items-center mt-44 gap-4">
         <div className="font-semibold text-xl">
-          {inviteCode.length > 0 && isNickSuccess ? `${inviteNickName}의` : "상대방의"} 초대를 받고
-          오셨나요?
+          {inviteCode && inviteCode.length > 0 && isNickSuccess
+            ? `${inviteNickName}의`
+            : "상대방의"}{" "}
+          초대를 받고 오셨나요?
         </div>
         <input
           value={inviteCode}
           className="text-lg font-bold w-full text-center rounded-lg bg-[#F6F6F6] py-2.5"
-          placeholder="초대 코드를 입력해주세요"
-          onChange={(e) => setInviteCode(e.target.value)}
         />
         <div className="text-sm text-[#AFAFAF]">초대 코드는 6자리입니다.</div>
       </div>
@@ -122,7 +124,6 @@ const CoupleInvitePage = () => {
         <Button
           onClick={() => {
             if (isNickSuccess) {
-              setInviteCode("");
             } else {
               router.push("/couple");
             }
@@ -136,7 +137,6 @@ const CoupleInvitePage = () => {
             if (isNickSuccess) {
               postInviteCode();
             } else {
-              setInviteCode("");
             }
           }}
         >

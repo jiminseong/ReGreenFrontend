@@ -40,6 +40,10 @@ const TextBox = ({
       {message}
       {progress !== undefined && (
         <div className="flex items-center justify-between mt-4">
+          {" "}
+          <span className="text-[#FF387F80]">
+            {progress + 1}/{maxProgress}
+          </span>
           {onConfirm && (
             <button
               className="bg-ppink text-sm font-semibold px-2.5 py-1 text-white rounded-4xl"
@@ -48,10 +52,6 @@ const TextBox = ({
               {progress + 1 === maxProgress ? "완료" : "다음"}
             </button>
           )}
-
-          <span className="text-[#FF387F80]">
-            {progress + 1}/{maxProgress}
-          </span>
         </div>
       )}
     </div>
