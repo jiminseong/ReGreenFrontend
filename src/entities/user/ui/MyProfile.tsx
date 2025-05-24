@@ -5,10 +5,16 @@ import { useMyInfo } from "../lib/userMyInfo";
 
 const MyProfile = () => {
   const { data, isPending } = useMyInfo();
-
+  if (isPending) {
+    return (
+      <div className="relative flex  w-[51px] h-[51px] flex-col items-center gap-2.5 animate-pulse">
+        <div className={`bg-gray-300 rounded-full`} style={{ width: 51, height: 51 }} />
+      </div>
+    );
+  }
   return (
     <div className="relative flex  w-[51px] h-[51px] flex-col items-center gap-2.5">
-      <div className={`flex flex-col items-center gap-2.5 ${isPending ? "animate-pulse" : ""}`}>
+      <div className={`flex flex-col items-center gap-2.5`}>
         <div className={`bg-gray-300 rounded-full`} style={{ width: 51, height: 51 }} />
 
         <Image
