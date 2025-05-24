@@ -7,13 +7,16 @@ import React, { useEffect } from "react";
 
 const CoupleInvitePage = () => {
   const { id: inviteCode } = useParams();
+  const URLDecodedInviteCode = decodeURIComponent(inviteCode as string);
   const data = useMyInfo();
   const name = data.isSuccess ? data.data.nickname : "우이미 손님";
   const router = useRouter();
   const [copySuccessToast, setCopySuccessToast] = React.useState(false);
 
   function handleCopyToClipboard() {
-    navigator.clipboard.writeText(String(inviteCode));
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/couple/invited/${URLDecodedInviteCode}`
+    );
     setCopySuccessToast(true); // 토스트를 보이게 설정
     const timer = setTimeout(() => {
       setCopySuccessToast(false); // 3초 후에 토스트 숨기기
@@ -39,7 +42,7 @@ const CoupleInvitePage = () => {
   });
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5 pt-24">
-      {copySuccessToast && <Toast message="초대 코드가 복사되었습니다!" position="top" />}
+      {copySuccessToast && <Toast message="초대 링크가 복사되었습니다!" position="top" />}
       {/* 로고 및 타이틀 */}
       <h1 className="text-2xl text-center w-full font-bold mb-4">
         초대 코드를 함께하고 싶은
@@ -57,7 +60,7 @@ const CoupleInvitePage = () => {
           {inviteCode}
         </div>
         <button onClick={handleCopyToClipboard} className="text-ppink underline font-bold">
-          복사하기
+          링크로 복사하기
         </button>
       </div>{" "}
       <Button onClick={() => router.push("/home")}>홈으로 가기</Button>
