@@ -14,6 +14,7 @@ import { dummyActivities } from "../model/dummyActivities";
 import { useUploadPhoto } from "../lib/useUploadPhoto";
 import { useLoadingStore } from "../model/useLoadingStore";
 import { useToastStore } from "../../../shared/store/useToastStore";
+import LogoLoading from "@/widgets/LogoLoading";
 
 const ActivityList = () => {
   const plusProgress = useCertificationStore((state) => state.plusProgress);
@@ -46,7 +47,12 @@ const ActivityList = () => {
     if (!selected) return;
     const { ecoVerificationId } = selected;
     setCurrentCheckedId("");
-    await uploadPhoto(ecoVerificationId, selected.title);
+    await uploadPhoto(
+      ecoVerificationId,
+      selected.title,
+      selected.ecoLovePoint,
+      selected.breakupBufferPoint
+    );
   };
 
   const TOAST_BUTTON_MESSAGE = selected ? (
@@ -66,7 +72,7 @@ const ActivityList = () => {
   return (
     <div className="bg-white h-full overflow-y-scroll no-scrollbar relative">
       {isOpen && <Toast message={message} position="top" />}
-      {loading && <Loading />}
+      {loading && <LogoLoading />}
       <AnimatePresence>
         {selected && (
           <>

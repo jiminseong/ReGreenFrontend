@@ -9,7 +9,12 @@ export const useUploadPhoto = () => {
   const { setLoading } = useLoadingStore();
   const { openToast } = useToastStore();
 
-  const uploadPhoto = async (id: string, title: string) => {
+  const uploadPhoto = async (
+    id: string,
+    title: string,
+    ecoLovePoint: number,
+    breakupBufferPoint: number
+  ) => {
     const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
     const { file } = await openFileDialog();
@@ -51,7 +56,9 @@ export const useUploadPhoto = () => {
 
     if (res.data.status === "APPROVED" && res.code === 2000) {
       const { memberEcoVerificationId, imageUrl } = res.data;
-      router.push(`/activity/${memberEcoVerificationId}?imageUrl=${imageUrl}&title=${title}`);
+      router.push(
+        `/activity/${memberEcoVerificationId}?imageUrl=${imageUrl}&title=${title}&ecoLovePoint=${ecoLovePoint}&breakupBufferPoint=${breakupBufferPoint}`
+      );
     }
   };
 
