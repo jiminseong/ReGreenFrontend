@@ -128,7 +128,7 @@ const CoupleInvitePage = () => {
               router.push("/couple");
             }
           }}
-          active={false}
+          gray
         >
           {isNickSuccess ? "아니오" : "취소"}
         </Button>

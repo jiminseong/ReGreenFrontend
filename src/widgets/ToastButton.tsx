@@ -20,7 +20,7 @@ const ToastButton: React.FC<ToastProps> = ({ message, onToastClick }) => {
       onClick={onToastClick}
       className={` 
         fixed bottom-4 left-1/2  transform -translate-x-1/2
-        bg-[#222222]  text-white text-lg font-semibold
+        bg-[#FFE0EB]  text-ppink text-lg font-semibold
         py-4 rounded-xl w-[350px] md:w-[400px] z-50 
       `}
     >

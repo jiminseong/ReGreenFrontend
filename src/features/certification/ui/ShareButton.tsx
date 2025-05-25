@@ -1,3 +1,4 @@
+import Button from "@/shared/ui/Button";
 import html2canvas from "html2canvas";
 import React from "react";
 
@@ -13,7 +14,9 @@ const ShareButton = ({ image, title }: ShareButtonProps) => {
     try {
       const canvas = await html2canvas(image.current, {
         useCORS: true,
-        scale: 3,
+        scale: window.devicePixelRatio,
+        backgroundColor: null,
+        scrollY: -window.scrollY,
       });
 
       const blob = await new Promise<Blob>((resolve, reject) => {
@@ -42,14 +45,7 @@ const ShareButton = ({ image, title }: ShareButtonProps) => {
     }
   };
 
-  return (
-    <button
-      onClick={handleShareButtonClick}
-      className="w-full bg-[#222222] py-4 rounded-lg flex gap-1.5 justify-center items-center text-white font-bold text-lg"
-    >
-      공유하기
-    </button>
-  );
+  return <Button onClick={handleShareButtonClick}>공유하기</Button>;
 };
 
 export default ShareButton;

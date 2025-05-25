@@ -1,4 +1,5 @@
-import React from "react";
+import { useToastStore } from "@/shared/store/useToastStore";
+import { useEffect } from "react";
 
 interface ToastProps {
   message: string | React.ReactNode;
@@ -6,7 +7,23 @@ interface ToastProps {
   onClick?: () => void;
 }
 
-const Toast: React.FC<ToastProps> = ({ message, position = "bottom", onClick }) => {
+const Toast: React.FC<ToastProps> = ({
+  message,
+  position = "bottom",
+
+  onClick,
+}) => {
+  const { isOpen, closeToast, onNext } = useToastStore();
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        closeToast();
+        onNext?.();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
   return (
     <div
       onAbort={onClick}
