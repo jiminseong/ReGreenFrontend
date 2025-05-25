@@ -25,7 +25,7 @@ const ActivitySelectClientPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex relative flex-col h-screen">
       {showTour && <ActivityDescription onFinish={handleTourFinish} />}
       {/* 상단 네비게이션 바 */}
       <AuthGuard />
