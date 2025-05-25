@@ -4,23 +4,27 @@ import React from "react";
 interface StatusListItemProp {
   iconSrc: string; // 아이콘 이미지 경로
   label: string; // 라벨 텍스트
-  status: "submit" | "review" | "success"; // 현재 상태
+  status: "SUBMIT" | "REVIEW" | "SUCCESS" | "REJECTED"; // 현재 상태
   date: Date;
   pending?: boolean; // 로딩 상태
 }
 
 const statusMap = {
-  submit: {
+  SUBMIT: {
     label: "인증신청",
     className: "bg-[#E6F0FF] text-[#3A8DFF]",
   },
-  review: {
+  REVIEW: {
     label: "인증검토",
     className: "bg-[#D9F4E4] text-[#3BB67D]",
   },
-  success: {
+  SUCCESS: {
     label: "인증완료",
     className: "bg-[#E9E9E9] text-[#9E9E9E]",
+  },
+  REJECTED: {
+    label: "인증거절",
+    className: "bg-[#FFE6E6] text-[#FF3A3A]",
   },
 };
 
@@ -31,7 +35,7 @@ const StatusListItem: React.FC<StatusListItemProp> = ({
   status,
   date,
 }) => {
-  const { label: statusLabel, className } = statusMap[status];
+  const { label: statusLabel, className } = statusMap[status] || {};
 
   // 글자수가 넓이를 초과하면 때는 그냥 span 태그로 감싸서 스타일을 적용
   // 넘으면 ...으로 나오게끔
