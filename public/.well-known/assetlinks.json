@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.wooimi.twa",
+      "sha256_cert_fingerprints": [
+        "E1:B5:8E:E1:CA:95:75:7F:9A:16:DA:3B:03:83:29:0D:07:01:B6:79:69:BE:54:55:2B:88:50:8F:1B:1B:7A:B0"
+      ]
+    }
+  }
+]
