@@ -48,7 +48,7 @@ const FinishedActivityList = () => {
 
   useEffect(() => {
     if (!isPending && isSuccess && submitData) {
-      const filtered = submitData.ecoVerifications.filter((item) => item.status === "success");
+      const filtered = submitData.ecoVerifications.filter((item) => item.status === "APPROVED");
       setItems((prev) => [...prev, ...filtered]);
       if (filtered.length < 10) setHasNextPage(false);
     }
@@ -105,7 +105,7 @@ const FinishedActivityList = () => {
             </div>
 
             <div className="flex flex-col items-center gap-2 w-[71px]">
-              {activity.point && (
+              {activity && (
                 <div className="flex items-center justify-between px-2 gap-1 text-ppink bg-[#FF387F1A] w-full py-0.75 rounded-[3.54px] text-sm font-medium">
                   <Image
                     width={16}
@@ -114,10 +114,10 @@ const FinishedActivityList = () => {
                     alt="하트"
                     className="w-4 h-4"
                   />
-                  +{activity.breakupAtPoint}
+                  +{activity.ecoLovePoint}
                 </div>
               )}
-              {activity.breakupAtPoint && (
+              {activity && (
                 <div className="flex items-center justify-between w-full gap-1 text-[#222222] bg-[#5151511A] px-2 py-0.75 rounded-[3.54px] text-sm font-medium">
                   <Image
                     width={16}
@@ -126,7 +126,7 @@ const FinishedActivityList = () => {
                     alt="보너스"
                     className="w-4 h-4"
                   />
-                  +{activity.breakupAtPoint}
+                  +{activity.breakupBufferPoint}
                 </div>
               )}
             </div>

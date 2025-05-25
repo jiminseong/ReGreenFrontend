@@ -1,13 +1,13 @@
 export interface SubmitActivitiesItem {
   ecoVerificationId: string;
   title: string;
-  iconS3ImageUrl: string;
-  point: number;
-  breakupAtPoint: number;
+  iconImageUrl: string;
+  ecoLovePoint: number;
+  breakupBufferPoint: number;
   memberEcoVerificationId: string;
   createdAt: string;
-  s3ImageUrl: string;
-  status: "REJECTED" | "APPROVED";
+  imageUrl: string;
+  status: "submit" | "REJECTED" | "APPROVED";
   location: null;
   geoLat: null;
   geoLng: null;

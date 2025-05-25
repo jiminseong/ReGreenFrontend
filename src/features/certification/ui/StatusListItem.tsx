@@ -4,12 +4,16 @@ import React from "react";
 interface StatusListItemProp {
   iconSrc: string; // 아이콘 이미지 경로
   label: string; // 라벨 텍스트
-  status: "APPROVED" | "REJECTED"; // 현재 상태
+  status: "submit" | "APPROVED" | "REJECTED"; // 현재 상태
   date: Date;
   pending?: boolean; // 로딩 상태
 }
 
 const statusMap = {
+  submit: {
+    label: "제출완료",
+    className: "bg-[#E9E9E9] text-[#9E9E9E]",
+  },
   APPROVED: {
     label: "인증완료",
     className: "bg-[#E9E9E9] text-[#9E9E9E]",
