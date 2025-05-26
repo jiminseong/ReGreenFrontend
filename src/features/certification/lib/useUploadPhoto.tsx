@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import { useLoadingStore } from "../model/useLoadingStore";
 import { postCertification } from "../lib/postCertification";
 import { useToastStore } from "../../../shared/store/useToastStore";
+import { temporarilyUnregisterSW } from "./temporarilyUnregisterSW";
 
 // useUploadPhoto.ts
 export const useUploadPhoto = () => {
@@ -16,6 +17,8 @@ export const useUploadPhoto = () => {
     ecoLovePoint: number,
     breakupBufferPoint: number
   ) => {
+    await temporarilyUnregisterSW();
+
     const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
     if (file.size > MAX_FILE_SIZE) {
