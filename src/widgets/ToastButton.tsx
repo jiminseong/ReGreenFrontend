@@ -19,9 +19,8 @@ const ToastButton: React.FC<ToastProps> = ({ message, onToastClick }) => {
       transition={{ duration: 0.3 }}
       onClick={onToastClick}
       className={` 
-        fixed bottom-4 left-1/2  transform -translate-x-1/2
         bg-[#FFE0EB]  text-ppink text-lg font-semibold
-        py-4 rounded-xl w-[350px] md:w-[400px] z-50 
+        py-4 rounded-xl w-full z-50
       `}
     >
       {message}

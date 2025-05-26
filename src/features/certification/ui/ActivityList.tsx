@@ -85,13 +85,13 @@ const ActivityList = () => {
       {loading && <LogoLoading />}
       <AnimatePresence>
         {selected && (
-          <>
+          <div className="w-full px-5 max-w-[500px] fixed bottom-10 left-1/2  transform -translate-x-1/2  flex flex-col gap-2 z-50">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 50 }}
               transition={{ duration: 0.3 }}
-              className="w-full fixed bottom-20 left-1/2  transform -translate-x-1/2  justify-center gap-4 flex items-center z-50"
+              className="w-full justify-center gap-4 flex items-center z-50"
             >
               <div className="flex items-center justify-center  gap-2">
                 <Image src="/icon/home/heartIcon.svg" width={24} height={24} alt="하트아이콘" />
@@ -103,7 +103,7 @@ const ActivityList = () => {
               </div>
             </motion.div>
             <ToastButton message={TOAST_BUTTON_MESSAGE} onToastClick={handleCertificationClick} />
-          </>
+          </div>
         )}
       </AnimatePresence>
       {isPending && (
