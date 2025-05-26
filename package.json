@@ -19,7 +19,6 @@
     "konva": "^9.3.20",
     "ky": "^1.8.1",
     "next": "^15.3.0",
-    "next-pwa": "^5.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "workbox-webpack-plugin": "^7.3.0",
@@ -35,6 +34,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "web-push": "^3.6.7"
   }
 }

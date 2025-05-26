@@ -6,6 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import LoginButton from "@/features/auth/ui/LoginButton";
 import { http } from "@/shared/lib/http";
 import Loading from "@/widgets/Loading";
+import { subscribeUser } from "@/app/actions";
+import { urlBase64ToUint8Array } from "../lib/urlBase64ToUint8Array";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -24,6 +26,16 @@ const LoginPage = () => {
   //    - 로그인 성공 후 페이지 새로고침 (선택적)
   //    - 로그인 성공 후 coupleId에 따라 페이지 분기
   //    - coupleId가 있으면 /home으로, 없으면 /couple로 이동
+
+  const subscribeToPush = async () => {
+    const registration = await navigator.serviceWorker.ready;
+    const sub = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!),
+    });
+    const serializedSub = JSON.parse(JSON.stringify(sub));
+    await subscribeUser(serializedSub);
+  };
 
   useEffect(() => {
     if (!code || hasRequestedLogin) return;
@@ -47,6 +59,7 @@ const LoginPage = () => {
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
           router.push("/home");
+          await subscribeToPush();
         } else {
           console.log("로그인 실패:", res.message);
         }

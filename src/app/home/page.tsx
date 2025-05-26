@@ -6,40 +6,21 @@ import TopSatatusBar from "@/widgets/home/TopSatatusBar";
 import InventoryList from "@/entities/room/ui/InventoryList";
 import CoupleGuard from "@/shared/lib/CoupleGuard";
 import HomedDescription from "@/features/description/ui/HomedDescription";
+import { sendNotification } from "../actions";
 
 const HomePage = () => {
   const [showTour, setShowTour] = useState(false);
 
-  // useEffect(() => {
-  //   if (typeof window === "undefined") return;
+  useEffect(() => {
+    const isNotFirst = localStorage.getItem("isNotFirst");
 
-  //   const isNotFirst = localStorage.getItem("isNotFirst");
+    if (isNotFirst !== "true") {
+      console.log("isNotFirst", isNotFirst);
 
-  //   if (Notification.permission === "default") {
-  //     Notification.requestPermission().then((perm) => {
-  //       if (perm === "granted" && isNotFirst !== "true") {
-  //         new Notification("우이미에 오신 걸 환영해요", {
-  //           body: "홈 화면에 추가해 주셔서 고마워요!",
-  //           requireInteraction: true,
-  //         });
-  //         localStorage.setItem("isNotFirst", "true");
-  //       }
-  //     });
-  //   } else if (Notification.permission === "granted" && isNotFirst !== "true") {
-  //     new Notification("우이미에 오신 걸 환영해요", {
-  //       body: "홈 화면에 추가해 주셔서 고마워요!",
-  //       requireInteraction: true,
-  //     });
-  //     localStorage.setItem("isNotFirst", "true");
-  //   }
-
-  //   // SW는 별도로 등록
-  //   if ("serviceWorker" in navigator) {
-  //     navigator.serviceWorker.register("/sw.js").then(() => {
-  //       console.log("✅ Service Worker registered");
-  //     });
-  //   }
-  // }, []);
+      sendNotification("홈 화면에 추가해주셔서 감사합니다!");
+      localStorage.setItem("isNotFirst", "false");
+    }
+  }, []);
 
   useEffect(() => {
     const isSeen = localStorage.getItem("homeTourSeen");
