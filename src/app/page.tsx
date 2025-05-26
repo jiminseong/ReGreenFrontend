@@ -25,6 +25,43 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+          console.log("✅ Service Worker 등록 완료", registration);
+        })
+        .catch((error) => {
+          console.error("❌ Service Worker 등록 실패", error);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined" && !isStandalone) return;
+
+    const isNotFirst = localStorage.getItem("isNotFirst");
+
+    if (Notification.permission === "default") {
+      Notification.requestPermission().then((perm) => {
+        if (perm === "granted" && isNotFirst !== "true") {
+          new Notification("우이미에 오신 걸 환영해요", {
+            body: "홈 화면에 추가해 주셔서 고마워요!",
+            requireInteraction: true,
+          });
+          localStorage.setItem("isNotFirst", "true");
+        }
+      });
+    } else if (Notification.permission === "granted" && isNotFirst !== "true") {
+      new Notification("우이미에 오신 걸 환영해요", {
+        body: "홈 화면에 추가해 주셔서 고마워요!",
+        requireInteraction: true,
+      });
+      localStorage.setItem("isNotFirst", "true");
+    }
+  }, []);
+
+  useEffect(() => {
     if (isPending) return;
     const accessToken = localStorage.getItem("accessToken");
     const onboarded = localStorage.getItem("onboarded");

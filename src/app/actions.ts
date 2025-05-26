@@ -1,63 +1,47 @@
-// 추후 PUSH 알림 필요할 때 사용할 것
+"use server";
 
-// "use server";
+import webpush from "web-push";
 
-// import webpush from "web-push";
+webpush.setVapidDetails(
+  "mailto:wooimiregreen@gmail.com",
+  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+  process.env.NEXT_PUBLIC_VAPID_PRIVATE_KEY!
+);
 
-// webpush.setVapidDetails(
-//   "mailto:iamjms4237@gmail.com",
-//   process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-//   process.env.VAPID_PRIVATE_KEY!
-// );
+let subscription: webpush.PushSubscription | null = null;
 
-// let subscription: PushSubscription | null = null;
+export async function subscribeUser(sub: PushSubscription) {
+  const serialized = sub.toJSON();
 
-// export async function subscribeUser(sub: PushSubscription) {
-//   subscription = sub;
-//   // In a production environment, you would want to store the subscription in a database
-//   // For example: await db.subscriptions.create({ data: sub })
-//   return { success: true };
-// }
+  subscription = {
+    endpoint: serialized.endpoint!,
+    keys: {
+      p256dh: serialized.keys!.p256dh!,
+      auth: serialized.keys!.auth!,
+    },
+  };
 
-// export async function unsubscribeUser() {
-//   subscription = null;
-//   // In a production environment, you would want to remove the subscription from the database
-//   // For example: await db.subscriptions.delete({ where: { ... } })
-//   return { success: true };
-// }
+  return { success: true };
+}
 
-// export async function sendNotification(message: string) {
-//   if (!subscription) {
-//     throw new Error("No subscription available");
-//   }
+export async function sendNotification(message: string) {
+  if (!subscription) {
+    console.warn("❌ No subscription available");
+    return { success: false };
+  }
 
-//   try {
-//     const subscriptionWithKeys = {
-//       endpoint: subscription.endpoint,
-//       keys: {
-//         p256dh: btoa(
-//           String.fromCharCode.apply(
-//             null,
-//             Array.from(new Uint8Array(subscription.getKey("p256dh")!))
-//           )
-//         ),
-//         auth: btoa(
-//           String.fromCharCode.apply(null, Array.from(new Uint8Array(subscription.getKey("auth")!)))
-//         ),
-//       },
-//     };
-
-//     await webpush.sendNotification(
-//       subscriptionWithKeys,
-//       JSON.stringify({
-//         title: "Test Notification",
-//         body: message,
-//         icon: "/icon.png",
-//       })
-//     );
-//     return { success: true };
-//   } catch (error) {
-//     console.error("Error sending push notification:", error);
-//     return { success: false, error: "Failed to send notification" };
-//   }
-// }
+  try {
+    await webpush.sendNotification(
+      subscription,
+      JSON.stringify({
+        title: "우이미",
+        body: message,
+        icon: "/192.png",
+      })
+    );
+    return { success: true };
+  } catch (err) {
+    console.error("🔴 Error sending notification:", err);
+    return { success: false };
+  }
+}
