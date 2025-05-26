@@ -42,4 +42,6 @@ next-env.d.ts
 
 certificates
 
-
+# local env files
+public/sw.js*
+public/workbox-*.js*
