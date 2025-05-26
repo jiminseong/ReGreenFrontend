@@ -62,7 +62,7 @@ const ActivityDescription = ({ onFinish }: { onFinish: () => void }) => {
           <div className="absolute top-0 w-full h-[80px] bg-black/70 z-[100]" />
 
           {/* 메시지 박스 */}
-          <div className="absolute flex items-end pb-10 top-[200px] w-full px-5 z-[100] bg-black/70 h-[calc(100%-300px)]">
+          <div className="absolute flex items-end pb-10 top-[200px] w-full px-5 z-[100] bg-black/70 h-[calc(100%-320px)]">
             <TextBox
               maxProgress={2}
               progress={progress}
@@ -79,10 +79,11 @@ const ActivityDescription = ({ onFinish }: { onFinish: () => void }) => {
               }
             />
           </div>
+          <div className="w-full px-5 max-w-[500px] fixed bottom-10 left-1/2  transform -translate-x-1/2  flex flex-col gap-2 z-50">
+            <ToastButton message={TOAST_MESSAGE} onToastClick={() => onFinish()} />
+          </div>
 
-          <ToastButton message={TOAST_MESSAGE} onToastClick={() => onFinish()} />
-
-          <div className={`absolute max-w-[500px] bottom-0 w-full h-[10px] bg-black/70 z-[100]`} />
+          <div className={`absolute max-w-[500px] bottom-0 w-full h-[20px] bg-black/70 z-[100]`} />
         </div>
       )}
     </>
