@@ -39,20 +39,30 @@ const ActivityList = () => {
     setCurrentCheckedId((prev) => (prev === id ? "" : id));
   };
 
-  const handleCertificationClick = async () => {
+  const handleCertificationClick = () => {
     if (isActivityTourSeen !== "true") {
       plusProgress?.(1);
       return;
     }
     if (!selected) return;
-    const { ecoVerificationId } = selected;
-    setCurrentCheckedId("");
-    await uploadPhoto(
-      ecoVerificationId,
-      selected.title,
-      selected.ecoLovePoint,
-      selected.breakupBufferPoint
-    );
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      await uploadPhoto(
+        file,
+        selected.ecoVerificationId,
+        selected.title,
+        selected.ecoLovePoint,
+        selected.breakupBufferPoint
+      );
+      setCurrentCheckedId("");
+    };
+    input.click();
   };
 
   const TOAST_BUTTON_MESSAGE = selected ? (
