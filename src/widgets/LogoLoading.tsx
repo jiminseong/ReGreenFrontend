@@ -11,7 +11,7 @@ const LogoLoading = () => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
-        className="fixed max-w-[500px] w-full h-full z-210  flex items-center pb-20 justify-center bg-black/70 top-0 left-0 right-0 bottom-0"
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-210 w-full max-w-[500px] h-full flex items-center justify-center bg-black/70 pb-20"
       >
         <motion.img
           src="/icon.webp"

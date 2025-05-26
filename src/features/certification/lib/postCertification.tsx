@@ -11,7 +11,6 @@ export const postCertification = async (id: string, formData: FormData) => {
 
     return res;
   } catch (error) {
-    console.error("❌ 인증 사진 업로드 요청 실패", error);
     throw error;
   }
 };
