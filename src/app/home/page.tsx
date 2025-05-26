@@ -10,36 +10,36 @@ import HomedDescription from "@/features/description/ui/HomedDescription";
 const HomePage = () => {
   const [showTour, setShowTour] = useState(false);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+  // useEffect(() => {
+  //   if (typeof window === "undefined") return;
 
-    const isNotFirst = localStorage.getItem("isNotFirst");
+  //   const isNotFirst = localStorage.getItem("isNotFirst");
 
-    if (Notification.permission === "default") {
-      Notification.requestPermission().then((perm) => {
-        if (perm === "granted" && isNotFirst !== "true") {
-          new Notification("우이미에 오신 걸 환영해요", {
-            body: "홈 화면에 추가해 주셔서 고마워요!",
-            requireInteraction: true,
-          });
-          localStorage.setItem("isNotFirst", "true");
-        }
-      });
-    } else if (Notification.permission === "granted" && isNotFirst !== "true") {
-      new Notification("우이미에 오신 걸 환영해요", {
-        body: "홈 화면에 추가해 주셔서 고마워요!",
-        requireInteraction: true,
-      });
-      localStorage.setItem("isNotFirst", "true");
-    }
+  //   if (Notification.permission === "default") {
+  //     Notification.requestPermission().then((perm) => {
+  //       if (perm === "granted" && isNotFirst !== "true") {
+  //         new Notification("우이미에 오신 걸 환영해요", {
+  //           body: "홈 화면에 추가해 주셔서 고마워요!",
+  //           requireInteraction: true,
+  //         });
+  //         localStorage.setItem("isNotFirst", "true");
+  //       }
+  //     });
+  //   } else if (Notification.permission === "granted" && isNotFirst !== "true") {
+  //     new Notification("우이미에 오신 걸 환영해요", {
+  //       body: "홈 화면에 추가해 주셔서 고마워요!",
+  //       requireInteraction: true,
+  //     });
+  //     localStorage.setItem("isNotFirst", "true");
+  //   }
 
-    // SW는 별도로 등록
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").then(() => {
-        console.log("✅ Service Worker registered");
-      });
-    }
-  }, []);
+  //   // SW는 별도로 등록
+  //   if ("serviceWorker" in navigator) {
+  //     navigator.serviceWorker.register("/sw.js").then(() => {
+  //       console.log("✅ Service Worker registered");
+  //     });
+  //   }
+  // }, []);
 
   useEffect(() => {
     const isSeen = localStorage.getItem("homeTourSeen");
