@@ -18,6 +18,8 @@ import LogoLoading from "@/widgets/LogoLoading";
 import { postCertification } from "../lib/postCertification";
 import { prepareFileInput } from "../lib/prepareFileInput";
 import { HTTPError } from "ky";
+import { readImageDate } from "../lib/readImageDate";
+import { isValidExifDate } from "../lib/isValidExifDate";
 
 const ActivityList = () => {
   const plusProgress = useCertificationStore((state) => state.plusProgress);
@@ -68,6 +70,21 @@ const ActivityList = () => {
       setLoading(false);
       openToast("HEIC 형식이 아닌 JPG 또는 PNG로 바꿔주세요:)");
       return;
+    }
+
+    const exifDateStr = await readImageDate(file);
+
+    if (exifDateStr) {
+      // EXIF 존재 시 날짜 비교
+      const isValid = isValidExifDate(exifDateStr, 24);
+      if (!isValid) {
+        setLoading(false);
+        openToast("촬영일이 현재보다 24시간 이전입니다.");
+        return;
+      }
+    } else {
+      // EXIF 없음 → 통과
+      console.log("EXIF 없음, 검사 생략");
     }
 
     const formData = new FormData();
