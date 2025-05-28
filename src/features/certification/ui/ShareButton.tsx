@@ -36,7 +36,6 @@ const ShareButton = ({ image, title }: ShareButtonProps) => {
           text: "이 이미지를 확인해보세요!",
           files: [file],
         });
-        console.log("공유 성공!");
       } else {
         alert("이 브라우저는 이미지 공유를 지원하지 않습니다.");
       }

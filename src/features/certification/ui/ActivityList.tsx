@@ -77,7 +77,6 @@ const ActivityList = () => {
     try {
       const res = await postCertification(ecoVerificationId, formData);
       setLoading(false);
-      console.log("업로드 결과:", res.code);
 
       if (res.data.status === "REJECTED") {
         setLoading(false);

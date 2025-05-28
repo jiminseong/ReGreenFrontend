@@ -41,14 +41,13 @@ const LoginPage = () => {
 
         if (res.code === 2000) {
           await setLoading(false);
-          console.log("로그인 성공");
+
           setHasRequestedLogin(true);
           // 로컬 스토리지에 accessToken과 refreshToken 저장
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
           router.push("/home");
         } else {
-          console.log("로그인 실패:", res.message);
         }
       } catch (error) {
         await setLoading(false);

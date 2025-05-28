@@ -46,7 +46,7 @@ const HeartCalendarState = () => {
 
   function handleEasterEgg() {
     setEasterEgg((prev) => prev + 1);
-    console.log(easterEgg);
+
     if (easterEgg === 4) {
       //TODO: 이스터에그 발견시 하트 추가 API 호출
       setModalOpen(true);
