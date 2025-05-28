@@ -13,15 +13,15 @@ const BottomButtons = ({ type = null }: BottomButtonsProps) => {
   const { mode, setMode } = useHomeMode();
 
   const handleNavigation = (action: "activity" | "inventory") => {
-    setPressedButton(action); // 그림자 제거
+    setPressedButton(action);
     setTimeout(() => {
-      setPressedButton(null); // 다시 그림자 복구
+      setPressedButton(null);
       if (action === "activity") {
         router.push("/activity/list");
       } else {
         setMode("inventory");
       }
-    }, 150); // 150ms 후에 동작 실행
+    }, 150);
   };
   const getButtonShadow = (action: "activity" | "inventory") => {
     return pressedButton === action

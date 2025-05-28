@@ -22,7 +22,7 @@ const Acitivity = () => {
           onClick={() => hadnleFinishedAcitivy()}
           className="text-left px-5 py-5 text-lg font-medium "
         >
-          인증내역
+          우리 인증내역
         </button>
       </div>
     </div>

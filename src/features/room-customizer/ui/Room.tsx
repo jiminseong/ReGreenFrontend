@@ -53,15 +53,8 @@ const Room = () => {
     return 1.125;
   };
 
-  const getRoomY = (mode: string, width: number): number => {
-    if (mode === "inventory") {
-      if (width >= 500) return -40; // 태블릿
-      return -60; // 모바일
-    } else {
-      if (width >= 1024) return -90; // 데스크탑
-      if (width >= 768) return -100; // 태블릿
-      return -90; // 모바일
-    }
+  const getRoomY = (mode: string): number => {
+    return mode === "inventory" ? -60 : -30;
   };
 
   return (
@@ -72,7 +65,7 @@ const Room = () => {
         ref={targetRef}
         animate={{
           scale: getRoomScale(mode),
-          y: getRoomY(mode, windowWidth),
+          y: getRoomY(mode),
         }}
         style={{
           transformOrigin: "top center",
@@ -117,7 +110,7 @@ const Room = () => {
             alt="배경 필터"
             width={1000}
             height={1000}
-            className="absolute z-[-10] bottom-[80px] md:bottom-[150px]   w-full h-full"
+            className="absolute z-[-10] bottom-[80px] md:bottom-[150px] w-full h-full"
           />
         </div>
       </motion.div>

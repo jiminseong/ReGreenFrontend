@@ -17,11 +17,20 @@ const CoupleInvitePage = () => {
     navigator.clipboard.writeText(
       `${process.env.NEXT_PUBLIC_BASE_URL}/couple/invited/${URLDecodedInviteCode}`
     );
-    setCopySuccessToast(true); // 토스트를 보이게 설정
+    setCopySuccessToast(true);
     const timer = setTimeout(() => {
-      setCopySuccessToast(false); // 3초 후에 토스트 숨기기
+      setCopySuccessToast(false);
     }, 2000);
-    return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
+    return () => clearTimeout(timer);
+  }
+
+  function handleCopyToClipboardCode() {
+    navigator.clipboard.writeText(URLDecodedInviteCode);
+    setCopySuccessToast(true);
+    const timer = setTimeout(() => {
+      setCopySuccessToast(false);
+    }, 2000);
+    return () => clearTimeout(timer);
   }
 
   useEffect(() => {
@@ -55,12 +64,14 @@ const CoupleInvitePage = () => {
           {name}님 초대 코드에요. <br />
           24시간 뒤에 만료됩니다!
         </div>
-
         <div className="text-lg font-bold w-full text-center rounded-lg bg-[#F6F6F6] py-2.5">
-          {inviteCode}
+          {URLDecodedInviteCode}
         </div>
         <button onClick={handleCopyToClipboard} className="text-ppink underline font-bold">
           링크로 복사하기
+        </button>{" "}
+        <button onClick={handleCopyToClipboardCode} className="text-ppink underline font-bold">
+          코드로 복사하기
         </button>
       </div>{" "}
       <Button onClick={() => router.push("/home")}>홈으로 가기</Button>
