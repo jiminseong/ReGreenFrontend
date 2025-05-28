@@ -4,6 +4,7 @@ import React from "react";
 
 interface CommonModalProps {
   className?: string;
+  marginBottom?: string;
   isOpen: boolean;
   message: string | React.ReactNode;
   subMessage?: string;
@@ -21,6 +22,7 @@ interface CommonModalProps {
  *
  * @component
  * @param {string} className - 모달의 추가 CSS 클래스입니다.
+ * @param {string} [marginBottom="mb-64"] - 모달의 하단 여백을 설정합니다. 기본값은 "mb-64"입니다.
  * @param {CommonModalProps} props
  * @param {boolean} props.isOpen - 모달의 표시 여부를 결정합니다.
  * @param {string | React.ReactNode} props.message - 모달에 표시할 주요 메시지입니다. "\n"으로 줄바꿈이 가능합니다.
@@ -53,6 +55,7 @@ const CommonModal: React.FC<CommonModalProps> = ({
   subMessage,
   confirmText = "확인",
   cancelText = "취소",
+  marginBottom = "mb-64",
   onConfirm,
   onCancel,
   onlyConfirm = false,
@@ -64,8 +67,10 @@ const CommonModal: React.FC<CommonModalProps> = ({
   const confirmButtonStyle = danger ? "bg-pink-100 text-pink-600" : "bg-gray-100";
 
   return (
-    <div className="z-300 absolute inset-0  bg-black/70 max-w-[500px] flex items-center justify-center">
-      <div className="bg-white rounded-[20px] min-w-[280px] text-center shadow-xl mb-64">
+    <div className="z-300 fixed inset-0 bg-black/70  flex items-center justify-center">
+      <div
+        className={`bg-white rounded-[20px] min-w-[280px] text-center shadow-xl ${marginBottom}`}
+      >
         {typeof message === "string" ? (
           <p className="pt-10 pb-4 w-full text-base font-semibold ">{message}</p>
         ) : (
