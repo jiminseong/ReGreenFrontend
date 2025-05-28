@@ -1,48 +1,31 @@
 "use client";
 import WiggleBadge from "@/widgets/home/WiggleBadge";
-import Toast from "@/widgets/Toast";
 import { motion } from "framer-motion";
 import React, { useEffect } from "react";
-import { useToastStore } from "../model/store";
+
 import { useRouter } from "next/navigation";
 import { useCoupleInfo } from "../lib/useCoupleInfo";
 import CommonModal from "@/widgets/ComonModal";
 
 const HeartCalendarState = () => {
   const router = useRouter();
-  const isCoupleJoinedToast = useToastStore((state) => state.isCoupleJoinedToast);
-  const setIsCoupleJoinedToast = useToastStore((state) => state.setIsCoupleJoinedToast);
-  const coupleQuery = useCoupleInfo();
-  const [heart, setHeart] = React.useState(0);
-  const [day, setDay] = React.useState(0);
+
+  const { data } = useCoupleInfo();
+  const coupleInfo = data?.data;
+
+  const ecoLovePoint = coupleInfo?.ecoLovePoint ?? 0;
+  const breakupBufferPoint = coupleInfo?.breakupBufferPoint ?? 0;
+
   const [easterEgg, setEasterEgg] = React.useState(0);
   const [modalOpen, setModalOpen] = React.useState(false);
-  useEffect(() => {
-    if (coupleQuery.isSuccess) {
-      const coupleData = coupleQuery.data?.data;
-      if (coupleData) {
-        setHeart(coupleData.ecoLovePoint);
-        setDay(coupleData.breakupBufferPoint);
-      }
-    }
-  });
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsCoupleJoinedToast(false); // 3초 후에 토스트 숨기기
-    }, 2000);
-
-    return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
-  });
-
-  useEffect(() => {
-    // 로그인 여부 우선 판단
     const token = localStorage.getItem("accessToken");
     if (!token) {
       router.push("/login");
       return;
     }
-  });
+  }, []);
 
   function handleEasterEgg() {
     setEasterEgg((prev) => prev + 1);
@@ -70,7 +53,7 @@ const HeartCalendarState = () => {
           onConfirm={() => setModalOpen(false)}
         />
       )}
-      {isCoupleJoinedToast && <Toast message="연결에 성공했습니다! 🎉" position="top" />}
+
       <motion.div
         transition={{
           duration: 0.3,
@@ -78,8 +61,8 @@ const HeartCalendarState = () => {
         }}
         className=" w-full flex gap-3 rounded-lg"
       >
-        <WiggleBadge onClick={() => handleEasterEgg()} value={String(heart)} type="heart" />
-        <WiggleBadge value={String(day)} type="calendar" />
+        <WiggleBadge onClick={() => handleEasterEgg()} value={String(ecoLovePoint)} type="heart" />
+        <WiggleBadge value={String(breakupBufferPoint)} type="calendar" />
       </motion.div>
     </>
   );

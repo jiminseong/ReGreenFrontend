@@ -17,7 +17,7 @@ const BottomNavigationBar = () => {
           className="flex w-full items-center justify-center relative"
         >
           <Image
-            className="absolute left-1/2  bottom-16 z-2 md:bottom-6 -translate-x-1/2 cursor-pointer"
+            className="absolute left-1/2  bottom-10 md:bottom-8 z-2  -translate-x-1/2 cursor-pointer"
             src="/icon/home/reloadIcon.svg"
             alt="새로고침 아이콘"
             width={40}

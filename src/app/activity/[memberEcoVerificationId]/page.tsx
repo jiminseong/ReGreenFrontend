@@ -22,8 +22,8 @@ export default function Page() {
     setIsBottomModal(!isBottomModal);
   };
 
-  const handleHomeButtonClick = () => {
-    setIsBottomModal(false);
+  const handleHomeButtonClick = async () => {
+    await setIsBottomModal(false);
     router.push("/home");
   };
 

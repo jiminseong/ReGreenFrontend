@@ -57,7 +57,7 @@ const CoupleInvitePage = () => {
         </div>
 
         <div className="text-lg font-bold w-full text-center rounded-lg bg-[#F6F6F6] py-2.5">
-          {inviteCode}
+          {URLDecodedInviteCode}
         </div>
         <button onClick={handleCopyToClipboard} className="text-ppink underline font-bold">
           링크로 복사하기
