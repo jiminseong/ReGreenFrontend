@@ -70,13 +70,12 @@ const ActivityList = () => {
       return;
     }
 
-    setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
 
     try {
+      setLoading(true);
       const res = await postCertification(ecoVerificationId, formData);
-      setLoading(false);
 
       if (res.data.status === "REJECTED") {
         setLoading(false);
@@ -90,6 +89,7 @@ const ActivityList = () => {
 
       if (res.data.status === "APPROVED") {
         const { memberEcoVerificationId, imageUrl } = res.data;
+        setLoading(false);
         router.push(
           `/activity/${memberEcoVerificationId}?imageUrl=${imageUrl}&title=${title}&ecoLovePoint=${ecoLovePoint}&breakupBufferPoint=${breakupBufferPoint}`
         );
