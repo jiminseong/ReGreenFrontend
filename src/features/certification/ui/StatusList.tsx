@@ -14,6 +14,9 @@ const StatusList = () => {
   const { data, isSuccess, isPending } = useSubmitActivityList({ page, limit: 10 });
 
   useEffect(() => {
+    const current = loader.current;
+    if (!current) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && hasNextPage && !isPending) {
@@ -22,15 +25,14 @@ const StatusList = () => {
       },
       { threshold: 1 }
     );
-    if (loader.current) observer.observe(loader.current);
-    return () => {
-      if (loader.current) observer.unobserve(loader.current);
-    };
-  }, [hasNextPage, isPending]);
+    observer.observe(current);
+
+    return () => observer.unobserve(current);
+  }, [hasNextPage, isPending, loader.current]);
 
   useEffect(() => {
-    if (!isPending && isSuccess && data) {
-      setItems((prev) => [...prev, ...data.ecoVerifications]);
+    if (!isPending && isSuccess && data?.ecoVerifications) {
+      setItems((prev) => [...prev, ...(data.ecoVerifications ?? [])]);
       if (data.ecoVerifications.length < 10) setHasNextPage(false);
     }
   }, [data]);
@@ -49,7 +51,7 @@ const StatusList = () => {
           <StatusListItem
             key={index}
             iconSrc={
-              (activity.title as string) === "다회용 컵 이용하기"
+              activity.title === "다회용 컵 이용하기"
                 ? "/icon/activity/cupIcon2.svg"
                 : activity.title === "중고 제품 나눔/구매 인증하기"
                 ? "/icon/activity/danguenIcon2.svg"
