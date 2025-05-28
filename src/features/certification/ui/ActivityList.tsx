@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ActivityItem from "@/features/certification/ui/ActivityItem";
 import ToastButton from "@/widgets/ToastButton";
 import Image from "next/image";
@@ -26,15 +26,21 @@ const ActivityList = () => {
   const { isOpen, message } = useToastStore();
   const [currentCheckedId, setCurrentCheckedId] = useState<string>("");
   const { data: activities, isSuccess, isPending } = useActivityList();
+  const [showTour, setShowTour] = useState(false);
 
   const notReadyActivities = dummyActivities;
 
   const selected = activities?.find((a) => a.ecoVerificationId === currentCheckedId);
 
-  const isActivityTourSeen = localStorage.getItem("activityTourSeen");
+  useEffect(() => {
+    const isActivityTourSeen = localStorage.getItem("activityTourSeen");
+    if (!isActivityTourSeen) {
+      setShowTour(true);
+    }
+  }, []);
 
   const handleCheckboxClick = (id: string) => {
-    if (isActivityTourSeen !== "true") {
+    if (showTour !== true) {
       plusProgress?.(1);
       setCurrentCheckedId((prev) => (prev === id ? "" : id));
       return;
@@ -105,7 +111,7 @@ const ActivityList = () => {
   };
 
   const handleCertificationClick = async () => {
-    if (isActivityTourSeen !== "true") {
+    if (showTour !== true) {
       plusProgress?.(1);
       return;
     }
