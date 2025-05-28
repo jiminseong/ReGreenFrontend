@@ -31,9 +31,9 @@ const StatusList = () => {
   }, [hasNextPage, isPending, loader.current]);
 
   useEffect(() => {
-    if (!isPending && isSuccess && data?.ecoVerifications) {
-      setItems((prev) => [...prev, ...(data.ecoVerifications ?? [])]);
-      if (data.ecoVerifications.length < 10) setHasNextPage(false);
+    if (!isPending && isSuccess && data?.results) {
+      setItems((prev) => [...prev, ...(data.results ?? [])]);
+      if (data.results.length < 10) setHasNextPage(false);
     }
   }, [data]);
 

@@ -17,7 +17,7 @@ export interface SubmitActivitiesResponse {
   code: number;
   message: string;
   data: {
-    ecoVerifications: SubmitActivitiesItem[];
+    results: SubmitActivitiesItem[];
   };
 }
 

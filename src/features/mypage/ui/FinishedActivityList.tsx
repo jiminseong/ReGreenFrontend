@@ -50,7 +50,7 @@ const FinishedActivityList = () => {
 
   useEffect(() => {
     if (!isPending && isSuccess && submitData) {
-      const filtered = submitData.ecoVerifications.filter((item) => item.status === "APPROVED");
+      const filtered = submitData.results.filter((item) => item.status === "APPROVED");
       setItems((prev) => [...prev, ...filtered]);
       if (filtered.length < 10) setHasNextPage(false);
     }
