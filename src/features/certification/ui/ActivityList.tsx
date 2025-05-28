@@ -66,7 +66,7 @@ const ActivityList = () => {
 
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
       setLoading(false);
-      openToast("HEIC 형식은 지원되지 않아요. JPG 또는 PNG로 바꿔주세요.");
+      openToast("HEIC 형식이 아닌 JPG 또는 PNG로 바꿔주세요:)");
       return;
     }
 
