@@ -6,6 +6,7 @@ export const postCertification = async (id: string, formData: FormData) => {
     const res = await http
       .post(`api/eco-verifications/${id}`, {
         json: formData,
+        headers: undefined, //ky가 content-type 자동 설정하도록 유도
       })
       .json<PostCertificationResponse>();
 
