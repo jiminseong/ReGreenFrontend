@@ -20,8 +20,8 @@ const Auth = () => {
           message: string;
         }>();
         if (res.code === 2000) {
-          await localStorage.removeItem("accessToken");
-          await localStorage.removeItem("refreshToken");
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
           router.push("/login");
         } else {
           console.log("로그아웃 실패:", res.message);

@@ -10,19 +10,17 @@ const ActivitySelectClientPage = () => {
   const [activeTab, setActiveTab] = useState("select");
   const [showTour, setShowTour] = useState(false);
 
-  useEffect(() => {
-    // 클라이언트 환경에서만 localStorage 접근
-    if (typeof window !== "undefined") {
-      const isSeen = localStorage.getItem("activityTourSeen");
-      if (!isSeen) {
-        setShowTour(true);
-      }
-    }
-  }, []);
   const handleTourFinish = () => {
     setShowTour(false);
     localStorage.setItem("activityTourSeen", "true");
   };
+
+  useEffect(() => {
+    const isSeen = localStorage.getItem("activityTourSeen");
+    if (!isSeen) {
+      setShowTour(true);
+    }
+  }, []);
 
   return (
     <div className="flex relative flex-col h-screen">

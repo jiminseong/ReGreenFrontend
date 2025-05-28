@@ -53,7 +53,7 @@ export const http = ky.create({
         const refreshToken = localStorage.getItem("refreshToken");
 
         // refresh 요청일 때만 x-refresh-token 추가
-        if (refreshToken && request.url.includes("auth/refresh")) {
+        if (refreshToken && request.url.includes("api/auth/refresh")) {
           request.headers.set("x-refresh-token", refreshToken);
         }
       },
@@ -70,7 +70,7 @@ export const http = ky.create({
      */
     afterResponse: [
       async (request, options, response) => {
-        if (response.status === 419) {
+        if (response.status === 41005) {
           const refresh = await http.post("api/auth/refresh", {
             prefixUrl: process.env.NEXT_PUBLIC_SERVER_URL,
             credentials: "include",
