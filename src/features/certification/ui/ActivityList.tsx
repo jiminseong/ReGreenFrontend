@@ -59,12 +59,14 @@ const ActivityList = () => {
     const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
     if (file.size > MAX_FILE_SIZE) {
-      openToast("파일 크기가 20MB를 초과합니다.", () => setLoading(false));
+      setLoading(false);
+      openToast("파일 크기가 20MB를 초과합니다.");
       return;
     }
 
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      openToast("HEIC 형식은 지원되지 않아요. JPG 또는 PNG로 바꿔주세요.", () => setLoading(false));
+      setLoading(false);
+      openToast("HEIC 형식은 지원되지 않아요. JPG 또는 PNG로 바꿔주세요.");
       return;
     }
 
@@ -78,11 +80,13 @@ const ActivityList = () => {
       console.log("업로드 결과:", res.code);
 
       if (res.data.status === "REJECTED") {
-        openToast("활동과 무관한 사진입니다.", () => setLoading(false));
+        setLoading(false);
+        openToast("활동과 무관한 사진입니다.");
       }
 
       if (res.code !== 2000) {
-        openToast("인증 사진 업로드에 실패했어요.", () => setLoading(false));
+        setLoading(false);
+        openToast("인증 사진 업로드에 실패했어요.");
       }
 
       if (res.data.status === "APPROVED") {
@@ -114,8 +118,10 @@ const ActivityList = () => {
           openToast("등록 되지 않은 활동이에요");
           return;
         }
+
         setLoading(false);
         openToast("네트워크 오류로 업로드에 실패했어요.");
+        return;
       }
     }
   };
@@ -177,12 +183,12 @@ const ActivityList = () => {
               transition={{ duration: 0.3 }}
               className="w-full justify-center gap-4 flex items-center z-50"
             >
-              <div className="flex items-center justify-center  gap-2">
-                <Image src="/icon/home/heartIcon.svg" width={24} height={24} alt="하트아이콘" />
+              <div className=" bg-lpink px-2 py-[4.5px] border-[0.5px] rounded-[4px] border-ppink flex items-center justify-center  gap-2">
+                <Image src="/icon/home/heartIcon.svg" width={17} height={17} alt="하트아이콘" />
                 <span className="text-ppink font-bold">+{selected.breakupBufferPoint}</span>
               </div>
-              <div className="flex items-center justify-center gap-2">
-                <Image src="/icon/home/calendarIcon.svg" width={24} height={24} alt="달력아이콘" />
+              <div className=" bg-[#EEEEEE] px-2 py-[4.5px] border-[0.5px] rounded-[4px] border-[#222222] flex items-center justify-center gap-2">
+                <Image src="/icon/home/calendarIcon.svg" width={17} height={17} alt="달력아이콘" />
                 <span className="font-bold">+{selected.breakupBufferPoint}</span>
               </div>
             </motion.div>
