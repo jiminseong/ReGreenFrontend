@@ -3,7 +3,6 @@ import StatusList from "@/features/certification/ui/StatusList";
 import TopNavigationBar from "@/shared/ui/TopNavigationBar";
 import ActivityList from "@/features/certification/ui/ActivityList";
 import React, { useEffect, useState } from "react";
-import AuthGuard from "@/shared/lib/AuthGuard";
 import ActivityDescription from "@/features/description/ui/ActivityDescription";
 
 const ActivitySelectClientPage = () => {
@@ -26,7 +25,7 @@ const ActivitySelectClientPage = () => {
     <div className="flex relative flex-col h-screen">
       {showTour && <ActivityDescription onFinish={handleTourFinish} />}
       {/* 상단 네비게이션 바 */}
-      <AuthGuard />
+
       <TopNavigationBar title="인증하기" />
 
       {/* 탭 메뉴 */}

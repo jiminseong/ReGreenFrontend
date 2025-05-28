@@ -2,7 +2,6 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-import AuthGuard from "@/shared/lib/AuthGuard";
 import { AnimatePresence, motion } from "framer-motion";
 import CoupleGuard from "@/shared/lib/CoupleGuard";
 import ShareButton from "@/features/certification/ui/ShareButton";
@@ -30,7 +29,6 @@ export default function Page() {
 
   return (
     <>
-      <AuthGuard />
       <CoupleGuard />
 
       <div className="relative flex flex-col w-full px-5 py-5  items-center h-screen">
