@@ -39,7 +39,8 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined" && !isStandalone) return;
+    if (typeof window === "undefined") return;
+    if (!isStandalone) return;
 
     const isNotFirst = localStorage.getItem("isNotFirst");
 
@@ -66,7 +67,7 @@ export default function Page() {
     if (isPending) return;
     const accessToken = localStorage.getItem("accessToken");
     const onboarded = localStorage.getItem("onboarded");
-    console.log("accessToken", accessToken);
+
     // PWA 미설치 + 아직 "웹으로 시작" 선택 안한 경우: 설치 안내만 보여줌
     if (!isStandalone && !promptSkipped) {
       setPromptVisible(true);
