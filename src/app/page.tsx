@@ -13,6 +13,7 @@ export default function Page() {
 
   const {
     isIOS,
+    isAndroid,
     isStandalone,
     promptVisible,
     promptSkipped,
@@ -108,6 +109,7 @@ export default function Page() {
       {promptVisible && (
         <InstallPrompt
           isIOS={isIOS}
+          isAndroid={isAndroid}
           onSkip={() => {
             setPromptSkipped();
             setPromptVisible(false);
