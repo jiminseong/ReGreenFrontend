@@ -32,6 +32,9 @@ const FinishedActivityList = () => {
   const { data: submitData, isSuccess, isPending } = useSubmitActivityList({ page, limit: 10 });
 
   useEffect(() => {
+    const current = loader.current;
+    if (!current) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && hasNextPage && !isPending) {
@@ -40,10 +43,9 @@ const FinishedActivityList = () => {
       },
       { threshold: 1 }
     );
-    if (loader.current) observer.observe(loader.current);
-    return () => {
-      if (loader.current) observer.unobserve(loader.current);
-    };
+
+    observer.observe(current);
+    return () => observer.disconnect();
   }, [hasNextPage, isPending]);
 
   useEffect(() => {
@@ -80,13 +82,13 @@ const FinishedActivityList = () => {
                 width={56}
                 height={56}
                 src={
-                  (activity.title as string) === "다회용 컵 이용하기"
+                  activity.title === "다회용 컵 이용하기"
                     ? "/icon/activity/cupIcon2.svg"
-                    : (activity.title as string) === "중고 제품 나눔/구매 인증하기"
+                    : activity.title === "중고 제품 나눔/구매 인증하기"
                     ? "/icon/activity/danguenIcon2.svg"
-                    : (activity.title as string) === "플로깅 데이트하기"
+                    : activity.title === "플로깅 데이트하기"
                     ? "/icon/activity/trashIcon2.svg"
-                    : ""
+                    : "/icon/home/heartIcon.svg"
                 }
                 alt={activity.title}
               />
