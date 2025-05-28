@@ -24,7 +24,6 @@ const Auth = () => {
           localStorage.removeItem("refreshToken");
           router.push("/login");
         } else {
-          console.log("로그아웃 실패:", res.message);
         }
       } catch (error) {
         console.error("로그아웃 처리 중 오류 발생:", error);
@@ -47,7 +46,6 @@ const Auth = () => {
         await localStorage.removeItem("refreshToken");
         router.push("/");
       } else {
-        console.log("회원탈퇴 실패:", res.message);
       }
     } catch (error) {
       console.error("회원탈퇴 처리 중 오류 발생:", error);

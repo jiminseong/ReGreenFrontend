@@ -41,7 +41,6 @@ const InventoryListComponent = () => {
 
   function handleToggle(item: FurnitureItem) {
     if (item.isOwned || item.price === 0) {
-      console.log(item);
       togglePlacement(item);
     } else {
       setModal(true, "buy", item);
@@ -79,7 +78,6 @@ const InventoryListComponent = () => {
     }
 
     if (Number(coupleInfo.data.ecoLovePoint) < modalItem.price) {
-      console.log(coupleInfo.data.ecoLovePoint);
       setModal(true, "notEnoughPoints", modalItem);
       return;
     }

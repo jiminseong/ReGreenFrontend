@@ -30,7 +30,7 @@ export default function Page() {
       navigator.serviceWorker
         .register("/sw.js")
         .then((registration) => {
-          console.log("✅ Service Worker 등록 완료", registration);
+          console.log("✅ Service Worker 등록 성공", registration);
         })
         .catch((error) => {
           console.error("❌ Service Worker 등록 실패", error);
@@ -52,12 +52,10 @@ export default function Page() {
     // 로그인 되었고 coupleId 있음 + 온보딩 완료
     if (accessToken !== null) {
       if (data?.coupleId !== "" && onboarded === "true") {
-        console.log("로그인 되었고 coupleId 있음");
         router.push("/home");
       }
       // 로그인 되었고 coupleId 없음 + 온보딩 완료
       else if (data?.coupleId === "" && onboarded === "true") {
-        console.log("로그인 되었고 coupleId 없음");
         router.push("/couple");
       }
       // 로그인 되었으나 온보딩 아직 안한 경우
@@ -68,7 +66,6 @@ export default function Page() {
 
     // 로그인 안 된 상태
     if (accessToken === null) {
-      console.log("로그인 안 된 상태");
       if (onboarded !== "true") {
         router.push("/onboard");
         return;
