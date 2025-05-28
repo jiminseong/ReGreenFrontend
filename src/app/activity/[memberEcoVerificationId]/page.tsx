@@ -99,8 +99,9 @@ export default function Page() {
                   <div
                     ref={ref}
                     // 높이를 넓이와 동일하게 설정
-                    className="w-full h-[calc(100vw)] max-h-[500px] overflow-hidden rounded-lg relative"
+                    className="w-full h-[calc(100vw)] f  max-h-[500px] overflow-hidden rounded-lg relative"
                   >
+                    <div className="absolute inset-0 bg-black/50 w-full h-full z-5" />
                     {imageUrl && (
                       <Image
                         src={imageUrl}
@@ -109,7 +110,7 @@ export default function Page() {
                         className="object-cover rounded-lg"
                       />
                     )}
-                    <div className="absolute bottom-5 right-5 flex flex-col gap-4">
+                    <div className="absolute bottom-5 right-5 flex flex-col gap-4 z-10">
                       <div className="flex items-center gap-2">
                         <Image
                           src="/icon/activity/certification/photoFrameIcon.svg"

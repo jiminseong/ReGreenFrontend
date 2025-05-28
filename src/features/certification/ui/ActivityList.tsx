@@ -70,11 +70,11 @@ const ActivityList = () => {
       return;
     }
 
-    setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
 
     try {
+      setLoading(true);
       const res = await postCertification(ecoVerificationId, formData);
       setLoading(false);
 
