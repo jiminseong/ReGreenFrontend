@@ -27,7 +27,7 @@ const CategorySwiper = () => {
     <div className="relative w-full">
       <motion.div
         ref={dragRef}
-        className="relative flex overflow-x-auto no-scrollbar w-full cursor-grab select-none"
+        className="relative flex overflow-x-auto no-scrollbar w-full cursor-grab select-none "
         whileTap={{ cursor: "grabbing" }}
       >
         {tabs.map((tab) => {
@@ -37,7 +37,7 @@ const CategorySwiper = () => {
           return (
             <button
               key={tab}
-              className={` px-8 py-2 whitespace-nowrap transition-all duration-150 min-w-[64px] ${
+              className={` text-center w-full py-2 whitespace-nowrap transition-all duration-150 min-w-[64px] ${
                 isActive
                   ? "border-b-2 border-black font-bold"
                   : "text-[#999999] border-[#EEEEEE] border-b-2"
