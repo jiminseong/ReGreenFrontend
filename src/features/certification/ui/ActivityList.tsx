@@ -17,6 +17,7 @@ import { useToastStore } from "../../../shared/store/useToastStore";
 import LogoLoading from "@/widgets/LogoLoading";
 import { postCertification } from "../lib/postCertification";
 import { prepareFileInput } from "../lib/prepareFileInput";
+import { HTTPError } from "ky";
 
 const ActivityList = () => {
   const plusProgress = useCertificationStore((state) => state.plusProgress);
@@ -26,7 +27,7 @@ const ActivityList = () => {
   const { isOpen, message } = useToastStore();
   const [currentCheckedId, setCurrentCheckedId] = useState<string>("");
   const { data: activities, isSuccess, isPending } = useActivityList();
-  const [showTour, setShowTour] = useState(false);
+  const [showTour, setShowTour] = useState("");
 
   const notReadyActivities = dummyActivities;
 
@@ -34,13 +35,13 @@ const ActivityList = () => {
 
   useEffect(() => {
     const isActivityTourSeen = localStorage.getItem("activityTourSeen");
-    if (!isActivityTourSeen) {
-      setShowTour(true);
+    if (isActivityTourSeen) {
+      setShowTour(isActivityTourSeen);
     }
   }, []);
 
   const handleCheckboxClick = (id: string) => {
-    if (showTour !== true) {
+    if (showTour !== "true") {
       plusProgress?.(1);
       setCurrentCheckedId((prev) => (prev === id ? "" : id));
       return;
@@ -74,27 +75,14 @@ const ActivityList = () => {
     try {
       const res = await postCertification(ecoVerificationId, formData);
       setLoading(false);
+      console.log("업로드 결과:", res.code);
 
       if (res.data.status === "REJECTED") {
         openToast("활동과 무관한 사진입니다.", () => setLoading(false));
-        return;
-      }
-      if (res.code === 47003) {
-        openToast("이미 인증한 활동입니다.", () => setLoading(false));
-        return;
-      }
-      if (res.code === 54001) {
-        openToast("인증 사진은 1개만 업로드할 수 있습니다.", () => setLoading(false));
-        return;
-      }
-      if (res.code === 44001) {
-        openToast("등록 되지 않은 활동이에요", () => setLoading(false));
-        return;
       }
 
       if (res.code !== 2000) {
         openToast("인증 사진 업로드에 실패했어요.", () => setLoading(false));
-        return;
       }
 
       if (res.data.status === "APPROVED") {
@@ -104,14 +92,36 @@ const ActivityList = () => {
         );
       }
     } catch (error) {
-      console.error("업로드 에러:", error);
-      setLoading(false);
-      openToast("네트워크 오류로 업로드에 실패했어요.");
+      if (error instanceof HTTPError) {
+        const res = await error.response.json();
+        const code = res.code;
+        console.error("HTTP 에러:", res);
+
+        if (code === 47003) {
+          setLoading(false);
+          openToast("이미 인증한 활동입니다.");
+          return;
+        }
+
+        if (code === 54001) {
+          setLoading(false);
+          openToast("인증 사진은 1개만 업로드할 수 있습니다.");
+          return;
+        }
+
+        if (code === 44001) {
+          setLoading(false);
+          openToast("등록 되지 않은 활동이에요");
+          return;
+        }
+        setLoading(false);
+        openToast("네트워크 오류로 업로드에 실패했어요.");
+      }
     }
   };
 
   const handleCertificationClick = async () => {
-    if (showTour !== true) {
+    if (showTour !== "true") {
       plusProgress?.(1);
       return;
     }

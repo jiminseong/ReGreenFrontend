@@ -31,4 +31,12 @@ export interface PostCertificationResponse {
     status: "REJECTED" | "APPROVED";
     aiReasonOfStatus: string;
   };
+  //에러 일때 Response 타입
+  error: {
+    code: number;
+    message: string;
+    method: string;
+    path: string;
+    timestamp: string;
+  };
 }
