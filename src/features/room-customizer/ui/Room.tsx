@@ -85,14 +85,14 @@ const Room = () => {
       >
         <Image
           src="https://regreen-bucket.s3.ap-northeast-2.amazonaws.com/images/constant/furniture/20250524-00.png"
-          alt="배경"
+          alt="바닥"
           width={1000}
           height={1000}
           className={`absolute `}
         />
         <Image
           src="https://regreen-bucket.s3.ap-northeast-2.amazonaws.com/images/constant/furniture/20250524-01.png"
-          alt="방 배경"
+          alt="벽"
           width={1000}
           height={1000}
           className={`absolute `}
