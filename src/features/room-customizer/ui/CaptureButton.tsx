@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React from "react";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 import { useHomeMode } from "../lib/useHomeMode";
 
 interface CaptureButtonProps {

@@ -1,5 +1,5 @@
 import Button from "@/shared/ui/Button";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 import React from "react";
 
 interface ShareButtonProps {
