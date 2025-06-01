@@ -61,7 +61,7 @@ export const http = ky.create({
 
     /**
      * @hook afterResponse
-     * 응답 후 호출되는 훅. 토큰 만료(419) 시 Silent Refresh 및 재요청 처리
+     * 응답 후 호출되는 훅. 토큰 만료(41005) 시 Silent Refresh 및 재요청 처리
      *
      * @param request - 원래 요청 객체
      * @param options - 요청 옵션
@@ -71,6 +71,9 @@ export const http = ky.create({
     afterResponse: [
       async (request, options, response) => {
         if (response.status === 41005) {
+          // 로컬 스토리지 비우기
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
           const refresh = await http.post("api/auth/refresh", {
             prefixUrl: process.env.NEXT_PUBLIC_SERVER_URL,
             credentials: "include",
