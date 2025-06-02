@@ -2,7 +2,7 @@
 
 export const SkeletonFinishedActivityList = () => {
   return (
-    <div className="p-4 space-y-6 bg-[#F1F2F5] h-screen animate-pulse">
+    <div className="p-4 space-y-6 bg-[#F1F2F5] h-[100dvh] animate-pulse">
       {/* 날짜 조정 바 */}
       <div className="flex justify-center items-center space-x-4">
         <div className="w-6 h-6 bg-gray-300 rounded-full" />

@@ -105,10 +105,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased overflow-hidden">
+      <body className="antialiased">
         <QueryProvider>
           <div
-            className={`${Pretendard.className} inset-0  mx-auto min-h-screen max-w-[500px] w-full min-w-[320px]  pb-[env(safe-area-inset-bottom)]  bg-white `}
+            className={`
+          ${Pretendard.className}
+          mx-auto
+          min-h-[100dvh]
+          max-w-[500px]
+          w-full
+          min-w-[320px]
+          bg-white
+          overflow-auto
+          pb-[env(safe-area-inset-bottom)]
+        `}
           >
             <SwiperBlockWrapper>
               <Analytics />

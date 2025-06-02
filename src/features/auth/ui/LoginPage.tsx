@@ -99,7 +99,7 @@ const LoginPage = () => {
   }, [code]);
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen p-5">
+    <div className="flex flex-col items-center justify-between h-[100dvh] p-5">
       {loading && <Loading />}
 
       <div className="text-center h-[80%] flex flex-col items-center justify-center">

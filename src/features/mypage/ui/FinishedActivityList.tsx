@@ -55,7 +55,7 @@ export const FinishedActivityList = () => {
   };
 
   return (
-    <div className="p-4 space-y-6 bg-[#F1F2F5] h-screen">
+    <div className="p-4 space-y-6 bg-[#F1F2F5] h-[100dvh]">
       {/* 날짜 조정 바 */}
       <div className="flex justify-center items-center space-x-4 ">
         <button onClick={() => handleDateChange(-1)}>

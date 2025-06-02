@@ -49,7 +49,7 @@ const CoupleInvitePage = () => {
   });
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen p-5 pt-24">
+    <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pt-24">
       {copySuccessToast && <Toast message="초대 링크가 복사되었습니다!" position="top" />}
       {/* 로고 및 타이틀 */}
       <h1 className="text-2xl text-center w-full font-bold mb-4">

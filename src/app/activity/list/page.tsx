@@ -20,7 +20,7 @@ const ActivitySelectClientPage = () => {
   }, [syncWithLocalStorage]);
 
   return (
-    <div className="flex relative flex-col h-screen">
+    <div className="flex relative flex-col h-[100dvh]">
       {isSeen === false && <ActivityDescription onFinish={handleTourFinish} />}
       {/* 상단 네비게이션 바 */}
 
