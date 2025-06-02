@@ -23,10 +23,10 @@ const HomedDescription = ({ onFinish }: { onFinish: () => void }) => {
     Notification.requestPermission().then((perm) => {
       const isNotFirst = localStorage.getItem("isNotFirst");
       if (perm === "granted" && isNotFirst !== "true") {
-        new Notification("우이미에 오신 걸 환영해요", {
-          body: "홈 화면에 추가해 주셔서 고마워요!",
-          requireInteraction: true,
-        });
+        // new Notification("우이미에 오신 걸 환영해요", {
+        //   body: "홈 화면에 추가해 주셔서 고마워요!",
+        //   requireInteraction: true,
+        // });
         localStorage.setItem("isNotFirst", "true");
       }
     });
