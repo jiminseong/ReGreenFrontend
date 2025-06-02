@@ -201,7 +201,7 @@ const ActivityList = () => {
             >
               <div className=" bg-lpink px-2 py-[4.5px] border-[0.5px] rounded-[4px] border-ppink flex items-center justify-center  gap-2">
                 <Image src="/icon/home/heartIcon.svg" width={17} height={17} alt="하트아이콘" />
-                <span className="text-ppink font-bold">+{selected.breakupBufferPoint}</span>
+                <span className="text-ppink font-bold">+{selected.ecoLovePoint}</span>
               </div>
               <div className=" bg-[#EEEEEE] px-2 py-[4.5px] border-[0.5px] rounded-[4px] border-[#222222] flex items-center justify-center gap-2">
                 <Image src="/icon/home/calendarIcon.svg" width={17} height={17} alt="달력아이콘" />
