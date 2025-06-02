@@ -27,6 +27,9 @@ const Auth = () => {
         } else {
         }
       } catch (error) {
+        // 모든 accessToken, refreshToken을 포함한 로컬스토리지 초기화
+        localStorage.clear();
+        router.push("/");
         console.error("로그아웃 처리 중 오류 발생:", error);
       }
       return;
