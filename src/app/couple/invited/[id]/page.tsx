@@ -65,7 +65,7 @@ const CoupleInvitePage = () => {
       return;
     }
     if (data?.coupleId) {
-      router.replace("/home");
+      router.push("/home");
     }
     // 커플 없으면 그대로 초대코드 입력화면 유지
   }, [data?.coupleId, isSuccess]);
