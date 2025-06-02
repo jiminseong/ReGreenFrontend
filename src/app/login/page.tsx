@@ -2,6 +2,7 @@
 import { Suspense } from "react";
 import LoginPage from "@/features/auth/ui/LoginPage";
 import Loading from "@/widgets/Loading";
+import { useSearchParams } from "next/navigation";
 
 export default function Page() {
   // router.push(`/login/${inviteCode}`); 로 접근해옴
@@ -9,7 +10,9 @@ export default function Page() {
   // 예시: invited/[inviteCode]로 접근 시
   // 로그인이 필요시 /login?inviteCode=초대코드 형태로 접근
 
-  const inviteCode = new URLSearchParams(window.location.search).get("inviteCode") || "";
+  // 초대 코드가 없으면 빈 문자열로 설정
+  const searchParams = useSearchParams();
+  const inviteCode = searchParams.get("inviteCode") || "";
 
   return (
     <Suspense fallback={<Loading />}>
