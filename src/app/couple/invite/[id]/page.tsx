@@ -41,11 +41,13 @@ const CoupleInvitePage = () => {
       } else {
         return;
       }
-    } else {
+    } else if (data.isError) {
+      // 로그인 여부 우선 판단
       router.push("/login");
       return;
     }
   });
+
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5 pt-24">
       {copySuccessToast && <Toast message="초대 링크가 복사되었습니다!" position="top" />}
