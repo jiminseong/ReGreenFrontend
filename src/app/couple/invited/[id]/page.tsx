@@ -52,6 +52,7 @@ const CoupleInvitePage = () => {
       }
     } catch (e) {
       console.error("초대 코드 실패", e);
+      localStorage.removeItem("inviteCode");
     } finally {
       setLoading(false);
     }
