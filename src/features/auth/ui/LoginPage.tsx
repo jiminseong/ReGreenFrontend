@@ -29,16 +29,19 @@ const LoginPage = () => {
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
   const inviteCode = searchParams.get("inviteCode") || "";
-  const { data: userInfo, isSuccess, refetch } = useMyInfo();
 
   const [hasRequestedLogin, setHasRequestedLogin] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const redirectAfterLogin = () => {
-    if (isSuccess && userInfo?.coupleId) {
+  const { refetch } = useMyInfo();
+
+  const redirectAfterLogin = (coupleId: string | null) => {
+    if (coupleId) {
       router.push("/home");
-    } else if (inviteCode.length > 0) {
+    } else if (inviteCode) {
       router.push(`/couple/invited/${encodeURIComponent(inviteCode)}`);
+    } else {
+      router.push("/couple");
     }
   };
 
@@ -56,8 +59,9 @@ const LoginPage = () => {
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
           setHasRequestedLogin(true);
-          refetch();
-          redirectAfterLogin();
+
+          const { data: refetchedUser } = await refetch();
+          redirectAfterLogin(refetchedUser?.coupleId ?? null);
         } else {
           throw new Error(res.message || "로그인 실패");
         }
@@ -68,8 +72,8 @@ const LoginPage = () => {
         setHasRequestedLogin(true);
 
         if (isAlreadyLoggedIn) {
-          console.log("이미 로그인된 상태입니다.");
-          redirectAfterLogin();
+          const { data: refetchedUser } = await refetch();
+          redirectAfterLogin(refetchedUser?.coupleId ?? null);
         } else {
           console.error("로그인 요청 실패", err);
           router.replace("/login");
@@ -80,7 +84,7 @@ const LoginPage = () => {
     };
 
     loginHandler();
-  }, [code, hasRequestedLogin]);
+  }, [code, hasRequestedLogin, inviteCode, refetch, router]);
 
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5">
