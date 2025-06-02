@@ -21,9 +21,8 @@ export const KakaoInAppBanner = () => {
   return (
     <div className="fixed bottom-0 left-0 w-full bg-yellow-100 text-black p-3 flex items-center justify-center z-[9999] shadow-lg">
       <span>
-        📢 카카오톡 인앱 브라우저에서는 일부 기능이 제한될 수 있어요.{" "}
-        <br className="block md:hidden" />
-        우측 상단 <b>⋮</b> 메뉴에서 <b>‘기본 브라우저로 열기’</b>를 선택해주세요!
+        📢 카카오톡 브라우저에서는 기능이 제한됩니다. <br className="block md:hidden" />
+        사파리, 크롬, 삼성 등 다른 브라우저를 사용해 주세요!
       </span>
     </div>
   );
