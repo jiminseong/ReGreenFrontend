@@ -28,28 +28,21 @@ const LoginPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
-  const [inviteCode, setInviteCode] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
 
-  const redirectAfterLogin = (coupleId: string | null) => {
+  const redirectAfterLogin = (coupleId: string | null, inviteCode: string | null) => {
     if (coupleId) {
       router.push("/home");
-    } else if (inviteCode) {
+      return;
+    }
+    if (inviteCode && inviteCode.trim().length > 0) {
       router.push(`/couple/invited/${encodeURIComponent(inviteCode)}`);
-    } else {
-      router.push("/couple");
+      return;
     }
+
+    router.push("/couple");
   };
-  useEffect(() => {
-    // 최초 1회만 실행 (deps 비움)
-    const storedInviteCode = localStorage.getItem("inviteCode") || searchParams.get("inviteCode");
-    if (storedInviteCode && storedInviteCode.length === 6) {
-      setInviteCode(storedInviteCode);
-    } else {
-      setInviteCode(null);
-    }
-  }, []);
 
   useEffect(() => {
     if (!code) return;
@@ -66,11 +59,10 @@ const LoginPage = () => {
         if (res.code === 2000) {
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
-
+          const inviteCode = localStorage.getItem("inviteCode");
           const user = await fetchMyInfo();
           if (!isMounted) return;
-
-          redirectAfterLogin(user.coupleId);
+          redirectAfterLogin(user.coupleId, inviteCode);
         } else {
           throw new Error(res.message || "로그인 실패");
         }
@@ -80,7 +72,8 @@ const LoginPage = () => {
         if (isAlreadyLoggedIn) {
           const user = await fetchMyInfo();
           if (!isMounted) return;
-          redirectAfterLogin(user.coupleId);
+          const inviteCode = localStorage.getItem("inviteCode");
+          redirectAfterLogin(user.coupleId, inviteCode);
         } else {
           if (!isMounted) return;
           router.replace("/login");
