@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useCoupleSubmitActivity } from "../lib/useCoupleSubmitActivity";
 import { SkeletonFinishedActivityList } from "@/widgets/mypage/SkeletonFinishedActivityList";
@@ -19,7 +19,14 @@ const iconMap: Record<string, string> = {
 };
 
 export const FinishedActivityList = () => {
-  const [date, setDate] = useState("2025-05-05");
+  const [date, setDate] = useState("");
+
+  // 초기 날짜 설정
+  useEffect(() => {
+    const today = new Date();
+    const todayString = today.toISOString().split("T")[0]; // YYYY-MM-DD 형식으로 변환
+    setDate(todayString);
+  }, []);
 
   const { data, isPending } = useCoupleSubmitActivity({ date });
   if (isPending || !data) return <SkeletonFinishedActivityList />;
