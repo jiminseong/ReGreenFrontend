@@ -9,6 +9,13 @@ import { useToastStore } from "@/shared/store/useToastStore";
 import { useNickName } from "@/entities/user/lib/useNickName";
 import CommonModal from "@/widgets/ComonModal";
 import Loading from "@/widgets/Loading";
+type InviteCodeResponse = {
+  code: number;
+  message: string;
+  method: string;
+  path: string;
+  timestamp: string;
+};
 
 const CoupleInvitePage = () => {
   const params = useParams();
@@ -19,7 +26,7 @@ const CoupleInvitePage = () => {
   const URLDecodedInviteCode = decodeURIComponent(inviteCode as string);
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
-  const { data, refetch, isSuccess, isError } = useMyInfo();
+  const { data, refetch, isSuccess } = useMyInfo();
   const [modalOpen, setModalOpen] = React.useState(false);
 
   const { data: inviteNickName, isSuccess: isNickSuccess } = useNickName({
@@ -50,6 +57,10 @@ const CoupleInvitePage = () => {
         setModalOpen(true);
       }
     } catch (e) {
+      const err = e as InviteCodeResponse;
+      if (err.code === 41003) {
+        router.push(`/login?inviteCode=${inviteCode}`);
+      }
       console.error("초대 코드 실패", e);
     } finally {
       setLoading(false);
@@ -59,11 +70,6 @@ const CoupleInvitePage = () => {
   useEffect(() => {
     if (!isSuccess) return;
 
-    if (isError) {
-      // 로그인 여부 우선 판단
-      router.push(`/login?inviteCode=${inviteCode}`);
-      return;
-    }
     if (data?.coupleId) {
       router.push("/home");
     }
