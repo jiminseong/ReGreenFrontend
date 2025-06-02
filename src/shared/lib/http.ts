@@ -70,29 +70,72 @@ export const http = ky.create({
      */
     afterResponse: [
       async (request, options, response) => {
-        console.log("afterResponse", response.status);
-        if (response.status === 401) {
-          // 로컬 스토리지 비우기
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          const refresh = await http.post("api/auth/refresh", {
-            prefixUrl: process.env.NEXT_PUBLIC_SERVER_URL,
-            credentials: "include",
-          });
+        // refresh 요청 반복 막기
+        const isRefreshUrl = request.url.includes("api/auth/refresh");
 
-          if (!refresh.ok) {
-            window.location.href = "/login";
-          }
+        // 401 아닌 응답은 그냥 반환
+        if (response.status !== 401) return response;
 
-          return http(request.url, {
-            ...options,
-            method: request.method,
-            headers: request.headers,
-            body: request.body,
-          });
+        // 서버 에러코드 파싱 (실패 시 그냥 반환)
+        let errorBody = null;
+        try {
+          errorBody = await response.clone().json();
+        } catch {
+          return response;
         }
 
-        return response;
+        // 실제 토큰 만료/무효 코드만 Silent Refresh 시도
+        const isTokenError = [41003, 41005].includes(errorBody.code);
+
+        if (isRefreshUrl || !isTokenError) {
+          // refresh 요청도 401이거나, 토큰 오류 아니면 → 로그인 이동
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+          return response;
+        }
+
+        // accessToken/refreshToken 없으면 → 로그인 이동
+        const accessToken = localStorage.getItem("accessToken");
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (!accessToken || !refreshToken) {
+          window.location.href = "/login";
+          return response;
+        }
+
+        // Silent Refresh 시도
+        const refresh = await httpNoThrow
+          .post("api/auth/refresh", {
+            prefixUrl: process.env.NEXT_PUBLIC_SERVER_URL,
+            credentials: "include",
+          })
+          .json<{
+            code: number;
+            message: string;
+            data: {
+              accessToken: string;
+              refreshToken: string;
+            };
+            status: number;
+          }>();
+
+        if (refresh.status === 401 || !refresh.data?.accessToken) {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+          return response;
+        }
+
+        // 새 토큰 저장 후 원래 요청 재시도
+        localStorage.setItem("accessToken", refresh.data.accessToken);
+        localStorage.setItem("refreshToken", refresh.data.refreshToken);
+
+        return http(request.url, {
+          ...options,
+          method: request.method,
+          headers: request.headers,
+          body: request.body,
+        });
       },
     ],
   },
