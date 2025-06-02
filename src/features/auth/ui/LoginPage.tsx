@@ -29,18 +29,16 @@ const LoginPage = () => {
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
   const inviteCode = searchParams.get("inviteCode") || "";
-  const { data: userInfo } = useMyInfo();
+  const { data: userInfo, isSuccess, refetch } = useMyInfo();
 
   const [hasRequestedLogin, setHasRequestedLogin] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const redirectAfterLogin = () => {
-    if (userInfo?.coupleId) {
+    if (isSuccess && userInfo?.coupleId) {
       router.push("/home");
-    } else if (inviteCode) {
+    } else if (inviteCode.length > 0) {
       router.push(`/couple/invited/${encodeURIComponent(inviteCode)}`);
-    } else {
-      router.push("/couple");
     }
   };
 
@@ -58,6 +56,7 @@ const LoginPage = () => {
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
           setHasRequestedLogin(true);
+          refetch();
           redirectAfterLogin();
         } else {
           throw new Error(res.message || "로그인 실패");
