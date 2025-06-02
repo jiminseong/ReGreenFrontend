@@ -8,14 +8,18 @@ import { http } from "@/shared/lib/http";
 import Loading from "@/widgets/Loading";
 import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 
-interface LoginPageProps {
-  inviteCode: string; // 초대 코드가 있을 경우
-}
-const LoginPage = ({ inviteCode }: LoginPageProps) => {
+const LoginPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
   const { data } = useMyInfo();
+
+  // 로그인 페이지에서 초대 코드가 필요할 경우 사용
+  // 예시: invited/[inviteCode]로 접근 시
+  // 로그인이 필요시 /login?inviteCode=초대코드 형태로 접근
+
+  // 초대 코드가 없으면 빈 문자열로 설정
+  const inviteCode = searchParams.get("inviteCode") || "";
 
   const [hasRequestedLogin, setHasRequestedLogin] = useState(false); // 중복 방지
   const [loading, setLoading] = useState(false); // 로딩 상태
