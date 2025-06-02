@@ -1,13 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { http } from "@/shared/lib/http";
-
-interface MemberInfo {
-  email: string;
-  memberId: string;
-  nickname: string;
-  profileImageUrl: string;
-  coupleId: string | null;
-}
+import { MemberInfo } from "../model/type";
 
 export function useMyInfo() {
   return useQuery<MemberInfo>({

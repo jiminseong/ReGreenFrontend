@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRoomStore } from "../model/store";
 import { useMyPlacedFurniture } from "../lib/useMyPlacedFurniture";
 import Loading from "@/widgets/Loading";
+import { useCoupleInfo } from "@/entities/user/lib/useCoupleInfo";
 
 const Room = () => {
   const [windowWidth, setWindowWidth] = useState<number>(0);
@@ -14,6 +15,7 @@ const Room = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const { data, isSuccess, isPending } = useMyPlacedFurniture();
+  const { isSuccess: coupleIsSuccess, data: couple } = useCoupleInfo();
 
   const setFurnitures = useRoomStore((state) => state.setCurrentRoomFurnitures);
   const currentFurnitures = useRoomStore((state) => state.currentRoomFurnitures);
@@ -76,6 +78,15 @@ const Room = () => {
         }}
         className="relative w-full h-full flex flex-col items-center justify-center  overflow-hidden"
       >
+        {coupleIsSuccess && couple.data.breakupBufferPoint !== 0 && (
+          <Image
+            src="/image/home/roomBackdrop.png"
+            alt="방 배경"
+            width={1000}
+            height={1000}
+            className="absolute z-[500] opacity-55 "
+          />
+        )}
         <Image
           src="https://regreen-bucket.s3.ap-northeast-2.amazonaws.com/images/constant/furniture/20250524-00.png"
           alt="바닥"

@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import LoginButton from "@/features/auth/ui/LoginButton";
 import { http } from "@/shared/lib/http";
 import Loading from "@/widgets/Loading";
-import { useMyInfo } from "@/entities/user/lib/userMyInfo";
+import { fetchMyInfo } from "@/entities/user/lib/fetchMyInfo";
 
 interface LoginResponse {
   code: number;
@@ -28,12 +28,9 @@ const LoginPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
-  const inviteCode = localStorage.getItem("inviteCode") || searchParams.get("inviteCode");
+  const [inviteCode, setInviteCode] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
-  const [loginCompleted, setLoginCompleted] = useState(false);
-
-  const { refetch } = useMyInfo();
 
   const redirectAfterLogin = (coupleId: string | null) => {
     if (coupleId) {
@@ -44,13 +41,23 @@ const LoginPage = () => {
       router.push("/couple");
     }
   };
+  useEffect(() => {
+    // 최초 1회만 실행 (deps 비움)
+    const storedInviteCode = localStorage.getItem("inviteCode") || searchParams.get("inviteCode");
+    if (storedInviteCode && storedInviteCode.length === 6) {
+      setInviteCode(storedInviteCode);
+    } else {
+      setInviteCode(null);
+    }
+  }, []);
 
   useEffect(() => {
-    if (!code || loginCompleted) return;
+    if (!code) return;
+
+    let isMounted = true;
+    setLoading(true);
 
     const loginHandler = async () => {
-      setLoading(true);
-
       try {
         const res = await http
           .post(`api/auth/kakao/login?code=${code}&local=${process.env.NEXT_PUBLIC_LOCAL_BOOLEAN}`)
@@ -60,34 +67,36 @@ const LoginPage = () => {
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
 
-          const { data: user } = await refetch();
-          setLoginCompleted(true); // 완료 표시 → 중복 방지
-          redirectAfterLogin(user?.coupleId ?? null);
+          const user = await fetchMyInfo();
+          if (!isMounted) return;
+
+          redirectAfterLogin(user.coupleId);
         } else {
           throw new Error(res.message || "로그인 실패");
         }
       } catch (err) {
         const error = err as ErrorWithResponse;
         const isAlreadyLoggedIn = error?.res?.code === 41001;
-
         if (isAlreadyLoggedIn) {
-          const { data: user } = await refetch();
-          setLoginCompleted(true);
-          redirectAfterLogin(user?.coupleId ?? null);
+          const user = await fetchMyInfo();
+          if (!isMounted) return;
+          redirectAfterLogin(user.coupleId);
         } else {
-          console.error("로그인 요청 실패", err);
+          if (!isMounted) return;
           router.replace("/login");
         }
       } finally {
+        if (!isMounted) return;
         setLoading(false);
       }
     };
 
-    // 마운트 후 이벤트 루프 이후 실행 보장
-    setTimeout(() => {
-      loginHandler();
-    }, 0);
-  }, [code, loginCompleted, inviteCode, refetch, router]);
+    setTimeout(loginHandler, 0);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [code]);
 
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5">
