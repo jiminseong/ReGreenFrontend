@@ -9,13 +9,6 @@ import { useToastStore } from "@/shared/store/useToastStore";
 import { useNickName } from "@/entities/user/lib/useNickName";
 import CommonModal from "@/widgets/ComonModal";
 import Loading from "@/widgets/Loading";
-type InviteCodeResponse = {
-  code: number;
-  message: string;
-  method: string;
-  path: string;
-  timestamp: string;
-};
 
 const CoupleInvitePage = () => {
   const params = useParams();
@@ -57,10 +50,6 @@ const CoupleInvitePage = () => {
         setModalOpen(true);
       }
     } catch (e) {
-      const err = e as InviteCodeResponse;
-      if (err.code === 41003) {
-        router.push(`/login?inviteCode=${inviteCode}`);
-      }
       console.error("초대 코드 실패", e);
     } finally {
       setLoading(false);
