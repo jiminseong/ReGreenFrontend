@@ -19,12 +19,18 @@ const iconMap: Record<string, string> = {
 };
 
 export const FinishedActivityList = () => {
-  const [date, setDate] = useState("2025-05-05");
-
+  const [date, setDate] = useState(() => {
+    return new Date().toISOString().split("T")[0];
+  });
   const { data, isPending } = useCoupleSubmitActivity({ date });
+
+  // date가 빈 문자열이면 렌더링하지 않음
+  if (!date) return <SkeletonFinishedActivityList />;
+
   if (isPending || !data) return <SkeletonFinishedActivityList />;
 
   const members = [...data.today.members, ...data.yesterday.members];
+  const allActivities = members.flatMap((member) => member.memberEcoVerifications);
 
   const groupedByType = members
     .flatMap((member) =>
@@ -60,17 +66,21 @@ export const FinishedActivityList = () => {
           <Image src="/icon/mypage/rightArrow.svg" alt="다음 날짜" width={28} height={28} />
         </button>
       </div>
-
-      {/* 활동 카드 */}
-      {Object.entries(groupedByType).map(([type, activities]) => (
-        <FinishedActivityListItem
-          key={type}
-          type={type}
-          activities={activities}
-          iconMap={iconMap}
-          activityTitleMap={activityTitleMap}
-        />
-      ))}
+      {allActivities.length === 0 ? (
+        <div className="flex flex-col items-center justify-center h-full">
+          <p className="text-gray-500 mt-[-128px]">아직 활동이 없습니다.</p>
+        </div>
+      ) : (
+        Object.entries(groupedByType).map(([type, activities]) => (
+          <FinishedActivityListItem
+            key={type}
+            type={type}
+            activities={activities}
+            iconMap={iconMap}
+            activityTitleMap={activityTitleMap}
+          />
+        ))
+      )}
     </div>
   );
 };

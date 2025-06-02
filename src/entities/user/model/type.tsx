@@ -11,3 +11,11 @@ export interface InviteCodeResponse {
   path: string;
   timestamp: string;
 }
+
+export interface MemberInfo {
+  email: string;
+  memberId: string;
+  nickname: string;
+  profileImageUrl: string;
+  coupleId: string | null;
+}

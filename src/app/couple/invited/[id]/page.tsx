@@ -44,6 +44,7 @@ const CoupleInvitePage = () => {
 
       if (res.code === 2000) {
         openToast("커플 연결 성공되었습니다!");
+        localStorage.removeItem("inviteCode");
         router.push("/home");
         refetch();
       } else {
@@ -51,6 +52,7 @@ const CoupleInvitePage = () => {
       }
     } catch (e) {
       console.error("초대 코드 실패", e);
+      localStorage.removeItem("inviteCode");
     } finally {
       setLoading(false);
     }

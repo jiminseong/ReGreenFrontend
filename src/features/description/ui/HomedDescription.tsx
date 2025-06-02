@@ -44,7 +44,7 @@ const HomedDescription = ({ onFinish }: { onFinish: () => void }) => {
   }
 
   return (
-    <div className={`absolute w-full h-full bg-black/70 z-[100]`}>
+    <div className={`absolute w-full h-full bg-black/70 z-[1000]`}>
       <div className={`absolute ${positionClass} w-full px-5`}>
         {progress === 0 && (
           <div className="w-full">
