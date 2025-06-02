@@ -9,7 +9,7 @@ const SplashContent = ({ isSplash }: { isSplash: boolean }) => {
     // ex) isSplash ? "hidden" : "block"
 
     <motion.div
-      className={`flex flex-col items-center justify-center h-screen pb-12 bg-white ${
+      className={`flex flex-col items-center justify-center h-[100dvh] pb-12 bg-white ${
         isSplash ? "hidden" : "block"
       }`}
       initial={{ opacity: 1 }}

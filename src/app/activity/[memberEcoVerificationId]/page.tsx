@@ -31,7 +31,7 @@ export default function Page() {
     <>
       <CoupleGuard />
 
-      <div className="relative flex flex-col w-full px-5 py-5  items-center h-screen">
+      <div className="relative flex flex-col w-full px-5 py-5  items-center h-[100dvh]">
         <div className="flex flex-col  w-full h-full">
           <div className="flex flex-col items-center justify-center gap-[30px] h-full mb-20">
             <h1 className="font-semibold text-[28px] text-center ">

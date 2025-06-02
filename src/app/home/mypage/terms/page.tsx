@@ -4,7 +4,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-[100dvh]">
       <TopNavigationBar title="이용약관" backPage="/home/mypage" />
       <TermsContent />
     </div>

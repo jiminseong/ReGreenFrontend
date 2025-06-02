@@ -5,7 +5,7 @@ import TopNavigationBar from "@/shared/ui/TopNavigationBar";
 
 const MyPage = () => {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-[100dvh]">
       <CoupleGuard />
       <TopNavigationBar title="마이페이지" />
       <CoupleProfile />
