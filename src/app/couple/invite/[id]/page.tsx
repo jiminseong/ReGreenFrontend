@@ -34,12 +34,6 @@ const CoupleInvitePage = () => {
   }
 
   useEffect(() => {
-    // 로그인 여부 우선 판단
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      router.push("/login");
-      return;
-    }
     if (data.isSuccess) {
       if (data.data.coupleId) {
         // 커플이 이미 존재하는 경우
@@ -47,6 +41,9 @@ const CoupleInvitePage = () => {
       } else {
         return;
       }
+    } else {
+      router.push("/login");
+      return;
     }
   });
   return (
