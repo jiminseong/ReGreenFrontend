@@ -20,6 +20,7 @@ import { prepareFileInput } from "../lib/prepareFileInput";
 import { HTTPError } from "ky";
 import { readImageDate } from "../lib/readImageDate";
 import { isValidExifDate } from "../lib/isValidExifDate";
+import { useActivityTourStore } from "@/features/description/lib/useActivityTourStore";
 
 const ActivityList = () => {
   const plusProgress = useCertificationStore((state) => state.plusProgress);
@@ -29,21 +30,17 @@ const ActivityList = () => {
   const { isOpen, message } = useToastStore();
   const [currentCheckedId, setCurrentCheckedId] = useState<string>("");
   const { data: activities, isSuccess, isPending } = useActivityList();
-  const [showTour, setShowTour] = useState("");
-
+  const { isSeen, syncWithLocalStorage } = useActivityTourStore();
   const notReadyActivities = dummyActivities;
 
   const selected = activities?.find((a) => a.ecoVerificationId === currentCheckedId);
 
   useEffect(() => {
-    const isActivityTourSeen = localStorage.getItem("activityTourSeen");
-    if (isActivityTourSeen) {
-      setShowTour(isActivityTourSeen);
-    }
-  }, []);
+    syncWithLocalStorage();
+  }, [syncWithLocalStorage]);
 
   const handleCheckboxClick = (id: string) => {
-    if (showTour !== "true") {
+    if (isSeen === false) {
       plusProgress?.(1);
       setCurrentCheckedId((prev) => (prev === id ? "" : id));
       return;
@@ -143,7 +140,7 @@ const ActivityList = () => {
   };
 
   const handleCertificationClick = async () => {
-    if (showTour !== "true") {
+    if (isSeen === false) {
       plusProgress?.(1);
       return;
     }

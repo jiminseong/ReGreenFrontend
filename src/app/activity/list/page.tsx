@@ -4,26 +4,24 @@ import TopNavigationBar from "@/shared/ui/TopNavigationBar";
 import ActivityList from "@/features/certification/ui/ActivityList";
 import React, { useEffect, useState } from "react";
 import ActivityDescription from "@/features/description/ui/ActivityDescription";
+import { useActivityTourStore } from "@/features/description/lib/useActivityTourStore";
 
 const ActivitySelectClientPage = () => {
   const [activeTab, setActiveTab] = useState("select");
-  const [showTour, setShowTour] = useState(false);
+  const { isSeen, setSeen, syncWithLocalStorage } = useActivityTourStore();
 
   const handleTourFinish = () => {
-    setShowTour(false);
-    localStorage.setItem("activityTourSeen", "true");
+    setSeen(true);
+    syncWithLocalStorage();
   };
 
   useEffect(() => {
-    const isSeen = localStorage.getItem("activityTourSeen");
-    if (!isSeen) {
-      setShowTour(true);
-    }
-  }, []);
+    syncWithLocalStorage();
+  }, [syncWithLocalStorage]);
 
   return (
     <div className="flex relative flex-col h-screen">
-      {showTour && <ActivityDescription onFinish={handleTourFinish} />}
+      {isSeen === false && <ActivityDescription onFinish={handleTourFinish} />}
       {/* 상단 네비게이션 바 */}
 
       <TopNavigationBar title="인증하기" />
