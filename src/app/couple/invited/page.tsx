@@ -1,7 +1,7 @@
 "use client";
 import Button from "@/shared/ui/Button";
 import { useMyInfo } from "@/entities/user/lib/userMyInfo";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import { httpNoThrow } from "@/shared/lib/http";
 
@@ -9,12 +9,13 @@ import { useToastStore } from "@/shared/store/useToastStore";
 import { useNickName } from "@/entities/user/lib/useNickName";
 import CommonModal from "@/widgets/ComonModal";
 import Loading from "@/widgets/Loading";
+import { KakaoInAppBanner } from "@/shared/ui/KakaoInAppBanner";
 
 const CoupleInvitePage = () => {
-  const params = useParams();
+  const params = useSearchParams();
 
   const [inviteCode, setInviteCode] = React.useState<string>(
-    decodeURIComponent(String(params?.id ?? ""))
+    decodeURIComponent(String(params.get("inviteCode") ?? ""))
   );
   const URLDecodedInviteCode = decodeURIComponent(inviteCode as string);
   const [loading, setLoading] = React.useState(false);
@@ -69,6 +70,7 @@ const CoupleInvitePage = () => {
 
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5 pt-24">
+      <KakaoInAppBanner />
       {loading && <Loading />}
       {modalOpen && (
         <CommonModal

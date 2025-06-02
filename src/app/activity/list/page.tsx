@@ -4,7 +4,7 @@ import TopNavigationBar from "@/shared/ui/TopNavigationBar";
 import ActivityList from "@/features/certification/ui/ActivityList";
 import React, { useEffect, useState } from "react";
 import ActivityDescription from "@/features/description/ui/ActivityDescription";
-import { useActivityTourStore } from "@/features/description/lib/useActivityTourStore";
+import { useActivityTourStore } from "@/features/certification/model/useActivityTourStore";
 
 const ActivitySelectClientPage = () => {
   const [activeTab, setActiveTab] = useState("select");

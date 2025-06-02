@@ -15,7 +15,7 @@ const CoupleInvitePage = () => {
 
   function handleCopyToClipboard() {
     navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/couple/invited/${URLDecodedInviteCode}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/couple/invited?inviteCode=${URLDecodedInviteCode}`
     );
     setCopySuccessToast(true);
     const timer = setTimeout(() => {

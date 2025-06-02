@@ -20,7 +20,7 @@ import { prepareFileInput } from "../lib/prepareFileInput";
 import { HTTPError } from "ky";
 import { readImageDate } from "../lib/readImageDate";
 import { isValidExifDate } from "../lib/isValidExifDate";
-import { useActivityTourStore } from "@/features/description/lib/useActivityTourStore";
+import { useActivityTourStore } from "@/features/certification/model/useActivityTourStore";
 
 const ActivityList = () => {
   const plusProgress = useCertificationStore((state) => state.plusProgress);

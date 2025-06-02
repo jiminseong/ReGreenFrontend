@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import InstallPrompt from "@/features/splash/ui/InstallPrompt";
 import { useInstallPromptStore } from "@/features/splash/ui/model/store";
+import { KakaoInAppBanner } from "@/shared/ui/KakaoInAppBanner";
 
 export default function Page() {
   const router = useRouter();
@@ -79,6 +80,7 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-white flex  items-center justify-center px-4">
+      <KakaoInAppBanner />
       {promptVisible && (
         <InstallPrompt
           isIOS={isIOS}
