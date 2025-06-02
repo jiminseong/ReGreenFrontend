@@ -9,6 +9,7 @@ import { useToastStore } from "@/shared/store/useToastStore";
 import { useNickName } from "@/entities/user/lib/useNickName";
 import CommonModal from "@/widgets/ComonModal";
 import Loading from "@/widgets/Loading";
+import { KakaoInAppBanner } from "@/shared/ui/KakaoInAppBanner";
 
 const CoupleInvitePage = () => {
   const params = useSearchParams();
@@ -69,6 +70,7 @@ const CoupleInvitePage = () => {
 
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5 pt-24">
+      <KakaoInAppBanner />
       {loading && <Loading />}
       {modalOpen && (
         <CommonModal
