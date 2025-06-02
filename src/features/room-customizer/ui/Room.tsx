@@ -78,7 +78,7 @@ const Room = () => {
         }}
         className="relative w-full h-full flex flex-col items-center justify-center  overflow-hidden"
       >
-        {coupleIsSuccess && couple.data.breakupBufferPoint !== 0 && (
+        {coupleIsSuccess && couple.data.breakupBufferPoint === 0 && (
           <Image
             src="/image/home/roomBackdrop.png"
             alt="방 배경"

@@ -10,7 +10,7 @@ import Button from "@/shared/ui/Button";
 export default function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const imageUrl = searchParams.get("imageUrl");
+  // const imageUrl = searchParams.get("imageUrl");
   const title = searchParams.get("title");
   const ecoLovePoint = searchParams.get("ecoLovePoint");
   const breakupBufferPoint = searchParams.get("breakupBufferPoint");
@@ -95,33 +95,34 @@ export default function Page() {
                 transition={{ duration: 0.3 }}
                 className="absolute z-50 bottom-0 px-5 py-5 bg-white rounded-t-[20px] flex flex-col gap-5 w-full"
               >
-                {imageUrl && (
-                  <div
-                    ref={ref}
-                    // 높이를 넓이와 동일하게 설정
-                    className="w-full h-[calc(100vw)] f  max-h-[500px] overflow-hidden rounded-lg relative"
-                  >
-                    <div className="absolute inset-0 bg-black/50 w-full h-full z-5" />
-                    {imageUrl && (
+                {/* {imageUrl && ( */}
+                <div
+                  ref={ref}
+                  // 높이를 넓이와 동일하게 설정
+                  className="w-full h-[calc(100vw)] f  max-h-[500px] overflow-hidden rounded-lg relative"
+                >
+                  <div className="absolute inset-0 bg-black/50 w-full h-full z-5" />
+                  {/* {imageUrl && ( */}
+                  <Image
+                    // src={imageUrl}
+                    src="/image/default.png"
+                    alt="activity image"
+                    fill
+                    className="object-cover rounded-lg"
+                  />
+                  {/* )} */}
+                  <div className="absolute bottom-5 right-5 flex flex-col gap-4 z-10">
+                    <div className="flex items-center gap-2">
                       <Image
-                        src={imageUrl}
-                        alt="activity image"
-                        fill
-                        className="object-cover rounded-lg"
+                        src="/icon/activity/certification/photoFrameIcon.svg"
+                        alt="calendar icon"
+                        width={38}
+                        height={56}
                       />
-                    )}
-                    <div className="absolute bottom-5 right-5 flex flex-col gap-4 z-10">
-                      <div className="flex items-center gap-2">
-                        <Image
-                          src="/icon/activity/certification/photoFrameIcon.svg"
-                          alt="calendar icon"
-                          width={38}
-                          height={56}
-                        />
-                      </div>
                     </div>
                   </div>
-                )}
+                </div>
+                {/* )} */}
                 <div className="flex items-center justify-between gap-[15px]">
                   <ShareButton title={title ?? ""} image={ref} />
                   <Button gray onClick={handleHomeButtonClick}>

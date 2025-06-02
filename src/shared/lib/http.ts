@@ -70,7 +70,8 @@ export const http = ky.create({
      */
     afterResponse: [
       async (request, options, response) => {
-        if (response.status === 41005) {
+        console.log("afterResponse", response.status);
+        if (response.status === 401) {
           // 로컬 스토리지 비우기
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
