@@ -28,7 +28,7 @@ const LoginPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
-  const inviteCode = searchParams.get("inviteCode") || "";
+  const inviteCode = localStorage.getItem("inviteCode") || searchParams.get("inviteCode");
 
   const [loading, setLoading] = useState(false);
   const [loginCompleted, setLoginCompleted] = useState(false);
