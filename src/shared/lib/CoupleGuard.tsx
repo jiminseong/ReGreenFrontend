@@ -5,13 +5,17 @@ import { useEffect } from "react";
 
 const CoupleGuard = () => {
   const router = useRouter();
-  const { data, isSuccess } = useMyInfo();
+  const { data, isSuccess, isError, isPending } = useMyInfo();
 
   useEffect(() => {
+    if (!isPending && isError) {
+      router.push("/login");
+      return;
+    }
     if (!isSuccess) return;
     if (isSuccess && data.coupleId === null) {
       console.warn("커플이 없어 /couple로 이동");
-      router.replace("/couple");
+      router.push("/couple");
     }
   }, [isSuccess, data?.coupleId, router]);
 

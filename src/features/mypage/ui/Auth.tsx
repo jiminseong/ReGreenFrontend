@@ -21,9 +21,9 @@ const Auth = () => {
           message: string;
         }>();
         if (res.code === 2000) {
-          await localStorage.removeItem("accessToken");
-          await localStorage.removeItem("refreshToken");
-          router.push("/login");
+          // 모든 accessToken, refreshToken을 포함한 로컬스토리지 초기화
+          localStorage.clear();
+          router.push("/");
         } else {
         }
       } catch (error) {
@@ -43,8 +43,8 @@ const Auth = () => {
         message: string;
       }>();
       if (res.code === 2000) {
-        await localStorage.removeItem("accessToken");
-        await localStorage.removeItem("refreshToken");
+        // 모든 accessToken, refreshToken을 포함한 로컬스토리지 초기화
+        localStorage.clear();
         router.push("/");
       } else {
       }

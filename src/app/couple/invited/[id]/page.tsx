@@ -19,7 +19,7 @@ const CoupleInvitePage = () => {
   const URLDecodedInviteCode = decodeURIComponent(inviteCode as string);
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
-  const { data, refetch, isSuccess } = useMyInfo();
+  const { data, refetch, isSuccess, isError } = useMyInfo();
   const [modalOpen, setModalOpen] = React.useState(false);
 
   const { data: inviteNickName, isSuccess: isNickSuccess } = useNickName({
@@ -59,14 +59,13 @@ const CoupleInvitePage = () => {
   useEffect(() => {
     if (!isSuccess) return;
 
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      router.replace("/login");
+    if (isError) {
+      // 로그인 여부 우선 판단
+      router.push(`/login?inviteCode=${inviteCode}`);
       return;
     }
-
     if (data?.coupleId) {
-      router.replace("/home");
+      router.push("/home");
     }
     // 커플 없으면 그대로 초대코드 입력화면 유지
   }, [data?.coupleId, isSuccess]);

@@ -6,11 +6,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 import LoginButton from "@/features/auth/ui/LoginButton";
 import { http } from "@/shared/lib/http";
 import Loading from "@/widgets/Loading";
+import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 
-const LoginPage = () => {
+interface LoginPageProps {
+  inviteCode: string; // 초대 코드가 있을 경우
+}
+const LoginPage = ({ inviteCode }: LoginPageProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
+  const { data } = useMyInfo();
 
   const [hasRequestedLogin, setHasRequestedLogin] = useState(false); // 중복 방지
   const [loading, setLoading] = useState(false); // 로딩 상태
@@ -23,6 +28,7 @@ const LoginPage = () => {
   //    - 로그인 성공 시 쿠키에 accessToken과 refreshToken을 저장
   //    - 로그인 성공 후 페이지 새로고침 (선택적)
   //    - 로그인 성공 후 coupleId에 따라 페이지 분기
+  //    - inviteCode가 있으면 /couple/invited/Encoded[inviteCode]로 이동
   //    - coupleId가 있으면 /home으로, 없으면 /couple로 이동
 
   useEffect(() => {
@@ -41,12 +47,20 @@ const LoginPage = () => {
 
         if (res.code === 2000) {
           await setLoading(false);
-
           setHasRequestedLogin(true);
           // 로컬 스토리지에 accessToken과 refreshToken 저장
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
-          router.push("/home");
+          if (data?.coupleId) {
+            router.push("/home");
+          } else if (data?.coupleId === null && inviteCode.length === 0) {
+            // 커플이 없고, 초대 받기 로직으로부터 온 경우가 아니라면 couple 페이지로 이동
+            router.push("/couple");
+          } else if (data?.coupleId === null && inviteCode.length > 0) {
+            // 초대 코드가 없고, 초대 받기 로직으로부터 온 경우
+            const encodedInviteCode = encodeURIComponent(inviteCode);
+            router.push(`/couple/invited/${encodedInviteCode}`);
+          }
         } else {
         }
       } catch (error) {
@@ -57,13 +71,6 @@ const LoginPage = () => {
 
     loginHandler();
   }, [code, hasRequestedLogin]);
-
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      return;
-    }
-  }, []);
 
   return (
     <div className="flex flex-col items-center justify-between h-screen p-5 ">
