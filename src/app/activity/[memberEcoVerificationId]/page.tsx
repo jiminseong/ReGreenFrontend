@@ -1,7 +1,7 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import CoupleGuard from "@/shared/lib/CoupleGuard";
 import ShareButton from "@/features/certification/ui/ShareButton";
@@ -10,10 +10,12 @@ import Button from "@/shared/ui/Button";
 export default function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const params = useParams();
   const imageUrl = searchParams.get("imageUrl");
   const title = searchParams.get("title");
   const ecoLovePoint = searchParams.get("ecoLovePoint");
   const breakupBufferPoint = searchParams.get("breakupBufferPoint");
+  const memberEcoVerificationId = params.memberEcoVerificationId;
 
   const ref = useRef<HTMLDivElement>(null);
   const [isBottomModal, setIsBottomModal] = useState(false);
@@ -26,6 +28,12 @@ export default function Page() {
     await setIsBottomModal(false);
     router.push("/home");
   };
+
+  useEffect(() => {
+    if (!imageUrl || !title || !ecoLovePoint || !breakupBufferPoint || !memberEcoVerificationId) {
+      router.push("/home");
+    }
+  }, [imageUrl, title, ecoLovePoint, breakupBufferPoint, memberEcoVerificationId, router]);
 
   return (
     <>
@@ -122,8 +130,14 @@ export default function Page() {
                     </div>
                   </div>
                 )}
+
                 <div className="flex items-center justify-between gap-[15px]">
-                  <ShareButton title={title ?? ""} image={ref} />
+                  <ShareButton
+                    title={title ?? ""}
+                    memberEcoVerificationId={String(memberEcoVerificationId)}
+                    image={ref}
+                  />
+
                   <Button gray onClick={handleHomeButtonClick}>
                     홈으로
                   </Button>
