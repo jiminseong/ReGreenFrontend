@@ -14,3 +14,16 @@ self.addEventListener("push", function (event) {
     event.waitUntil(self.registration.showNotification(data.title, options));
   }
 });
+
+self.addEventListener("install", () => {
+  self.skipWaiting(); // 설치되자마자 활성화
+});
+
+self.addEventListener("activate", () => {
+  clients.claim(); // 열린 탭에 바로 적용
+});
+
+self.addEventListener("fetch", (event) => {
+  // 항상 네트워크에서 최신 리소스를 받음 (캐싱 X)
+  event.respondWith(fetch(event.request));
+});

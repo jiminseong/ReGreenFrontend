@@ -28,19 +28,6 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .then((registration) => {
-          console.log("✅ Service Worker 등록 성공", registration);
-        })
-        .catch((error) => {
-          console.error("❌ Service Worker 등록 실패", error);
-        });
-    }
-  }, []);
-
-  useEffect(() => {
     if (isPending) return;
     const accessToken = localStorage.getItem("accessToken");
     const onboarded = localStorage.getItem("onboarded");
