@@ -4,6 +4,7 @@ import QueryProvider from "./providers/query-provider";
 import "./globals.css";
 import SwiperBlockWrapper from "./providers/SwiperBlockWrapper";
 import { Analytics } from "@vercel/analytics/next";
+import { RegisterSW } from "./providers/RegisterSW";
 
 export const metadata: Metadata = {
   title: "우리는 이별을 미루기로 했다.",
@@ -121,6 +122,7 @@ export default function RootLayout({
         `}
           >
             <SwiperBlockWrapper>
+              <RegisterSW />
               <Analytics />
               {children}
             </SwiperBlockWrapper>

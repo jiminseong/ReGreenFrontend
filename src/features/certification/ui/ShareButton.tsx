@@ -53,12 +53,12 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
           return;
         }
       } else {
-        // const url = URL.createObjectURL(blob);
-        // const link = document.createElement("a");
-        // link.href = url;
-        // link.download = `${fileTitle}.png`;
-        // link.click();
-        // URL.revokeObjectURL(url);
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${fileTitle}.png`;
+        link.click();
+        URL.revokeObjectURL(url);
       }
     } catch (error) {
       console.error("이미지 공유 실패:", error);
