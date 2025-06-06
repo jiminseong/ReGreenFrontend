@@ -1,4 +1,5 @@
 "use client";
+
 import Button from "@/shared/ui/Button";
 import html2canvas from "html2canvas-pro";
 import React from "react";
@@ -12,16 +13,12 @@ interface ShareButtonProps {
 }
 
 const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps) => {
-  //const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) && !("MSStream" in window);
-  const { openToast } = useToastStore((state) => ({
-    openToast: state.openToast,
-  }));
+  const openToast = useToastStore((state) => state.openToast);
+
   const handleShareButtonClick = async () => {
     if (!image.current) return;
 
     try {
-      //공유하기 누를 시에 포인트 추가 적립
-
       const canvas = await html2canvas(image.current, {
         useCORS: true,
         scale: window.devicePixelRatio,
@@ -48,6 +45,7 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
           files: [file],
         });
 
+        //공유하기 누를 시에 포인트 추가 적립
         const response = await postShare(memberEcoVerificationId);
         if (response.code === 2000) {
           openToast("공유 추가 하트 20점 적립! 감사합니다!");
