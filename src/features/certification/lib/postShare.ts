@@ -15,7 +15,9 @@ interface PostShareError {
 
 export const postShare = async (memberEcoVerificationId: string) => {
   const response = await httpNoThrow
-    .post(`api/eco-verifications/my/${memberEcoVerificationId}/link`)
+    .patch(`api/eco-verifications/my/${memberEcoVerificationId}/link`, {
+      json: { url: "https://blabla.com" },
+    })
     .json<PostShareResponse | PostShareError>();
   if (response.code === 2000) {
     // 성공 처리
