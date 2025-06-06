@@ -1,3 +1,4 @@
+"use client";
 import Button from "@/shared/ui/Button";
 import html2canvas from "html2canvas-pro";
 import React from "react";
