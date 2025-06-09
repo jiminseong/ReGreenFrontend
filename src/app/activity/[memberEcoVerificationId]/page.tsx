@@ -114,11 +114,9 @@ export default function Page() {
               >
                 <div
                   ref={ref}
-                  style={{
-                    backgroundImage: `url(${proxyUrl})`,
-                  }}
-                  className="w-full max-w-[500px] aspect-square overflow-hidden rounded-lg relative bg-center bg-cover"
+                  className="w-full max-w-[500px] aspect-square overflow-hidden rounded-lg relative "
                 >
+                  <Image src={proxyUrl} alt="인증 사진" fill className="object-cover" />
                   <div className="absolute inset-0 bg-black/30" />
                   <div className="absolute bottom-5 right-5 flex items-center gap-2 border-none">
                     <Image

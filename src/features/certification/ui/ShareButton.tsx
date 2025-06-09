@@ -26,26 +26,6 @@ export default function ShareButton({
     if (!containerRef.current) return;
     setIsLoading(true);
 
-    // ① Pull the CSS background URL
-    const bgStyle = getComputedStyle(containerRef.current);
-    const match = bgStyle.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
-    const bgUrl = match && match[1];
-    if (!bgUrl) {
-      openToast("배경 이미지가 준비되지 않았습니다.");
-      setIsLoading(false);
-      return;
-    }
-
-    // ② Wait for the background to load
-    await new Promise<void>((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.src = bgUrl;
-      img.onload = () => resolve();
-      img.onerror = () => reject("배경 이미지 로드 실패");
-    });
-
-    // ③ If you’re still using <img> or next/image for the icon, wait for that too:
     await new Promise<void>((resolve, reject) => {
       const iconEl =
         containerRef.current!.querySelector<HTMLImageElement>("img[alt='프레임 아이콘']");
