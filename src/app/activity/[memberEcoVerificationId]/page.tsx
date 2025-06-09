@@ -17,6 +17,7 @@ export default function Page() {
   const breakupBufferPoint = searchParams.get("breakupBufferPoint");
   const memberEcoVerificationId = params.memberEcoVerificationId;
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [base64Image, setBase64Image] = useState<string | null>(null);
 
   const ref = useRef<HTMLDivElement>(null);
   const [isBottomModal, setIsBottomModal] = useState(false);
@@ -35,6 +36,26 @@ export default function Page() {
       router.push("/home");
     }
   }, [imageUrl, title, ecoLovePoint, breakupBufferPoint, memberEcoVerificationId, router]);
+  useEffect(() => {
+    if (!imageUrl) return;
+
+    // 초기화
+    setBase64Image(null);
+    setImageLoaded(false);
+
+    fetch(`/api/proxy/image?url=${encodeURIComponent(imageUrl)}`)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setBase64Image(reader.result as string); // base64 dataURL로 업데이트
+        };
+        reader.readAsDataURL(blob);
+      })
+      .catch((err) => {
+        console.error("이미지 base64 변환 실패:", err);
+      });
+  }, [imageUrl]);
 
   return (
     <>
@@ -104,16 +125,16 @@ export default function Page() {
                 transition={{ duration: 0.3 }}
                 className="absolute z-50 bottom-0 px-5 py-5 bg-white rounded-t-[20px] flex flex-col gap-5 w-full"
               >
-                {imageUrl && (
+                {base64Image && (
                   <div
                     ref={ref}
                     // 높이를 넓이와 동일하게 설정
                     className="w-full h-[calc(100vw)] f  max-h-[500px] overflow-hidden rounded-lg relative"
                   >
                     <div className="absolute inset-0 bg-black/50 w-full h-full z-5" />
-                    {imageUrl && (
+                    {base64Image && (
                       <img
-                        src={`/api/proxy/image?url=${encodeURIComponent(imageUrl)}`}
+                        src={base64Image}
                         alt="activity image"
                         className="object-cover rounded-lg w-full h-full"
                         style={{ objectFit: "cover", borderRadius: "12px" }}
