@@ -21,10 +21,6 @@ export default function Page() {
   const { isOpen, message } = useToastStore();
   const ref = useRef<HTMLDivElement>(null);
   const [isBottomModal, setIsBottomModal] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [bgDataUrl, setBgDataUrl] = useState<string>("");
-  const [iconLoaded, setIconLoaded] = useState(false);
-
   const handleBottomModal = () => {
     setIsBottomModal(!isBottomModal);
   };
@@ -39,21 +35,6 @@ export default function Page() {
       router.push("/home");
     }
   }, [imageUrl, title, ecoLovePoint, breakupBufferPoint, memberEcoVerificationId, router]);
-
-  useEffect(() => {
-    if (!imageUrl) return;
-    (async () => {
-      const res = await fetch(`/api/proxy/image?url=${encodeURIComponent(imageUrl)}`);
-      const blob = await res.blob();
-      const dataUrl = await new Promise<string>((r) => {
-        const reader = new FileReader();
-        reader.onload = () => r(reader.result as string);
-        reader.readAsDataURL(blob);
-      });
-      setBgDataUrl(dataUrl);
-      setImageLoaded(true);
-    })();
-  }, [imageUrl]);
 
   return (
     <>
@@ -126,35 +107,33 @@ export default function Page() {
               >
                 {imageUrl && (
                   <div
-                    ref={ref} // 여기만 ref 유지
+                    ref={ref}
                     className="w-full h-[calc(100vw)] max-h-[500px] overflow-hidden rounded-lg relative"
-                    style={{
-                      backgroundImage: `url(${bgDataUrl})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }}
                   >
-                    <div className="absolute inset-0 bg-black/20 w-full h-full z-5" />
-                    <div className="absolute bottom-5 right-5 flex flex-col gap-4 z-10">
-                      <div className="flex items-center gap-2">
-                        <Image
-                          src="/icon/activity/certification/photoFrameIcon.svg"
-                          alt="calendar icon"
-                          width={38}
-                          height={56}
-                          onLoadingComplete={() => setIconLoaded(true)}
-                        />
-                      </div>
+                    <Image
+                      src={imageUrl}
+                      fill
+                      alt="활동 인증"
+                      className="w-full h-full object-cover"
+                      crossOrigin="anonymous"
+                    />
+                    <div className="absolute inset-0 bg-black/20" />
+                    <div className="absolute bottom-5 right-5 flex items-center gap-2">
+                      <Image
+                        src="/icon/activity/certification/photoFrameIcon.svg"
+                        alt="프레임 아이콘"
+                        width={38}
+                        height={56}
+                      />
                     </div>
                   </div>
                 )}
+
                 <div className="flex items-center justify-between gap-[15px]">
                   <ShareButton
                     title={title ?? ""}
                     memberEcoVerificationId={String(memberEcoVerificationId)}
-                    ref={ref}
-                    imageLoaded={imageLoaded}
-                    iconLoaded={iconLoaded}
+                    imageUrl={imageUrl}
                   />
 
                   <Button gray onClick={handleHomeButtonClick}>
