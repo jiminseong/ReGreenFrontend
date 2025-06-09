@@ -5,7 +5,7 @@ import { postShare } from "../lib/postShare";
 import { useToastStore } from "@/shared/store/useToastStore";
 
 interface ShareButtonProps {
-  image: React.RefObject<HTMLDivElement | null>;
+  image: React.RefObject<HTMLDivElement> | null;
   title: string;
   memberEcoVerificationId: string;
 }
@@ -14,7 +14,7 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
   const { openToast } = useToastStore();
 
   const handleClick = async () => {
-    if (!image.current) return;
+    if (!image) return;
 
     try {
       const blob = await htmlToImage.toBlob(image.current, {

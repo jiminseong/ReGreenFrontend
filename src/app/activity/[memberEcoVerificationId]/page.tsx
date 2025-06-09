@@ -111,11 +111,11 @@ export default function Page() {
                   >
                     <div className="absolute inset-0 bg-black/50 w-full h-full z-5" />
                     {imageUrl && (
-                      <Image
+                      <img
                         src={imageUrl}
                         alt="activity image"
-                        fill
-                        className="object-cover rounded-lg"
+                        className="object-cover rounded-lg w-full h-full"
+                        style={{ objectFit: "cover", borderRadius: "12px" }}
                       />
                     )}
                     <div className="absolute bottom-5 right-5 flex flex-col gap-4 z-10">
