@@ -21,7 +21,7 @@ export default function Page() {
   const { isOpen, message } = useToastStore();
   const ref = useRef<HTMLDivElement>(null);
   const [isBottomModal, setIsBottomModal] = useState(false);
-  // const [proxyUrl, setProxyUrl] = useState<string | null>(null);
+
   const handleBottomModal = () => {
     setIsBottomModal(!isBottomModal);
   };
@@ -37,12 +37,6 @@ export default function Page() {
     }
   }, [imageUrl, title, ecoLovePoint, breakupBufferPoint, memberEcoVerificationId, router]);
 
-  // useEffect(() => {
-  //   if (imageUrl) {
-  //     const proxyUrl = `/api/proxy/image?url=${imageUrl}`;
-  //     setProxyUrl(proxyUrl);
-  //   }
-  // }, [imageUrl]);
   return (
     <>
       <CoupleGuard />
