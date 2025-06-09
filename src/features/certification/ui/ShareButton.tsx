@@ -23,20 +23,42 @@ export default function ShareButton({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
-    if (containerRef === null) {
-      openToast("공유할 이미지가 준비되지 않았습니다.");
+    if (!containerRef.current) return;
+    setIsLoading(true);
+
+    // ① Pull the CSS background URL
+    const bgStyle = getComputedStyle(containerRef.current);
+    const match = bgStyle.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
+    const bgUrl = match && match[1];
+    if (!bgUrl) {
+      openToast("배경 이미지가 준비되지 않았습니다.");
+      setIsLoading(false);
       return;
     }
-    const container = containerRef.current;
-    if (!container) {
-      openToast("공유할 이미지가 준비되지 않았습니다.");
-      return;
-    }
+
+    // ② Wait for the background to load
+    await new Promise<void>((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = bgUrl;
+      img.onload = () => resolve();
+      img.onerror = () => reject("배경 이미지 로드 실패");
+    });
+
+    // ③ If you’re still using <img> or next/image for the icon, wait for that too:
+    await new Promise<void>((resolve, reject) => {
+      const iconEl =
+        containerRef.current!.querySelector<HTMLImageElement>("img[alt='프레임 아이콘']");
+      if (!iconEl) return resolve();
+      if (iconEl.complete) return resolve();
+      iconEl.onload = () => resolve();
+      iconEl.onerror = () => reject("아이콘 로드 실패");
+    });
 
     setIsLoading(true);
     try {
       // Blob 생성 (container 기반)
-      const blob = await createShareBlob(container);
+      const blob = await createShareBlob(containerRef.current);
 
       // 네이티브 공유
       const fileTitle = `우이미에서의 ${title || "활동"}!`;
