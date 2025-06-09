@@ -10,7 +10,7 @@ interface ShareButtonProps {
   imageUrl: string | null;
   title: string;
   memberEcoVerificationId: string;
-  isRef: HTMLDivElement | null;
+  isRef: React.RefObject<HTMLDivElement> | null;
 }
 
 export default function ShareButton({
@@ -24,8 +24,20 @@ export default function ShareButton({
 
   const handleClick = async () => {
     setIsLoading(true);
+    if (isRef === null) {
+      setIsLoading(false);
+      openToast("공유할 이미지가 준비되지 않았습니다.");
+      return;
+    }
+    const container = isRef.current;
+    if (!container || !imageUrl) {
+      setIsLoading(false);
+      openToast("공유할 이미지를 찾을 수 없습니다.");
+      return;
+    }
+
     try {
-      const blob = await createShareBlob(imageUrl, isRef);
+      const blob = await createShareBlob(imageUrl, container);
       const fileTitle = `우이미에서의 ${title || "활동"}!`;
       const file = new File([blob], `${fileTitle}.png`, { type: "image/png" });
 

@@ -1,6 +1,6 @@
 export async function createShareBlob(
   imageUrl: string | null,
-  container: HTMLElement | null, // ref.current
+  container: HTMLElement, // ref.current
   iconCssWidth = 38, // CSS 상에 보이는 아이콘 너비(px)
   iconCssHeight = 58, // CSS 상에 보이는 아이콘 높이(px)
   paddingCss = 20, // CSS 상 여백(px)

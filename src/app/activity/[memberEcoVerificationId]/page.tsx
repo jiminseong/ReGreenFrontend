@@ -130,12 +130,14 @@ export default function Page() {
                 )}
 
                 <div className="flex items-center justify-between gap-[15px]">
-                  <ShareButton
-                    title={title ?? ""}
-                    memberEcoVerificationId={String(memberEcoVerificationId)}
-                    imageUrl={imageUrl}
-                    isRef={ref}
-                  />
+                  {ref !== null && (
+                    <ShareButton
+                      title={title ?? ""}
+                      memberEcoVerificationId={String(memberEcoVerificationId)}
+                      imageUrl={imageUrl}
+                      isRef={ref}
+                    />
+                  )}
 
                   <Button gray onClick={handleHomeButtonClick}>
                     홈으로
