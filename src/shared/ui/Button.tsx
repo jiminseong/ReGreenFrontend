@@ -5,6 +5,7 @@ interface ButtonProps {
   className?: string;
   primary?: boolean;
   gray?: boolean;
+  ref?: React.Ref<HTMLButtonElement>;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -13,6 +14,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   className,
   gray = false,
+  ref,
 }) => {
   const bgColor = gray
     ? "bg-[#EEEEEE] text-black"
@@ -21,6 +23,7 @@ const Button: React.FC<ButtonProps> = ({
     : "bg-[#FFFFFF] text-ppink border-1 border-ppink";
   return (
     <motion.button
+      ref={ref}
       whileTap={{ scale: 0.95 }}
       transition={{ duration: 0.2 }}
       type="button"
