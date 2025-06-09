@@ -60,7 +60,6 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
       console.error("공유 실패:", error);
       openToast("이미지 처리 중 오류가 발생했습니다.");
     } finally {
-      // navigator.share 끝난 뒤에 Loading off
       setIsLoading(false);
     }
   };
