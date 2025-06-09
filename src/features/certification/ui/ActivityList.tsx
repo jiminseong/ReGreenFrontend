@@ -25,9 +25,8 @@ import { useActivityTourStore } from "@/features/certification/model/useActivity
 const ActivityList = () => {
   const plusProgress = useCertificationStore((state) => state.plusProgress);
   const router = useRouter();
-  const { openToast } = useToastStore();
   const { loading, setLoading } = useLoadingStore();
-  const { isOpen, message } = useToastStore();
+  const { openToast, isOpen, message } = useToastStore();
   const [currentCheckedId, setCurrentCheckedId] = useState<string>("");
   const { data: activities, isSuccess, isPending } = useActivityList();
   const { isSeen, syncWithLocalStorage } = useActivityTourStore();

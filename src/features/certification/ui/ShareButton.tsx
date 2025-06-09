@@ -5,6 +5,7 @@ import html2canvas from "html2canvas-pro";
 import React from "react";
 import { postShare } from "../lib/postShare";
 import { useToastStore } from "@/shared/store/useToastStore";
+import Toast from "@/widgets/Toast";
 
 interface ShareButtonProps {
   image: React.RefObject<HTMLDivElement | null>;
@@ -13,8 +14,7 @@ interface ShareButtonProps {
 }
 
 const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps) => {
-  const openToast = useToastStore((state) => state.openToast);
-
+  const { openToast, isOpen, message } = useToastStore();
   const handleShareButtonClick = async () => {
     if (!image.current) return;
 
@@ -51,6 +51,11 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
           openToast("공유 추가 하트 20점 적립! 감사합니다!");
           return;
         }
+        console.log("공유하기 실패:", response.code);
+        if (response.code === 47004) {
+          openToast("이미 공유한 인증입니다.");
+          return;
+        }
       } else {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -64,7 +69,12 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
     }
   };
 
-  return <Button onClick={handleShareButtonClick}>공유하기</Button>;
+  return (
+    <>
+      {isOpen && <Toast message={message} position="top" />}
+      <Button onClick={handleShareButtonClick}>공유하기</Button>
+    </>
+  );
 };
 
 export default ShareButton;
