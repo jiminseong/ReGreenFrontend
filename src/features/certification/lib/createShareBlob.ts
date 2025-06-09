@@ -1,5 +1,5 @@
 // lib/createShareBlob.ts
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 
 /**
  * HTML 요소를 html2canvas로 캡처하여 Blob으로 반환

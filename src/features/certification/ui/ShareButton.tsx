@@ -8,7 +8,8 @@ import LogoLoading from "@/widgets/LogoLoading";
 import { createShareBlob } from "../lib/createShareBlob";
 
 interface ShareButtonProps {
-  containerRef: React.RefObject<HTMLDivElement> | null;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+
   title: string;
   memberEcoVerificationId: string;
 }
