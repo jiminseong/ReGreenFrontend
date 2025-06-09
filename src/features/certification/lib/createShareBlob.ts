@@ -1,61 +1,33 @@
+// lib/createShareBlob.ts
+import html2canvas from "html2canvas";
+
+/**
+ * HTML 요소를 html2canvas로 캡처하여 Blob으로 반환
+ * @param container HTMLElement를 React.RefObject.current 형태로 넘겨주세요.
+ * @param useCORS crossOrigin 이미지 허용 여부
+ * @param backgroundColor 배경색 (null이면 투명)
+ */
 export async function createShareBlob(
-  imageUrl: string | null,
-  container: HTMLElement, // ref.current
-  iconCssWidth = 38, // CSS 상에 보이는 아이콘 너비(px)
-  iconCssHeight = 58, // CSS 상에 보이는 아이콘 높이(px)
-  paddingCss = 20, // CSS 상 여백(px)
-  overlayOpacity = 0.2
+  container: HTMLElement,
+  useCORS = true,
+  backgroundColor: string | null = null
 ): Promise<Blob> {
-  // 1) 로드 헬퍼
-  const loadImg = (src: string) =>
-    new Promise<HTMLImageElement>((res, rej) => {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = () => res(img);
-      img.onerror = rej;
-      img.src = src;
-    });
+  if (!(container instanceof HTMLElement)) {
+    throw new Error("createShareBlob: 유효한 HTMLElement가 필요합니다.");
+  }
 
-  // 2) 배경 + 아이콘 로딩
-  const proxyUrl = `/api/proxy/image?url=${encodeURIComponent(imageUrl ?? "")}`;
-  const [bg, icon] = await Promise.all([
-    loadImg(proxyUrl),
-    loadImg("/icon/activity/certification/photoFrameIcon.svg"),
-  ]);
+  // html2canvas로 캡처
+  const canvas = await html2canvas(container, {
+    useCORS,
+    backgroundColor,
+    scale: window.devicePixelRatio || 1,
+  });
 
-  // 3) 캔버스 및 DPI 세팅
-  const dpr = window.devicePixelRatio || 1;
-  const w = bg.naturalWidth;
-  const h = bg.naturalHeight;
-  const canvas = document.createElement("canvas");
-  canvas.width = w * dpr;
-  canvas.height = h * dpr;
-  const ctx = canvas.getContext("2d")!;
-  ctx.scale(dpr, dpr);
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = "high";
-
-  // 4) 배경 + overlay
-  ctx.drawImage(bg, 0, 0, w, h);
-  ctx.fillStyle = `rgba(0,0,0,${overlayOpacity})`;
-  ctx.fillRect(0, 0, w, h);
-
-  // 5) 스케일 계산: CSS → Blob
-  const rect = container?.getBoundingClientRect();
-  const scaleX = w / (rect?.width || 1);
-  const scaleY = h / (rect?.height || 1);
-
-  // 6) 아이콘 크기/위치 결정
-  const iconW = iconCssWidth * scaleX;
-  const iconH = iconCssHeight * scaleY;
-  const padX = paddingCss * scaleX;
-  const padY = paddingCss * scaleY;
-  const x = w - iconW - padX;
-  const y = h - iconH - padY;
-
-  // 7) 아이콘 그리기
-  ctx.drawImage(icon, x, y, iconW, iconH);
-
-  // 8) Blob 반환
-  return new Promise<Blob>((resolve) => canvas.toBlob((b) => b && resolve(b), "image/png"));
+  // canvas to Blob
+  return new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error("Blob 생성 실패"));
+    }, "image/png");
+  });
 }

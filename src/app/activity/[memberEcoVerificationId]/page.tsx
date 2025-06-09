@@ -134,8 +134,7 @@ export default function Page() {
                     <ShareButton
                       title={title ?? ""}
                       memberEcoVerificationId={String(memberEcoVerificationId)}
-                      imageUrl={imageUrl}
-                      isRef={ref}
+                      containerRef={ref}
                     />
                   )}
 
