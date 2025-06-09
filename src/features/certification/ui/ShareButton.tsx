@@ -1,5 +1,5 @@
 import * as htmlToImage from "html-to-image";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Button from "@/shared/ui/Button";
 import { postShare } from "../lib/postShare";
 import { useToastStore } from "@/shared/store/useToastStore";
@@ -12,83 +12,47 @@ interface ShareButtonProps {
 
 const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps) => {
   const { openToast } = useToastStore();
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    console.log("buttonRef.current", buttonRef.current);
-    console.log("image.current innerHTML", image.current?.innerHTML);
+  const handleClick = async () => {
+    if (!image.current) return;
 
-    const handleClick = async () => {
-      console.log("공유하기 버튼 클릭됨");
-      if (!image.current) {
-        console.log("이미지 요소가 없습니다.");
-        return;
+    try {
+      const blob = await htmlToImage.toBlob(image.current, {
+        pixelRatio: 1,
+        cacheBust: false,
+      });
+
+      if (!blob) {
+        throw new Error("Blob 생성 실패");
       }
 
-      try {
-        // html-to-image → blob 얻기
-        console.log("html-to-image 시작");
-        const blob = await htmlToImage.toBlob(image.current, {
-          cacheBust: true,
-          pixelRatio: 1, // 필요 시 조절 가능
-        });
+      console.log("blob size", blob.size);
 
-        if (!blob) {
-          throw new Error("Blob 생성 실패");
-        }
+      const fileTitle = `우이미에서의 ${title === "" ? "활동" : title}!`;
+      const file = new File([blob], `${fileTitle}.png`, {
+        type: "image/png",
+      });
 
-        console.log("blob size", blob.size);
+      await navigator.share({
+        title: fileTitle,
+        files: [file],
+      });
 
-        const fileTitle = `우이미에서의 ${title === "" ? "활동" : title}!`;
-        const file = new File([blob], `${fileTitle}.png`, {
-          type: "image/png",
-        });
-
-        // Safari 대응용 trusted click 확보 → requestAnimationFrame + setTimeout
-        requestAnimationFrame(() => {
-          setTimeout(async () => {
-            try {
-              await navigator.share({
-                title: fileTitle,
-                files: [file], // files만
-              });
-
-              console.log("✅ 파일만 공유 성공");
-
-              // 공유 성공 시 → postShare 호출
-              const response = await postShare(memberEcoVerificationId);
-              if (response.code === 2000) {
-                openToast("공유 추가 하트 20점 적립! 감사합니다!");
-              } else if (response.code === 47004) {
-                openToast("이미 공유한 인증입니다.");
-              } else {
-                console.log("공유하기 실패:", response.code);
-              }
-            } catch (err) {
-              console.error("❌ 파일만 공유 실패:", err);
-              openToast("이미지 공유 중 오류가 발생했습니다.");
-            }
-          }, 150); // 애니메이션 frame 안정화
-        });
-      } catch (err) {
-        console.error("이미지 처리 실패:", err);
-        openToast("이미지 처리 중 오류가 발생했습니다.");
+      const response = await postShare(memberEcoVerificationId);
+      if (response.code === 2000) {
+        openToast("공유 추가 하트 20점 적립! 감사합니다!");
+      } else if (response.code === 47004) {
+        openToast("이미 공유한 인증입니다.");
+      } else {
+        console.log("공유하기 실패:", response.code);
       }
-    };
-
-    const button = buttonRef.current;
-    if (button) {
-      button.addEventListener("click", handleClick);
+    } catch (err) {
+      console.error("이미지 처리 실패:", err);
+      openToast("이미지 처리 중 오류가 발생했습니다.");
     }
+  };
 
-    return () => {
-      if (button) {
-        button.removeEventListener("click", handleClick);
-      }
-    };
-  }, [image, title, memberEcoVerificationId, openToast]);
-
-  return <Button ref={buttonRef}>공유하기</Button>;
+  return <Button onClick={handleClick}>공유하기</Button>;
 };
 
 export default ShareButton;
