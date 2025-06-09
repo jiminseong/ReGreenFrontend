@@ -1,4 +1,4 @@
-import html2canvas from "html2canvas-pro";
+import * as htmlToImage from "html-to-image";
 import React, { useEffect, useRef } from "react";
 import Button from "@/shared/ui/Button";
 import { postShare } from "../lib/postShare";
@@ -16,6 +16,8 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
 
   useEffect(() => {
     console.log("buttonRef.current", buttonRef.current);
+    console.log("image.current innerHTML", image.current?.innerHTML);
+
     const handleClick = async () => {
       console.log("공유하기 버튼 클릭됨");
       if (!image.current) {
@@ -24,23 +26,16 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
       }
 
       try {
-        // html2canvas → canvas 얻기
-        const canvas = await html2canvas(image.current, {
-          useCORS: true,
-          scale: 1,
-          backgroundColor: null,
-          scrollY: -window.scrollY,
+        // html-to-image → blob 얻기
+        console.log("html-to-image 시작");
+        const blob = await htmlToImage.toBlob(image.current, {
+          cacheBust: true,
+          pixelRatio: 1, // 필요 시 조절 가능
         });
 
-        // toDataURL → fetch → blob 변환 (Safari 대응)
-        const dataUrl = canvas.toDataURL("image/png");
-        console.log("dataUrl length", dataUrl.length);
-        console.log("dataUrl sample", dataUrl.slice(0, 100));
-        console.log("fetch start");
-        const response = await fetch(dataUrl);
-        console.log("fetch success");
-
-        const blob = await response.blob();
+        if (!blob) {
+          throw new Error("Blob 생성 실패");
+        }
 
         console.log("blob size", blob.size);
 
