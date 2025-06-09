@@ -1,13 +1,3 @@
-// lib/useShare.ts
-export interface UseShareOptions {
-  file?: File;
-  title?: string;
-  text?: string;
-  url?: string;
-  onSuccess?: () => void;
-  onFailure?: (err: unknown) => void;
-}
-
 export const useShare = () => {
   const isiOS =
     typeof window !== "undefined" &&
@@ -29,7 +19,6 @@ export const useShare = () => {
 
       const shareData: ShareData = {};
 
-      // iOS + WhatsApp → files만 보냄
       if (isiOS && isWhatsApp && file) {
         shareData.files = [file];
       } else {
@@ -47,14 +36,33 @@ export const useShare = () => {
       if (canShareFiles) {
         await navigator.share(shareData);
         onSuccess?.();
+      } else if (file) {
+        alert("파일 공유 불가");
       } else {
         throw new Error("Web Share API not supported or file sharing not available.");
       }
     } catch (err) {
-      console.error("공유 실패:", err);
-      onFailure?.(err);
+      console.error("❌ 공유 실패:", err);
+
+      // 여기 추가 → reason 분기
+      let reason = "unknown";
+      if (err instanceof DOMException && err.name === "AbortError") {
+        reason = "canceled";
+      } else if (err instanceof Error) {
+        reason = err.message;
+      }
+
+      onFailure?.(err as Error | DOMException, reason);
     }
   };
 
   return { share };
 };
+export interface UseShareOptions {
+  file?: File;
+  title?: string;
+  text?: string;
+  url?: string;
+  onSuccess?: () => void;
+  onFailure?: (error: Error | DOMException, reason?: string) => void;
+}
