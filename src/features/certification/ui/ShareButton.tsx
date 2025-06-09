@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Button from "@/shared/ui/Button";
 import { postShare } from "../lib/postShare";
 import { useToastStore } from "@/shared/store/useToastStore";
-import Loading from "@/widgets/Loading";
+import LogoLoading from "@/widgets/LogoLoading";
 
 interface ShareButtonProps {
   image: React.RefObject<HTMLDivElement | null>;
@@ -35,9 +35,19 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
         type: "image/png",
       });
 
-      await navigator.share({
-        title: fileTitle,
-        files: [file],
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(async () => {
+          try {
+            await navigator.share({
+              title: fileTitle,
+              files: [file],
+            });
+            resolve();
+          } catch (err) {
+            console.error("공유 실패:", err);
+            resolve();
+          }
+        });
       });
 
       const response = await postShare(memberEcoVerificationId);
@@ -50,13 +60,14 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
       console.error("공유 실패:", error);
       openToast("이미지 처리 중 오류가 발생했습니다.");
     } finally {
+      // navigator.share 끝난 뒤에 Loading off
       setIsLoading(false);
     }
   };
 
   return (
     <>
-      {isLoading && <Loading />}
+      {isLoading && <LogoLoading />}
       <Button onClick={handleClick}>공유하기</Button>
     </>
   );
