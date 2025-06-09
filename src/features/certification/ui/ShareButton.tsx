@@ -1,4 +1,5 @@
 // import html2canvas from "html2canvas-pro";
+import Button from "@/shared/ui/Button";
 import React, { useEffect, useRef } from "react";
 // import { postShare } from "../lib/postShare";
 // import { useToastStore } from "@/shared/store/useToastStore";
@@ -86,17 +87,22 @@ ShareButtonProps) => {
   //     }
   //   };
   // }, [image, title, memberEcoVerificationId, openToast, share]);
+
   useEffect(() => {
     const handleClick = async () => {
+      const blob = new Blob(["Hello world!"], { type: "text/plain" });
+      const file = new File([blob], "hello.txt", { type: "text/plain" });
+
       try {
         await navigator.share({
-          title: "Test share without file",
-          text: "Testing share without file",
-          url: window.location.href,
+          title: "Test file only",
+          files: [file],
+          // text: "Testing share with file",  --> 주석처리
+          // url: window.location.href,       --> 주석처리
         });
-        console.log("✅ 공유 성공");
+        console.log("✅ 파일만 공유 성공");
       } catch (err) {
-        console.error("❌ 공유 실패:", err);
+        console.error("❌ 파일만 공유 실패:", err);
       }
     };
 
@@ -112,7 +118,7 @@ ShareButtonProps) => {
     };
   }, []);
 
-  return <button ref={buttonRef}>공유하기</button>;
+  return <Button ref={buttonRef}>공유하기</Button>;
 };
 
 export default ShareButton;
