@@ -43,11 +43,9 @@ const InstallPrompt = ({
         </p>
       )}
 
-      {!isIOS && !isAndroid && (
-        <button onClick={onSkip} className="mt-6 px-4 py-2 underline text-sm">
-          웹으로 그냥 시작하기
-        </button>
-      )}
+      <button onClick={onSkip} className="mt-6 px-4 py-2 underline text-sm">
+        웹으로 그냥 시작하기
+      </button>
     </div>
   );
 };
