@@ -22,17 +22,17 @@ const ShareButton = ({ image, title, memberEcoVerificationId, imageLoaded }: Sha
     try {
       setIsLoading(true);
 
-      const blob = await htmlToImage.toBlob(image.current, {
+      const pngBlob = await htmlToImage.toPng(image.current, {
         pixelRatio: 1,
         cacheBust: false,
       });
 
-      if (!blob) {
+      if (!pngBlob) {
         throw new Error("Blob 생성 실패");
       }
 
       const fileTitle = `우이미에서의 ${title === "" ? "활동" : title}!`;
-      const file = new File([blob], `${fileTitle}.png`, {
+      const file = new File([pngBlob], `${fileTitle}.png`, {
         type: "image/png",
       });
 
