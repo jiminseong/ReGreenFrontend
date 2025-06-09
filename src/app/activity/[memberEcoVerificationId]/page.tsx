@@ -21,6 +21,7 @@ export default function Page() {
   const { isOpen, message } = useToastStore();
   const ref = useRef<HTMLDivElement>(null);
   const [isBottomModal, setIsBottomModal] = useState(false);
+  const [proxyUrl, setProxyUrl] = useState<string | null>(null);
   const handleBottomModal = () => {
     setIsBottomModal(!isBottomModal);
   };
@@ -36,6 +37,12 @@ export default function Page() {
     }
   }, [imageUrl, title, ecoLovePoint, breakupBufferPoint, memberEcoVerificationId, router]);
 
+  useEffect(() => {
+    if (imageUrl) {
+      const proxyUrl = `/api/proxy/image?url=${imageUrl}`;
+      setProxyUrl(proxyUrl);
+    }
+  }, [imageUrl]);
   return (
     <>
       <CoupleGuard />
@@ -87,7 +94,7 @@ export default function Page() {
 
         {/* 바텀 모달 */}
         <AnimatePresence>
-          {isBottomModal && (
+          {isBottomModal && proxyUrl && (
             <motion.div
               key="overlay"
               onClick={() => handleBottomModal()}
@@ -105,25 +112,23 @@ export default function Page() {
                 transition={{ duration: 0.3 }}
                 className="absolute z-50 bottom-0 px-5 py-5 bg-white rounded-t-[20px] flex flex-col gap-5 w-full"
               >
-                {imageUrl && (
-                  <div
-                    ref={ref}
-                    style={{
-                      backgroundImage: `url(/api/proxy/image?url=${imageUrl})`,
-                    }}
-                    className="w-full max-w-[500px] aspect-square overflow-hidden rounded-lg relative bg-center bg-cover"
-                  >
-                    <div className="absolute inset-0 bg-black/30" />
-                    <div className="absolute bottom-5 right-5 flex items-center gap-2 border-none">
-                      <Image
-                        src="/icon/activity/certification/photoFrameIcon.svg"
-                        alt="프레임 아이콘"
-                        width={38}
-                        height={56}
-                      />
-                    </div>
+                <div
+                  ref={ref}
+                  style={{
+                    backgroundImage: `url(${proxyUrl})`,
+                  }}
+                  className="w-full max-w-[500px] aspect-square overflow-hidden rounded-lg relative bg-center bg-cover"
+                >
+                  <div className="absolute inset-0 bg-black/30" />
+                  <div className="absolute bottom-5 right-5 flex items-center gap-2 border-none">
+                    <Image
+                      src="/icon/activity/certification/photoFrameIcon.svg"
+                      alt="프레임 아이콘"
+                      width={38}
+                      height={56}
+                    />
                   </div>
-                )}
+                </div>
 
                 <div className="flex items-center justify-between gap-[15px]">
                   {ref !== null && (
