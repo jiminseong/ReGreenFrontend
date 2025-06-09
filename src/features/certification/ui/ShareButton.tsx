@@ -1,4 +1,3 @@
-import Button from "@/shared/ui/Button";
 import html2canvas from "html2canvas-pro";
 import React, { useEffect, useRef } from "react";
 import { postShare } from "../lib/postShare";
@@ -87,7 +86,7 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
     };
   }, [image, title, memberEcoVerificationId, openToast, share]);
 
-  return <Button ref={buttonRef}>공유하기</Button>;
+  return <button ref={buttonRef}>공유하기</button>;
 };
 
 export default ShareButton;
