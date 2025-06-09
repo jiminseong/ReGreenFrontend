@@ -16,6 +16,7 @@ export default function Page() {
   const ecoLovePoint = searchParams.get("ecoLovePoint");
   const breakupBufferPoint = searchParams.get("breakupBufferPoint");
   const memberEcoVerificationId = params.memberEcoVerificationId;
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
   const [isBottomModal, setIsBottomModal] = useState(false);
@@ -116,6 +117,7 @@ export default function Page() {
                         alt="activity image"
                         className="object-cover rounded-lg w-full h-full"
                         style={{ objectFit: "cover", borderRadius: "12px" }}
+                        onLoad={() => setImageLoaded(true)}
                       />
                     )}
                     <div className="absolute bottom-5 right-5 flex flex-col gap-4 z-10">
@@ -136,6 +138,7 @@ export default function Page() {
                     title={title ?? ""}
                     memberEcoVerificationId={String(memberEcoVerificationId)}
                     image={ref}
+                    imageLoaded={imageLoaded} // 전달
                   />
 
                   <Button gray onClick={handleHomeButtonClick}>
