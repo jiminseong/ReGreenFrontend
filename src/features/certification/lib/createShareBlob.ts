@@ -1,47 +1,39 @@
 // lib/createShareBlob.ts
-import domtoimage from "dom-to-image-more";
+import * as htmlToImage from "html-to-image";
 
 /**
- * dom-to-image-more의 toPng을 이용해 HTMLElement를 캡처하여
- * 고해상도 PNG DataURL을 Blob으로 변환 후 반환합니다.
+ * HTMLElement를 html-to-image로 캡처하여
+ * (기본 DPR × 2) 고해상도 PNG Blob으로 반환합니다.
  *
- * @param container 캡처할 HTMLElement (예: ref.current)
- * @param filterNode 캡처 대상 필터 함수 (기본: 모든 노드 포함)
+ * @param container 캡처할 HTMLElement (ref.current)
+ * @param scaleFactor DPR에 곱할 배율 (default: 2)
  */
-export async function createShareBlob(
-  container: HTMLElement,
-  filterNode: (node: Node) => boolean = () => true
-): Promise<Blob> {
+export async function createShareBlob(container: HTMLElement, scaleFactor = 2): Promise<Blob> {
   if (!(container instanceof HTMLElement)) {
     throw new Error("createShareBlob: 유효한 HTMLElement가 필요합니다.");
   }
 
-  console.log("createShareBlob: 캡처 시작", container);
-  // 요소 크기 및 DPR 계산
-  const rect = container.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  const width = rect.width;
-  const height = rect.height;
+  // 실제 사용할 픽셀 배율: devicePixelRatio × scaleFactor
+  const pixelRatio = (window.devicePixelRatio || 1) * scaleFactor;
 
-  // dom-to-image-more 옵션 설정: 고해상도 캡처
   const options = {
-    width: width * dpr,
-    height: height * dpr,
+    cacheBust: true, // 캐시 우회
+    backgroundColor: "transparent", // 투명 배경 유지
+    width: container.clientWidth, // CSS 픽셀 너비 고정
+    height: container.clientHeight, // CSS 픽셀 높이 고정
+    pixelRatio, // DPR 대응 + 추가 배율
     style: {
-      transform: `scale(${dpr})`,
+      transform: "scale(1)",
       transformOrigin: "top left",
-      width: `${width}px`,
-      height: `${height}px`,
+      width: `${container.clientWidth}px`,
+      height: `${container.clientHeight}px`,
     },
-    filter: filterNode,
-    cacheBust: true,
   };
 
-  // toPng: PNG DataURL로 반환
-  const dataUrl: string = await domtoimage.toPng(container, options);
-
-  // DataURL을 Blob으로 변환
-  const response = await fetch(dataUrl);
-  const blob = await response.blob();
+  // toPng → DataURL
+  const dataUrl = await htmlToImage.toPng(container, options);
+  // DataURL → Blob
+  const res = await fetch(dataUrl);
+  const blob = await res.blob();
   return blob;
 }

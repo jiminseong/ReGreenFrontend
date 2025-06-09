@@ -28,7 +28,7 @@ describe("ShareButton", () => {
     });
 
     const { getByText } = render(
-      <ShareButton memberEcoVerificationId="123" image={imageRef} title="테스트" />
+      <ShareButton memberEcoVerificationId="123" containerRef={imageRef} title="테스트" />
     );
     fireEvent.click(getByText("공유하기"));
 
@@ -47,7 +47,7 @@ describe("ShareButton", () => {
     });
 
     const { getByText } = render(
-      <ShareButton memberEcoVerificationId="123" image={imageRef} title="테스트" />
+      <ShareButton memberEcoVerificationId="123" containerRef={imageRef} title="테스트" />
     );
     fireEvent.click(getByText("공유하기"));
 
