@@ -22,14 +22,19 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
         // html2canvas → canvas 얻기
         const canvas = await html2canvas(image.current, {
           useCORS: true,
-          scale: window.devicePixelRatio,
+          scale: 1,
           backgroundColor: null,
           scrollY: -window.scrollY,
         });
 
         // toDataURL → fetch → blob 변환 (Safari 대응)
         const dataUrl = canvas.toDataURL("image/png");
+        console.log("dataUrl length", dataUrl.length);
+        console.log("dataUrl sample", dataUrl.slice(0, 100));
+        console.log("fetch start");
         const response = await fetch(dataUrl);
+        console.log("fetch success");
+
         const blob = await response.blob();
 
         console.log("blob size", blob.size);
