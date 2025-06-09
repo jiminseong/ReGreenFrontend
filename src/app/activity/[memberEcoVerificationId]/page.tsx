@@ -112,7 +112,7 @@ export default function Page() {
                     <div className="absolute inset-0 bg-black/50 w-full h-full z-5" />
                     {imageUrl && (
                       <img
-                        src={imageUrl}
+                        src={`/api/proxy/image?url=${encodeURIComponent(imageUrl)}`}
                         alt="activity image"
                         className="object-cover rounded-lg w-full h-full"
                         style={{ objectFit: "cover", borderRadius: "12px" }}
