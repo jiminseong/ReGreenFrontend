@@ -22,6 +22,8 @@ export default function Page() {
   const ref = useRef<HTMLDivElement>(null);
   const [isBottomModal, setIsBottomModal] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [bgDataUrl, setBgDataUrl] = useState<string>("");
+  const [iconLoaded, setIconLoaded] = useState(false);
 
   const handleBottomModal = () => {
     setIsBottomModal(!isBottomModal);
@@ -40,20 +42,17 @@ export default function Page() {
 
   useEffect(() => {
     if (!imageUrl) return;
-
-    setImageLoaded(false);
-
-    fetch(`/api/proxy/image?url=${encodeURIComponent(imageUrl)}`)
-      .then((res) => {
-        if (res.ok) {
-          setImageLoaded(true);
-        } else {
-          console.error("이미지 fetch 실패:", res.status);
-        }
-      })
-      .catch((err) => {
-        console.error("이미지 fetch 실패:", err);
+    (async () => {
+      const res = await fetch(`/api/proxy/image?url=${encodeURIComponent(imageUrl)}`);
+      const blob = await res.blob();
+      const dataUrl = await new Promise<string>((r) => {
+        const reader = new FileReader();
+        reader.onload = () => r(reader.result as string);
+        reader.readAsDataURL(blob);
       });
+      setBgDataUrl(dataUrl);
+      setImageLoaded(true);
+    })();
   }, [imageUrl]);
 
   return (
@@ -130,7 +129,7 @@ export default function Page() {
                     ref={ref} // 여기만 ref 유지
                     className="w-full h-[calc(100vw)] max-h-[500px] overflow-hidden rounded-lg relative"
                     style={{
-                      backgroundImage: `url(/api/proxy/image?url=${encodeURIComponent(imageUrl)})`,
+                      backgroundImage: `url(${bgDataUrl})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                     }}
@@ -143,6 +142,7 @@ export default function Page() {
                           alt="calendar icon"
                           width={38}
                           height={56}
+                          onLoadingComplete={() => setIconLoaded(true)}
                         />
                       </div>
                     </div>
@@ -154,6 +154,7 @@ export default function Page() {
                     memberEcoVerificationId={String(memberEcoVerificationId)}
                     ref={ref}
                     imageLoaded={imageLoaded}
+                    iconLoaded={iconLoaded}
                   />
 
                   <Button gray onClick={handleHomeButtonClick}>
