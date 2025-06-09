@@ -108,17 +108,13 @@ export default function Page() {
                 {imageUrl && (
                   <div
                     ref={ref}
-                    className="w-full h-[calc(100vw)] max-h-[500px] overflow-hidden rounded-lg relative"
+                    style={{
+                      backgroundImage: `url(/api/proxy/image?url=${imageUrl})`,
+                    }}
+                    className="w-full max-w-[500px] aspect-square overflow-hidden rounded-lg relative bg-center bg-cover"
                   >
-                    <Image
-                      src={imageUrl}
-                      fill
-                      alt="활동 인증"
-                      className="w-full h-full object-cover"
-                      crossOrigin="anonymous"
-                    />
-                    <div className="absolute inset-0 bg-black/20" />
-                    <div className="absolute bottom-5 right-5 flex items-center gap-2">
+                    <div className="absolute inset-0 bg-black/30" />
+                    <div className="absolute bottom-5 right-5 flex items-center gap-2 border-none">
                       <Image
                         src="/icon/activity/certification/photoFrameIcon.svg"
                         alt="프레임 아이콘"
