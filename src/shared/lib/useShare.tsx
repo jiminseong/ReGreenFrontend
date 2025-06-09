@@ -47,13 +47,11 @@ export const useShare = () => {
       if (canShareFiles) {
         await navigator.share(shareData);
         onSuccess?.();
-      } else if (file) {
-        alert("파일 공유 불가");
       } else {
         throw new Error("Web Share API not supported or file sharing not available.");
       }
     } catch (err) {
-      console.error("❌ 공유 실패:", err);
+      console.error("공유 실패:", err);
       onFailure?.(err);
     }
   };
