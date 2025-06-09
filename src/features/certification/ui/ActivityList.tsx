@@ -7,7 +7,6 @@ import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
 import { useActivityList } from "@/entities/activity/lib/useActivityList";
 import DummyActivityItem from "./DummyActivityItem";
-import Loading from "@/widgets/Loading";
 import Toast from "@/widgets/Toast";
 import { useCertificationStore } from "@/features/description/lib/store";
 import { dummyActivities } from "../model/dummyActivities";
@@ -25,9 +24,8 @@ import { useActivityTourStore } from "@/features/certification/model/useActivity
 const ActivityList = () => {
   const plusProgress = useCertificationStore((state) => state.plusProgress);
   const router = useRouter();
-  const { openToast } = useToastStore();
   const { loading, setLoading } = useLoadingStore();
-  const { isOpen, message } = useToastStore();
+  const { openToast, isOpen, message } = useToastStore();
   const [currentCheckedId, setCurrentCheckedId] = useState<string>("");
   const { data: activities, isSuccess, isPending } = useActivityList();
   const { isSeen, syncWithLocalStorage } = useActivityTourStore();
@@ -211,7 +209,7 @@ const ActivityList = () => {
       </AnimatePresence>
       {isPending && (
         <div className="flex items-center justify-center h-[100dvh]">
-          <Loading />
+          <LogoLoading />
         </div>
       )}
       {isSuccess &&

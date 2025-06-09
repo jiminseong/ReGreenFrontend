@@ -117,7 +117,7 @@ export default function RootLayout({
           w-full
           min-w-[320px]
           bg-white
-          overflow-auto
+          overflow-hidden
           pb-[env(safe-area-inset-bottom)]
         `}
           >

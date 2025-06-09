@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRoomStore } from "../model/store";
 import { useMyPlacedFurniture } from "../lib/useMyPlacedFurniture";
-import Loading from "@/widgets/Loading";
+import LogoLoading from "@/widgets/LogoLoading";
 import { useCoupleInfo } from "@/entities/user/lib/useCoupleInfo";
 
 const Room = () => {
@@ -61,7 +61,7 @@ const Room = () => {
 
   return (
     <>
-      {isPending && <Loading />}
+      {isPending && <LogoLoading />}
 
       <motion.div
         ref={targetRef}

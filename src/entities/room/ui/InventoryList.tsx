@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { useCoupleInfo } from "@/entities/user/lib/useCoupleInfo";
 import { useMyPlacedFurniture } from "@/features/room-customizer/lib/useMyPlacedFurniture";
 import { httpNoThrow } from "@/shared/lib/http";
-import Loading from "@/widgets/Loading";
+import LogoLoading from "@/widgets/LogoLoading";
 
 const InventoryListComponent = () => {
   const router = useRouter();
@@ -138,7 +138,7 @@ const InventoryListComponent = () => {
   return (
     <>
       {" "}
-      {loading && <Loading />}
+      {loading && <LogoLoading />}
       <AnimatePresence mode="wait">
         {mode === "inventory" && (
           <motion.div
