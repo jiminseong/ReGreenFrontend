@@ -6,6 +6,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import CoupleGuard from "@/shared/lib/CoupleGuard";
 import ShareButton from "@/features/certification/ui/ShareButton";
 import Button from "@/shared/ui/Button";
+import Toast from "@/widgets/Toast";
+import { useToastStore } from "@/shared/store/useToastStore";
 
 export default function Page() {
   const router = useRouter();
@@ -16,9 +18,7 @@ export default function Page() {
   const ecoLovePoint = searchParams.get("ecoLovePoint");
   const breakupBufferPoint = searchParams.get("breakupBufferPoint");
   const memberEcoVerificationId = params.memberEcoVerificationId;
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [base64Image, setBase64Image] = useState<string | null>(null);
-
+  const { isOpen, message } = useToastStore();
   const ref = useRef<HTMLDivElement>(null);
   const [isBottomModal, setIsBottomModal] = useState(false);
 
@@ -36,30 +36,11 @@ export default function Page() {
       router.push("/home");
     }
   }, [imageUrl, title, ecoLovePoint, breakupBufferPoint, memberEcoVerificationId, router]);
-  useEffect(() => {
-    if (!imageUrl) return;
-
-    // 초기화
-    setBase64Image(null);
-    setImageLoaded(false);
-
-    fetch(`/api/proxy/image?url=${encodeURIComponent(imageUrl)}`)
-      .then((res) => res.blob())
-      .then((blob) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setBase64Image(reader.result as string); // base64 dataURL로 업데이트
-        };
-        reader.readAsDataURL(blob);
-      })
-      .catch((err) => {
-        console.error("이미지 base64 변환 실패:", err);
-      });
-  }, [imageUrl]);
 
   return (
     <>
       <CoupleGuard />
+      {isOpen && <Toast message={message} position="top" />}
 
       <div className="relative flex flex-col w-full px-5 py-5  items-center h-[100dvh]">
         <div className="flex flex-col  w-full h-full">
@@ -125,22 +106,39 @@ export default function Page() {
                 transition={{ duration: 0.3 }}
                 className="absolute z-50 bottom-0 px-5 py-5 bg-white rounded-t-[20px] flex flex-col gap-5 w-full"
               >
-                {base64Image && (
+                {imageUrl && (
                   <div
                     ref={ref}
                     // 높이를 넓이와 동일하게 설정
                     className="w-full h-[calc(100vw)] f  max-h-[500px] overflow-hidden rounded-lg relative"
                   >
                     <div className="absolute inset-0 bg-black/50 w-full h-full z-5" />
-                    {base64Image && (
-                      <img
-                        src={base64Image}
-                        alt="activity image"
-                        className="object-cover rounded-lg w-full h-full"
-                        style={{ objectFit: "cover", borderRadius: "12px" }}
-                        onLoad={() => setImageLoaded(true)}
-                      />
+                    {imageUrl && (
+                      <div
+                        ref={ref}
+                        className="w-full h-[calc(100vw)] max-h-[500px] overflow-hidden rounded-lg relative"
+                        style={{
+                          backgroundImage: `url(/api/proxy/image?url=${encodeURIComponent(
+                            imageUrl
+                          )})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }}
+                      >
+                        <div className="absolute inset-0 bg-black/20 w-full h-full z-5" />
+                        <div className="absolute bottom-5 right-5 flex flex-col gap-4 z-10">
+                          <div className="flex items-center gap-2">
+                            <Image
+                              src="/icon/activity/certification/photoFrameIcon.svg"
+                              alt="calendar icon"
+                              width={38}
+                              height={56}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     )}
+
                     <div className="absolute bottom-5 right-5 flex flex-col gap-4 z-10">
                       <div className="flex items-center gap-2">
                         <Image
@@ -158,8 +156,7 @@ export default function Page() {
                   <ShareButton
                     title={title ?? ""}
                     memberEcoVerificationId={String(memberEcoVerificationId)}
-                    image={ref}
-                    imageLoaded={imageLoaded} // 전달
+                    ref={ref}
                   />
 
                   <Button gray onClick={handleHomeButtonClick}>
