@@ -8,7 +8,7 @@ import { httpNoThrow } from "@/shared/lib/http";
 import { useToastStore } from "@/shared/store/useToastStore";
 import { useNickName } from "@/entities/user/lib/useNickName";
 import CommonModal from "@/widgets/ComonModal";
-import Loading from "@/widgets/Loading";
+import LogoLoading from "@/widgets/LogoLoading";
 import { KakaoInAppBanner } from "@/shared/ui/KakaoInAppBanner";
 
 const CoupleInvitePage = () => {
@@ -71,7 +71,7 @@ const CoupleInvitePage = () => {
   return (
     <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pt-24">
       <KakaoInAppBanner />
-      {loading && <Loading />}
+      {loading && <LogoLoading />}
       {modalOpen && (
         <CommonModal
           isOpen={modalOpen}

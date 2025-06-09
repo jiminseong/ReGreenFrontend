@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import LoginButton from "@/features/auth/ui/LoginButton";
 import { http } from "@/shared/lib/http";
-import Loading from "@/widgets/Loading";
+import LogoLoading from "@/widgets/LogoLoading";
 import { fetchMyInfo } from "@/entities/user/lib/fetchMyInfo";
 
 interface LoginResponse {
@@ -93,7 +93,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-between h-[100dvh] p-5">
-      {loading && <Loading />}
+      {loading && <LogoLoading />}
 
       <div className="text-center h-[80%] flex flex-col items-center justify-center">
         <h1 className="text-4xl font-bold text-ppink">wooimi</h1>

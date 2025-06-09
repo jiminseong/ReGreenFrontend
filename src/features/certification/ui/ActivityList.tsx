@@ -7,7 +7,6 @@ import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
 import { useActivityList } from "@/entities/activity/lib/useActivityList";
 import DummyActivityItem from "./DummyActivityItem";
-import Loading from "@/widgets/Loading";
 import Toast from "@/widgets/Toast";
 import { useCertificationStore } from "@/features/description/lib/store";
 import { dummyActivities } from "../model/dummyActivities";
@@ -210,7 +209,7 @@ const ActivityList = () => {
       </AnimatePresence>
       {isPending && (
         <div className="flex items-center justify-center h-[100dvh]">
-          <Loading />
+          <LogoLoading />
         </div>
       )}
       {isSuccess &&

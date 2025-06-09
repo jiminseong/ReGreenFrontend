@@ -7,7 +7,7 @@ import CommonModal from "@/widgets/ComonModal";
 import { patchRoom } from "@/entities/room/lib/patchRoom";
 import { useRoomStore } from "../model/store";
 import { useMyPlacedFurniture } from "../lib/useMyPlacedFurniture";
-import Loading from "@/widgets/Loading";
+import LogoLoading from "@/widgets/LogoLoading";
 
 const RoomSaveButton = () => {
   const [modal, setModal] = React.useState(false);
@@ -58,7 +58,7 @@ const RoomSaveButton = () => {
 
   return (
     <>
-      {loading && <Loading />}
+      {loading && <LogoLoading />}
       <motion.button
         onClick={() => handleSave()}
         whileHover={{ scale: 1.05 }}
