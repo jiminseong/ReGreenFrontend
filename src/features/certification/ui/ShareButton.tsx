@@ -15,8 +15,13 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
+    console.log("buttonRef.current", buttonRef.current);
     const handleClick = async () => {
-      if (!image.current) return;
+      console.log("공유하기 버튼 클릭됨");
+      if (!image.current) {
+        console.log("이미지 요소가 없습니다.");
+        return;
+      }
 
       try {
         // html2canvas → canvas 얻기
