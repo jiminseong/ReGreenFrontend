@@ -1,3 +1,4 @@
+// features/certification/ui/ShareButton.tsx
 "use client";
 import React, { useState } from "react";
 import Button from "@/shared/ui/Button";
@@ -7,13 +8,14 @@ import LogoLoading from "@/widgets/LogoLoading";
 import { createShareBlob } from "../lib/createShareBlob";
 
 interface ShareButtonProps {
-  imageUrl: string | null;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+
   title: string;
   memberEcoVerificationId: string;
 }
 
 export default function ShareButton({
-  imageUrl,
+  containerRef,
   title,
   memberEcoVerificationId,
 }: ShareButtonProps) {
@@ -21,17 +23,27 @@ export default function ShareButton({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
+    if (containerRef === null) {
+      openToast("공유할 이미지가 준비되지 않았습니다.");
+      return;
+    }
+    const container = containerRef.current;
+    if (!container) {
+      openToast("공유할 이미지가 준비되지 않았습니다.");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const blob = await createShareBlob(imageUrl);
+      // Blob 생성 (container 기반)
+      const blob = await createShareBlob(container);
+
+      // 네이티브 공유
       const fileTitle = `우이미에서의 ${title || "활동"}!`;
       const file = new File([blob], `${fileTitle}.png`, { type: "image/png" });
+      await navigator.share({ title: fileTitle, files: [file] });
 
-      await navigator.share({
-        title: fileTitle,
-        files: [file],
-      });
-
+      // 서버 기록
       const res = await postShare(memberEcoVerificationId);
       if (res.code === 2000) {
         openToast("공유 추가 하트 20점 적립! 감사합니다!");
