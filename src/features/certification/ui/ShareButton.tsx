@@ -9,7 +9,7 @@ import { createShareBlob } from "../lib/createShareBlob";
 
 interface ShareButtonProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
-
+  imageUrl?: string;
   title: string;
   memberEcoVerificationId: string;
 }
@@ -18,27 +18,27 @@ export default function ShareButton({
   containerRef,
   title,
   memberEcoVerificationId,
+  imageUrl,
 }: ShareButtonProps) {
   const { openToast } = useToastStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
-    if (!containerRef.current) return;
     setIsLoading(true);
 
-    await new Promise<void>((resolve, reject) => {
-      const iconEl =
-        containerRef.current!.querySelector<HTMLImageElement>("img[alt='프레임 아이콘']");
-      if (!iconEl) return resolve();
-      if (iconEl.complete) return resolve();
-      iconEl.onload = () => resolve();
-      iconEl.onerror = () => reject("아이콘 로드 실패");
-    });
+    if (!containerRef.current && !imageUrl) {
+      openToast("아직 이미지가 준비 되지 않았습니다.");
+      return;
+    }
 
-    setIsLoading(true);
     try {
       // Blob 생성 (container 기반)
-      const blob = await createShareBlob(containerRef.current);
+      if (!containerRef.current) {
+        openToast("아직 이미지가 준비 되지 않았습니다.");
+        setIsLoading(false);
+        return;
+      }
+      const blob = await createShareBlob(containerRef.current, imageUrl || "");
 
       // 네이티브 공유
       const fileTitle = `우이미에서의 ${title || "활동"}!`;
@@ -56,7 +56,12 @@ export default function ShareButton({
       }
     } catch (err) {
       console.error(err);
-      openToast("공유 중 오류가 발생했습니다. 다시 시도해주세요.");
+
+      if (err instanceof DOMException && err.name === "AbortError") {
+        openToast("공유가 취소되었습니다.");
+      } else {
+        openToast("공유 중 오류가 발생했습니다. 다시 시도해주세요.");
+      }
     } finally {
       setIsLoading(false);
     }
