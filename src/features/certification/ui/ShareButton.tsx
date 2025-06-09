@@ -9,9 +9,10 @@ interface ShareButtonProps {
   image: React.RefObject<HTMLDivElement | null>;
   title: string;
   memberEcoVerificationId: string;
+  imageLoaded?: boolean;
 }
 
-const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps) => {
+const ShareButton = ({ image, title, memberEcoVerificationId, imageLoaded }: ShareButtonProps) => {
   const { openToast } = useToastStore();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -67,7 +68,17 @@ const ShareButton = ({ image, title, memberEcoVerificationId }: ShareButtonProps
   return (
     <>
       {isLoading && <LogoLoading />}
-      <Button onClick={handleClick}>공유하기</Button>
+      <Button
+        onClick={() => {
+          if (!imageLoaded) {
+            openToast("이미지가 아직 로드 중입니다. 잠시 후 다시 시도해주세요.");
+            return;
+          }
+          handleClick();
+        }}
+      >
+        공유하기
+      </Button>
     </>
   );
 };
