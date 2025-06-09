@@ -10,12 +10,14 @@ interface ShareButtonProps {
   imageUrl: string | null;
   title: string;
   memberEcoVerificationId: string;
+  isRef: HTMLDivElement | null;
 }
 
 export default function ShareButton({
   imageUrl,
   title,
   memberEcoVerificationId,
+  isRef,
 }: ShareButtonProps) {
   const { openToast } = useToastStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +25,7 @@ export default function ShareButton({
   const handleClick = async () => {
     setIsLoading(true);
     try {
-      const blob = await createShareBlob(imageUrl);
+      const blob = await createShareBlob(imageUrl, isRef);
       const fileTitle = `우이미에서의 ${title || "활동"}!`;
       const file = new File([blob], `${fileTitle}.png`, { type: "image/png" });
 

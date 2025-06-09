@@ -1,57 +1,61 @@
-/**
- * 주어진 이미지 URL과 고정 아이콘을 합쳐
- * 검정 반투명 오버레이를 씌운 후 Blob으로 반환하는 함수
- */
 export async function createShareBlob(
   imageUrl: string | null,
-  iconPath: string = "/icon/activity/certification/photoFrameIcon.svg",
-  overlayOpacity: number = 0.2,
-  iconWidth: number = 38,
-  iconHeight: number = 58,
-  padding: number = 20
+  container: HTMLElement | null, // ref.current
+  iconCssWidth = 38, // CSS 상에 보이는 아이콘 너비(px)
+  iconCssHeight = 58, // CSS 상에 보이는 아이콘 높이(px)
+  paddingCss = 20, // CSS 상 여백(px)
+  overlayOpacity = 0.2
 ): Promise<Blob> {
-  // 이미지 로드 헬퍼
+  // 1) 로드 헬퍼
   const loadImg = (src: string) =>
-    new Promise<HTMLImageElement>((resolve, reject) => {
+    new Promise<HTMLImageElement>((res, rej) => {
       const img = new Image();
       img.crossOrigin = "anonymous";
-      img.onload = () => resolve(img);
-      img.onerror = reject;
+      img.onload = () => res(img);
+      img.onerror = rej;
       img.src = src;
     });
 
-  // 배경 + 아이콘 로딩
-  const proxyUrl = imageUrl ? `/api/proxy/image?url=${encodeURIComponent(imageUrl)}` : "";
-  const [bg, icon] = await Promise.all([loadImg(proxyUrl), loadImg(iconPath)]);
+  // 2) 배경 + 아이콘 로딩
+  const proxyUrl = `/api/proxy/image?url=${encodeURIComponent(imageUrl ?? "")}`;
+  const [bg, icon] = await Promise.all([
+    loadImg(proxyUrl),
+    loadImg("/icon/activity/certification/photoFrameIcon.svg"),
+  ]);
 
-  // 캔버스 생성 (원본 크기 × DPR)
+  // 3) 캔버스 및 DPI 세팅
   const dpr = window.devicePixelRatio || 1;
-  const width = bg.naturalWidth;
-  const height = bg.naturalHeight;
+  const w = bg.naturalWidth;
+  const h = bg.naturalHeight;
   const canvas = document.createElement("canvas");
-  canvas.width = width * dpr;
-  canvas.height = height * dpr;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
   const ctx = canvas.getContext("2d")!;
-
-  // Hi-DPI & 스무딩
   ctx.scale(dpr, dpr);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
 
-  // 배경 그리기
-  ctx.drawImage(bg, 0, 0, width, height);
-
-  // 반투명 오버레이
+  // 4) 배경 + overlay
+  ctx.drawImage(bg, 0, 0, w, h);
   ctx.fillStyle = `rgba(0,0,0,${overlayOpacity})`;
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillRect(0, 0, w, h);
 
-  // 아이콘 그리기 (고정 크기, 우측 하단)
-  const x = width - iconWidth - padding;
-  const y = height - iconHeight - padding;
-  ctx.drawImage(icon, x, y, iconWidth, iconHeight);
+  // 5) 스케일 계산: CSS → Blob
+  const rect = container?.getBoundingClientRect();
+  const scaleX = w / (rect?.width || 1);
+  const scaleY = h / (rect?.height || 1);
 
-  // Blob 반환
-  return new Promise<Blob>((resolve) => {
-    canvas.toBlob((b) => b && resolve(b), "image/png");
-  });
+  // 6) 아이콘 크기/위치 결정
+  const iconW = iconCssWidth * scaleX;
+  const iconH = iconCssHeight * scaleY;
+  const padX = paddingCss * scaleX;
+  const padY = paddingCss * scaleY;
+  const x = w - iconW - padX;
+  const y = h - iconH - padY;
+
+  // 7) 아이콘 그리기
+  ctx.drawImage(icon, x, y, iconW, iconH);
+
+  // 8) Blob 반환
+  return new Promise<Blob>((resolve) => canvas.toBlob((b) => b && resolve(b), "image/png"));
 }

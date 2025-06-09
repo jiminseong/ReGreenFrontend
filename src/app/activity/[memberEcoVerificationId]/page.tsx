@@ -134,6 +134,7 @@ export default function Page() {
                     title={title ?? ""}
                     memberEcoVerificationId={String(memberEcoVerificationId)}
                     imageUrl={imageUrl}
+                    isRef={ref}
                   />
 
                   <Button gray onClick={handleHomeButtonClick}>
