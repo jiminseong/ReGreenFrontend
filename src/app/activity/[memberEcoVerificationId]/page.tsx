@@ -21,6 +21,7 @@ export default function Page() {
   const { isOpen, message } = useToastStore();
   const ref = useRef<HTMLDivElement>(null);
   const [isBottomModal, setIsBottomModal] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleBottomModal = () => {
     setIsBottomModal(!isBottomModal);
@@ -36,6 +37,24 @@ export default function Page() {
       router.push("/home");
     }
   }, [imageUrl, title, ecoLovePoint, breakupBufferPoint, memberEcoVerificationId, router]);
+
+  useEffect(() => {
+    if (!imageUrl) return;
+
+    setImageLoaded(false);
+
+    fetch(`/api/proxy/image?url=${encodeURIComponent(imageUrl)}`)
+      .then((res) => {
+        if (res.ok) {
+          setImageLoaded(true);
+        } else {
+          console.error("이미지 fetch 실패:", res.status);
+        }
+      })
+      .catch((err) => {
+        console.error("이미지 fetch 실패:", err);
+      });
+  }, [imageUrl]);
 
   return (
     <>
@@ -108,37 +127,15 @@ export default function Page() {
               >
                 {imageUrl && (
                   <div
-                    ref={ref}
-                    // 높이를 넓이와 동일하게 설정
-                    className="w-full h-[calc(100vw)] f  max-h-[500px] overflow-hidden rounded-lg relative"
+                    ref={ref} // 여기만 ref 유지
+                    className="w-full h-[calc(100vw)] max-h-[500px] overflow-hidden rounded-lg relative"
+                    style={{
+                      backgroundImage: `url(/api/proxy/image?url=${encodeURIComponent(imageUrl)})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
                   >
-                    <div className="absolute inset-0 bg-black/50 w-full h-full z-5" />
-                    {imageUrl && (
-                      <div
-                        ref={ref}
-                        className="w-full h-[calc(100vw)] max-h-[500px] overflow-hidden rounded-lg relative"
-                        style={{
-                          backgroundImage: `url(/api/proxy/image?url=${encodeURIComponent(
-                            imageUrl
-                          )})`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                        }}
-                      >
-                        <div className="absolute inset-0 bg-black/20 w-full h-full z-5" />
-                        <div className="absolute bottom-5 right-5 flex flex-col gap-4 z-10">
-                          <div className="flex items-center gap-2">
-                            <Image
-                              src="/icon/activity/certification/photoFrameIcon.svg"
-                              alt="calendar icon"
-                              width={38}
-                              height={56}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
+                    <div className="absolute inset-0 bg-black/20 w-full h-full z-5" />
                     <div className="absolute bottom-5 right-5 flex flex-col gap-4 z-10">
                       <div className="flex items-center gap-2">
                         <Image
@@ -151,12 +148,12 @@ export default function Page() {
                     </div>
                   </div>
                 )}
-
                 <div className="flex items-center justify-between gap-[15px]">
                   <ShareButton
                     title={title ?? ""}
                     memberEcoVerificationId={String(memberEcoVerificationId)}
                     ref={ref}
+                    imageLoaded={imageLoaded}
                   />
 
                   <Button gray onClick={handleHomeButtonClick}>

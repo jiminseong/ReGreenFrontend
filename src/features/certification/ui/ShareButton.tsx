@@ -9,13 +9,19 @@ interface ShareButtonProps {
   ref: React.RefObject<HTMLDivElement | null>;
   title: string;
   memberEcoVerificationId: string;
+  imageLoaded?: boolean;
 }
 
-const ShareButton = ({ ref, title, memberEcoVerificationId }: ShareButtonProps) => {
+const ShareButton = ({ ref, title, memberEcoVerificationId, imageLoaded }: ShareButtonProps) => {
   const { openToast } = useToastStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
+    if (!imageLoaded) {
+      openToast("이미지가 아직 로드 중입니다. 잠시 후 다시 시도해주세요.");
+      return;
+    }
+
     console.log("공유 버튼 클릭됨");
 
     if (!ref.current) return;
