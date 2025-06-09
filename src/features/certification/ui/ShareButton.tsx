@@ -10,15 +10,26 @@ interface ShareButtonProps {
   title: string;
   memberEcoVerificationId: string;
   imageLoaded?: boolean;
+  iconLoaded?: boolean;
 }
 
-const ShareButton = ({ ref, title, memberEcoVerificationId, imageLoaded }: ShareButtonProps) => {
+const ShareButton = ({
+  ref,
+  title,
+  memberEcoVerificationId,
+  imageLoaded,
+  iconLoaded,
+}: ShareButtonProps) => {
   const { openToast } = useToastStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
     if (!imageLoaded) {
-      openToast("이미지가 아직 로드 중입니다. 잠시 후 다시 시도해주세요.");
+      openToast("이미지가 아직이에요. 잠시만 기다려주세요:)");
+      return;
+    }
+    if (!iconLoaded) {
+      openToast("아이콘이 아직이에요! 잠시만 기다려주세요:)");
       return;
     }
 
