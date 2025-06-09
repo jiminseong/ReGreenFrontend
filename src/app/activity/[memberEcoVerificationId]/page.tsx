@@ -21,7 +21,7 @@ export default function Page() {
   const { isOpen, message } = useToastStore();
   const ref = useRef<HTMLDivElement>(null);
   const [isBottomModal, setIsBottomModal] = useState(false);
-  const [proxyUrl, setProxyUrl] = useState<string | null>(null);
+  // const [proxyUrl, setProxyUrl] = useState<string | null>(null);
   const handleBottomModal = () => {
     setIsBottomModal(!isBottomModal);
   };
@@ -37,12 +37,12 @@ export default function Page() {
     }
   }, [imageUrl, title, ecoLovePoint, breakupBufferPoint, memberEcoVerificationId, router]);
 
-  useEffect(() => {
-    if (imageUrl) {
-      const proxyUrl = `/api/proxy/image?url=${imageUrl}`;
-      setProxyUrl(proxyUrl);
-    }
-  }, [imageUrl]);
+  // useEffect(() => {
+  //   if (imageUrl) {
+  //     const proxyUrl = `/api/proxy/image?url=${imageUrl}`;
+  //     setProxyUrl(proxyUrl);
+  //   }
+  // }, [imageUrl]);
   return (
     <>
       <CoupleGuard />
@@ -94,7 +94,7 @@ export default function Page() {
 
         {/* 바텀 모달 */}
         <AnimatePresence>
-          {isBottomModal && proxyUrl && (
+          {isBottomModal && imageUrl && (
             <motion.div
               key="overlay"
               onClick={() => handleBottomModal()}
@@ -116,7 +116,7 @@ export default function Page() {
                   ref={ref}
                   className="w-full max-w-[500px] aspect-square overflow-hidden rounded-lg relative "
                 >
-                  <Image src={proxyUrl} alt="인증 사진" fill className="object-cover" />
+                  <Image src={imageUrl} alt="인증 사진" fill className="object-cover" />
                   <div className="absolute inset-0 bg-black/30" />
                   <div className="absolute bottom-5 right-5 flex items-center gap-2 border-none">
                     <Image
