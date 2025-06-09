@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 interface ButtonProps {
   children: React.ReactNode;
-  onClick: () => void;
-  className?: string;
+  onClick?: () => void;
+  className?: string | React.Ref<HTMLButtonElement>;
   primary?: boolean;
   gray?: boolean;
   ref?: React.Ref<HTMLButtonElement>;
