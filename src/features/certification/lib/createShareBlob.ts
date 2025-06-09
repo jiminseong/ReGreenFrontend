@@ -17,8 +17,9 @@ export async function createShareBlob(
     });
 
   // 2) 배경 + 아이콘 로딩
+  const proxyUrl = `/api/proxy/image?url=${encodeURIComponent(imageUrl)}`;
   const [bg, icon] = await Promise.all([
-    loadImg(imageUrl),
+    loadImg(proxyUrl),
     loadImg("/icon/activity/certification/photoFrameIcon.svg"),
   ]);
 
