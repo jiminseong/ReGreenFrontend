@@ -33,7 +33,7 @@ const ShareButton = ({ image, title, memberEcoVerificationId, imageLoaded }: Sha
 
       const fileTitle = `우이미에서의 ${title === "" ? "활동" : title}!`;
       const file = new File([pngBlob], `${fileTitle}.png`, {
-        type: "image/png",
+        type: "image/jpeg",
       });
 
       await new Promise<void>((resolve) => {
