@@ -27,7 +27,9 @@ describe("ShareButton", () => {
       canShare: canShareSpy,
     });
 
-    const { getByText } = render(<ShareButton image={imageRef} title="테스트" />);
+    const { getByText } = render(
+      <ShareButton memberEcoVerificationId="123" image={imageRef} title="테스트" />
+    );
     fireEvent.click(getByText("공유하기"));
 
     await waitFor(() => {
@@ -44,7 +46,9 @@ describe("ShareButton", () => {
       share: jest.fn(),
     });
 
-    const { getByText } = render(<ShareButton image={imageRef} title="테스트" />);
+    const { getByText } = render(
+      <ShareButton memberEcoVerificationId="123" image={imageRef} title="테스트" />
+    );
     fireEvent.click(getByText("공유하기"));
 
     await waitFor(() => {
