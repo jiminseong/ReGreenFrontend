@@ -2,10 +2,12 @@ import Image from "next/image";
 
 const InstallPrompt = ({
   isIOS,
+  isGoogleApp,
   isAndroid,
   onSkip,
 }: {
   isIOS: boolean;
+  isGoogleApp: boolean;
   isAndroid: boolean;
   onSkip: () => void;
 }) => {
@@ -36,6 +38,11 @@ const InstallPrompt = ({
             선택해주세요.
           </div>
         </div>
+      ) : isGoogleApp ? (
+        <p className="text-sm text-gray-500 mt-4">
+          구글 앱에서는 설치가 지원되지 않아요. <br />
+          iOS에서는 Safari, Android에서는 삼성,혹은 크롬 브라우저를 이용해주세요.
+        </p>
       ) : (
         <p className="text-sm text-gray-500">
           브라우저 주소창 옆에 <strong>설치 버튼</strong>이 보인다면 눌러서 <br /> 홈 화면에 추가할

@@ -6,11 +6,13 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCoupleInfo } from "../lib/useCoupleInfo";
 import CommonModal from "@/widgets/ComonModal";
+import { postEasterEgg } from "../lib/postEasterEgg";
+import { useToastStore } from "@/shared/store/useToastStore";
 
 const HeartCalendarState = () => {
   const router = useRouter();
-
-  const { data } = useCoupleInfo();
+  const { openToast } = useToastStore();
+  const { data, refetch } = useCoupleInfo();
   const coupleInfo = data?.data;
 
   const ecoLovePoint = coupleInfo?.ecoLovePoint ?? 0;
@@ -27,15 +29,26 @@ const HeartCalendarState = () => {
     }
   }, []);
 
-  function handleEasterEgg() {
+  const handleEasterEgg = async () => {
     setEasterEgg((prev) => prev + 1);
 
     if (easterEgg === 4) {
-      //TODO: 이스터에그 발견시 하트 추가 API 호출
-      setModalOpen(true);
+      const res = await postEasterEgg();
+      if (res.code === 2000) {
+        refetch();
+        setModalOpen(true);
+        setEasterEgg(0);
+        return;
+      }
+      if (res.code === 47004) {
+        openToast("이미 히든 미션을 완료하셨습니다.");
+        setEasterEgg(0);
+        return;
+      }
       setEasterEgg(0);
+      return;
     }
-  }
+  };
 
   const EASTER_EGG_MESSAGE = (
     <div className="flex flex-col gap-2 justify-center items-center">
