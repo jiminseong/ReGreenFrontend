@@ -8,11 +8,11 @@ import { useDragScroll } from "../lib/useDragScroll";
 
 // export type FurnitureCategory = "wallPaper" | "floor" | "furniture" | "window" | "decor";
 const categoryNameToTypeMap: Record<string, FurnitureCategory> = {
-  벽지: "wallPaper",
-  바닥: "floor",
-  가구: "furniture",
-  창문: "window",
-  소품: "prop",
+  벽지: "WALLPAPER",
+  바닥: "FLOOR",
+  가구: "FURNITURE",
+  창문: "WINDOW",
+  소품: "PROP",
 };
 
 const tabs = Object.keys(categoryNameToTypeMap);

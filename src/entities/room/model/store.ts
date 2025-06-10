@@ -3,11 +3,11 @@ import { FurnitureCategory, FurnitureItem } from "./type";
 
 // 카테고리 한글 변환 맵
 export const categoryMap: Record<FurnitureCategory, string> = {
-  wallPaper: "벽지",
-  prop: "소품",
-  window: "창문",
-  floor: "바닥재",
-  furniture: "가구",
+  WALLPAPER: "벽지",
+  PROP: "소품",
+  WINDOW: "창문",
+  FLOOR: "바닥",
+  FURNITURE: "가구",
 };
 
 function toKoreanCategory(category: FurnitureCategory): string {
