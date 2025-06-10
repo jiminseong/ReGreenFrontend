@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ShareButton from "@/features/certification/ui/ShareButton";
 import { useRouter } from "next/navigation";
@@ -11,48 +11,59 @@ interface BottomShareModalProps {
   imageUrl: string | null;
   title?: string | null;
   memberEcoVerificationId: string | null;
+  actionLabel?: string;
 }
 
-const BottomShareModal = ({ imageUrl, title, memberEcoVerificationId }: BottomShareModalProps) => {
+const BottomShareModal = ({
+  imageUrl,
+  title,
+  memberEcoVerificationId,
+  actionLabel = "홈으로",
+}: BottomShareModalProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { isOpen: isBottomModal, setIsOpen: setIsBottomModal } = useModalStore();
 
-  const handleHomeButtonClick = async () => {
-    await setIsBottomModal(false);
-    router.push("/home");
-  };
+  const [shouldTriggerAction, setShouldTriggerAction] = useState(false);
 
-  const handleBottomModal = () => {
+  const handleToggleModal = () => {
+    setShouldTriggerAction(!shouldTriggerAction);
     setIsBottomModal(!isBottomModal);
   };
+
+  const handleActionClick = async () => {
+    if (actionLabel === "홈으로") {
+      router.push("/home");
+      return;
+    }
+    handleToggleModal();
+  };
+
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isBottomModal && imageUrl && (
         <motion.div
           key="overlay"
-          onClick={() => handleBottomModal()}
+          onClick={handleToggleModal}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/50 z-40"
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 bg-black/50 z-[999] max-w-[500px] left-1/2 transform -translate-x-1/2 cursor-pointer"
         >
           <motion.div
             key="bottom-modal"
             onClick={(e) => e.stopPropagation()}
-            initial={{ y: "100%" }}
+            initial={{ y: 650 }}
             animate={{ y: 0 }}
-            exit={{ y: "100%" }}
+            exit={{ y: 650 }}
             transition={{ duration: 0.3 }}
-            className="absolute z-50 bottom-0 px-5 py-5 bg-white rounded-t-[20px] flex flex-col gap-5 w-full"
+            className="absolute z-50 bottom-0 px-5 py-5 bg-white rounded-t-[20px] cursor-auto flex flex-col gap-5 w-full max-w-[500px] left-1/2 transform -translate-x-1/2"
           >
-            <div
-              ref={ref}
-              className="w-full max-w-[500px] aspect-square overflow-hidden rounded-lg relative "
-            >
+            <div ref={ref} className="w-full aspect-square overflow-hidden rounded-lg relative ">
               <Image src={imageUrl} alt="인증 사진" fill className="object-cover" />
               <div className="absolute inset-0 bg-black/30" />
-              <div className="absolute bottom-5 right-5 flex items-center gap-2 border-none">
+              <div className="absolute bottom-5 right-5 flex items-center gap-2">
                 <Image
                   src="/icon/activity/certification/photoFrameIcon.svg"
                   alt="프레임 아이콘"
@@ -63,7 +74,7 @@ const BottomShareModal = ({ imageUrl, title, memberEcoVerificationId }: BottomSh
             </div>
 
             <div className="flex items-center justify-between gap-[15px]">
-              {ref !== null && (
+              {ref && (
                 <ShareButton
                   title={title ?? ""}
                   memberEcoVerificationId={String(memberEcoVerificationId)}
@@ -71,9 +82,8 @@ const BottomShareModal = ({ imageUrl, title, memberEcoVerificationId }: BottomSh
                   imageUrl={imageUrl}
                 />
               )}
-
-              <Button gray onClick={handleHomeButtonClick}>
-                홈으로
+              <Button gray onClick={handleActionClick}>
+                {actionLabel}
               </Button>
             </div>
           </motion.div>
@@ -83,4 +93,4 @@ const BottomShareModal = ({ imageUrl, title, memberEcoVerificationId }: BottomSh
   );
 };
 
-export default BottomShareModal;
+export default React.memo(BottomShareModal);

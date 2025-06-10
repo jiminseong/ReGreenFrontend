@@ -29,3 +29,22 @@ export interface CoupleActivitiesResponseMember {
   nickname: "홍길동" | string;
   memberEcoVerifications: CoupleActivity[];
 }
+
+export interface CoupleActivityResponse {
+  code: 2000 | 42001 | 47001 | 47002;
+  message: string;
+  data: {
+    ecoVerificationId: string;
+    title: string;
+    iconImageUrl: string;
+    ecoLovePoint: number;
+    breakupBufferPoint: number;
+    memberEcoVerificationId: string;
+    createdAt: string;
+    imageUrl: string;
+    status: string;
+    location: string | null;
+    geoLat: number | null;
+    geoLng: number | null;
+  };
+}

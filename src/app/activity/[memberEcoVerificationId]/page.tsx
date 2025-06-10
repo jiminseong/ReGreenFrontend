@@ -81,15 +81,14 @@ export default function Page() {
             다음
           </Button>
         </div>
-        {isBottomModal && (
-          <BottomShareModal
-            title={title}
-            imageUrl={imageUrl}
-            memberEcoVerificationId={
-              typeof memberEcoVerificationId === "string" ? memberEcoVerificationId : null
-            }
-          />
-        )}
+
+        <BottomShareModal
+          title={title}
+          imageUrl={imageUrl}
+          memberEcoVerificationId={
+            typeof memberEcoVerificationId === "string" ? memberEcoVerificationId : null
+          }
+        />
       </div>
     </>
   );
