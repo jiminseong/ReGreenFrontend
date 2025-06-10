@@ -70,22 +70,27 @@ export const http = ky.create({
      */
     afterResponse: [
       async (request, options, response) => {
+        let errorBody: { code?: number } | null = null;
+        try {
+          errorBody = await response.clone().json();
+        } catch {
+          return response;
+        }
+        if (errorBody?.code === 46001) {
+          localStorage.clear();
+          window.location.href = "/login";
+          return response;
+        }
+
         // refresh 요청 반복 막기
         const isRefreshUrl = request.url.includes("api/auth/refresh");
 
         // 401 아닌 응답은 그냥 반환
         if (response.status !== 401) return response;
 
-        // 서버 에러코드 파싱 (실패 시 그냥 반환)
-        let errorBody = null;
-        try {
-          errorBody = await response.clone().json();
-        } catch {
-          return response;
-        }
-
         // 실제 토큰 만료/무효 코드만 Silent Refresh 시도
-        const isTokenError = [41003, 41005].includes(errorBody.code);
+        const isTokenError =
+          typeof errorBody?.code === "number" && [41003, 41005].includes(errorBody.code);
 
         if (isRefreshUrl || !isTokenError) {
           // refresh 요청도 401이거나, 토큰 오류 아니면 → 로그인 이동
