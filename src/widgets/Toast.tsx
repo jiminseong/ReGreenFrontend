@@ -33,7 +33,7 @@ const Toast: React.FC<ToastProps> = ({
         bg-[#000000] opacity-85 text-white text-sm font-medium 
         px-4 py-3.5 rounded-xl shadow-lg 
         w-[350px] md:w-[400px]
-        z-[999] transition-opacity duration-300
+        z-[9999] transition-opacity duration-300
       `}
     >
       {message}

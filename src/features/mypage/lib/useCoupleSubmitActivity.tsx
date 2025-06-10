@@ -9,6 +9,7 @@ export function useCoupleSubmitActivity({ date }: { date: string }) {
   if (!isValidDate) {
     throw new Error("Invalid date format. Please use YYYY-MM-DD.");
   }
+  console.log("useCoupleSubmitActivity", date);
   return useQuery({
     queryKey: ["coupleSubmitActivity", date],
     queryFn: async () => {
