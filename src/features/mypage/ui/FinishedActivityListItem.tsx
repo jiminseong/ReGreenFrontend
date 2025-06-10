@@ -1,17 +1,20 @@
 import Image from "next/image";
 import React from "react";
+import { CurrentActivityType } from "../model/type";
 import FinishedActivityListIDetailItem from "./FinishedActivityListIDetailItem";
 
-interface Activity {
+export interface Activity {
   memberEcoVerificationId: string;
   nickname: string;
+  type: CurrentActivityType;
   ecoLovePoint: number;
   breakupBufferPoint: number;
+  imageUrl: string | null;
   isMe: boolean;
 }
 
 interface FinishedActivityListItemProps {
-  type: string;
+  type: CurrentActivityType;
   activities: Activity[];
   iconMap: Record<string, string>;
   activityTitleMap: Record<string, string>;
@@ -22,7 +25,8 @@ const FinishedActivityListItem = ({
   activities,
   iconMap,
   activityTitleMap,
-}: FinishedActivityListItemProps) => {
+  onActivityClick,
+}: FinishedActivityListItemProps & { onActivityClick: (activity: Activity) => void }) => {
   const leftActivity = activities.find((a) => !a.isMe) ?? null;
   const rightActivity = activities.find((a) => a.isMe) ?? null;
 
@@ -36,16 +40,20 @@ const FinishedActivityListItem = ({
       </div>
 
       <div className="grid grid-cols-2 gap-2">
-        {/* 왼쪽 (상대방 or 빈칸) */}
         {leftActivity ? (
-          <FinishedActivityListIDetailItem activity={leftActivity} />
+          <FinishedActivityListIDetailItem
+            activity={leftActivity}
+            onClick={() => onActivityClick(leftActivity)}
+          />
         ) : (
           <div className="bg-[#DDE0E9] w-full h-full rounded-[10px]" />
         )}
 
-        {/* 오른쪽 (나 or 빈칸) */}
         {rightActivity ? (
-          <FinishedActivityListIDetailItem activity={rightActivity} />
+          <FinishedActivityListIDetailItem
+            activity={rightActivity}
+            onClick={() => onActivityClick(rightActivity)}
+          />
         ) : (
           <div className="bg-[#DDE0E9] w-full h-full rounded-[10px]" />
         )}

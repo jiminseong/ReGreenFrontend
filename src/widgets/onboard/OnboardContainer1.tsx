@@ -8,7 +8,7 @@ const OnboardContainer1 = ({ imageUrl }: OnboardContainerProps) => {
   return (
     <MotionDiv>
       <h1 className=" text-2xl font-bold text-center ">
-        지구가 망하면 <br /> 우리의 인연도 끝이다!
+        지구가 망하면 <br /> 우리의 연애도 끝이다!
       </h1>
       <Image
         src={imageUrl}

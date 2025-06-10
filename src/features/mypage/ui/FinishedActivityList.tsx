@@ -4,20 +4,20 @@ import { useState } from "react";
 import Image from "next/image";
 import { useCoupleSubmitActivity } from "../lib/useCoupleSubmitActivity";
 import { SkeletonFinishedActivityList } from "@/widgets/mypage/SkeletonFinishedActivityList";
-import FinishedActivityListItem from "./FinishedActivityListItem";
+import FinishedActivityListItem, { Activity } from "./FinishedActivityListItem";
 import Toast from "@/widgets/Toast";
 import { useToastStore } from "@/shared/store/useToastStore";
+import BottomShareModal from "@/features/share/ui/BottomShareModal";
+import { useModalStore } from "@/features/certification/model/useModalStore";
 
 const activityTitleMap: Record<string, string> = {
   REUSABLE_CUP: "다회용 컵 사용하기",
   PLOGGING_PROOF: "플로깅 데이트",
-  SECOND_HAND: "중고나눔 인증하기",
 };
 
 const iconMap: Record<string, string> = {
   REUSABLE_CUP: "/icon/mypage/cupIcon.svg",
   PLOGGING_PROOF: "/icon/mypage/pictureIcon.svg",
-  SECOND_HAND: "/icon/mypage/pictureIcon.svg",
 };
 
 export const FinishedActivityList = () => {
@@ -26,16 +26,22 @@ export const FinishedActivityList = () => {
   });
   const { data, isPending, refetch } = useCoupleSubmitActivity({ date });
   const { isOpen: isOpenToast, message } = useToastStore();
+
   const members = data ? [...data.today.members] : [];
   const allActivities = members.flatMap((member) => member.memberEcoVerifications);
 
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+  const { setIsOpen: setIsOpenBottomModal } = useModalStore();
+
   const groupedByType = members
     .flatMap((member) =>
-      member.memberEcoVerifications.map((activity) => ({
-        ...activity,
-        nickname: member.nickname,
-        isMe: member.isMe,
-      }))
+      member.memberEcoVerifications
+        .filter((activity) => activity.status === "APPROVED")
+        .map((activity) => ({
+          ...activity,
+          nickname: member.nickname,
+          isMe: member.isMe,
+        }))
     )
     .reduce((acc, cur) => {
       acc[cur.type] = acc[cur.type] || [];
@@ -44,21 +50,23 @@ export const FinishedActivityList = () => {
     }, {} as Record<string, ((typeof members)[0]["memberEcoVerifications"][0] & { nickname: string; isMe: boolean })[]>);
 
   const handleDateChange = (diff: number) => {
-    // 지금 날짜를 Date 객체로 변환
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + diff);
-    const newDateString = newDate.toISOString().split("T")[0]; // YYYY-MM-DD 형식으로 변환
+    const newDateString = newDate.toISOString().split("T")[0];
     setDate(newDateString);
     refetch();
-    console.log(data);
+  };
+
+  const titleMapping: Record<string, string> = {
+    REUSABLE_CUP: "다회용 컵 사용하기",
+    PLOGGING_PROOF: "플로깅 데이트",
+    SECOND_HAND: "중고나눔 인증하기",
   };
 
   return (
     <>
-      {" "}
       {isOpenToast && <Toast message={message} position="top" />}
       <div className="p-4 space-y-6 bg-[#F1F2F5] h-[100dvh]">
-        {/* 날짜 조정 바 */}
         <div className="flex justify-center items-center space-x-4 z-10 ">
           <button onClick={() => handleDateChange(-1)}>
             <Image src="/icon/mypage/leftArrow.svg" alt="이전 날짜" width={28} height={28} />
@@ -68,7 +76,7 @@ export const FinishedActivityList = () => {
             <Image src="/icon/mypage/rightArrow.svg" alt="다음 날짜" width={28} height={28} />
           </button>
         </div>
-        {!date && <SkeletonFinishedActivityList />}
+
         {(isPending || !data) && <SkeletonFinishedActivityList />}
         {allActivities.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full">
@@ -82,10 +90,25 @@ export const FinishedActivityList = () => {
               activities={activities}
               iconMap={iconMap}
               activityTitleMap={activityTitleMap}
+              onActivityClick={(activity) => {
+                setSelectedActivity(activity);
+                setIsOpenBottomModal(true);
+              }}
             />
           ))
         )}
       </div>
+
+      {/* BottomShareModal는 상위에 하나만 */}
+      {selectedActivity && (
+        <BottomShareModal
+          isMe={selectedActivity.isMe}
+          title={titleMapping[selectedActivity.type]}
+          imageUrl={selectedActivity.imageUrl}
+          memberEcoVerificationId={selectedActivity.memberEcoVerificationId}
+          actionLabel="닫기"
+        />
+      )}
     </>
   );
 };

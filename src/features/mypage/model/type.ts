@@ -20,7 +20,8 @@ export interface CoupleActivity {
   ecoLovePoint: 50 | number;
   breakupBufferPoint: 2 | number;
   linkUrl: "https://balbal.com" | null | string;
-  status: "APPROVED" | "REJECTED" | "GOING_OVER" | string; // 승인 상관없이 일단 다 보낼게
+  imageUrl: "https://balbal.com/image.jpg" | null | string;
+  status: "APPROVED" | "REJECTED" | "GOING_OVER" | string;
 }
 
 export interface CoupleActivitiesResponseMember {

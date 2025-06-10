@@ -12,6 +12,7 @@ interface ShareButtonProps {
   imageUrl?: string;
   title: string;
   memberEcoVerificationId: string;
+  isMe?: boolean;
 }
 
 export default function ShareButton({
@@ -19,6 +20,7 @@ export default function ShareButton({
   title,
   memberEcoVerificationId,
   imageUrl,
+  isMe,
 }: ShareButtonProps) {
   const { openToast } = useToastStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -46,13 +48,17 @@ export default function ShareButton({
       await navigator.share({ title: fileTitle, files: [file] });
 
       // 서버 기록
-      const res = await postShare(memberEcoVerificationId);
-      if (res.code === 2000) {
-        openToast("공유 추가 하트 20점 적립! 감사합니다!");
-      } else if (res.code === 47004) {
-        openToast("이미 공유한 인증입니다.");
+      if (isMe) {
+        const res = await postShare(memberEcoVerificationId);
+        if (res.code === 2000) {
+          openToast("공유 추가 하트 20점 적립! 감사합니다!");
+        } else if (res.code === 47004) {
+          openToast("이미 공유한 인증입니다.");
+        } else {
+          openToast("공유는 완료되었지만, 서버 처리 중에 문제가 있었습니다.");
+        }
       } else {
-        openToast("공유는 완료되었지만, 서버 처리 중에 문제가 있었습니다.");
+        return;
       }
     } catch (err) {
       console.error(err);

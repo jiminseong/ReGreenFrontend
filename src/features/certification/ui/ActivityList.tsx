@@ -213,26 +213,30 @@ const ActivityList = () => {
         </div>
       )}
       {isSuccess &&
-        activities.map((activity) => (
-          <ActivityItem
-            key={activity.ecoVerificationId}
-            ecoVerificationId={activity.ecoVerificationId}
-            title={activity.title}
-            ecoLovePoint={activity.ecoLovePoint}
-            breakupBufferPoint={activity.breakupBufferPoint}
-            imageUrl={
-              activity.iconImageUrl || activity.title === "다회용 컵 이용하기"
-                ? "/icon/activity/cupIcon.svg"
-                : activity.title === "중고 제품 나눔/구매 인증하기"
-                ? "/icon/activity/danguenIcon.svg"
-                : activity.title === "플로깅 데이트하기"
-                ? "/icon/activity/trashIcon.svg"
-                : ""
-            }
-            currentCheckedId={currentCheckedId}
-            onChecked={handleCheckboxClick}
-          />
-        ))}{" "}
+        activities.map((activity) =>
+          activity.title === "사전예약 히든미션" ? (
+            <></>
+          ) : (
+            <ActivityItem
+              key={activity.ecoVerificationId}
+              ecoVerificationId={activity.ecoVerificationId}
+              title={activity.title}
+              ecoLovePoint={activity.ecoLovePoint}
+              breakupBufferPoint={activity.breakupBufferPoint}
+              imageUrl={
+                activity.iconImageUrl || activity.title === "다회용 컵 이용하기"
+                  ? "/icon/activity/cupIcon.svg"
+                  : activity.title === "중고 제품 나눔/구매 인증하기"
+                  ? "/icon/activity/danguenIcon.svg"
+                  : activity.title === "플로깅 데이트하기"
+                  ? "/icon/activity/trashIcon.svg"
+                  : ""
+              }
+              currentCheckedId={currentCheckedId}
+              onChecked={handleCheckboxClick}
+            />
+          )
+        )}{" "}
       <div className="relative">
         <span className="absolute z-20 w-full text-center bottom-110  md:bottom-64  font-normal text-lg">
           업데이트 예정입니다.
