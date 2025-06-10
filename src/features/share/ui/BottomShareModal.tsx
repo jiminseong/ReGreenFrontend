@@ -49,7 +49,7 @@ const BottomShareModal = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 bg-black/50 z-[999] max-w-[500px] left-1/2 transform -translate-x-1/2 cursor-pointer"
+          className="fixed inset-0 bg-black/50 z-[999] w-full max-w-[500px] left-1/2 transform -translate-x-1/2 cursor-pointer"
         >
           <motion.div
             key="bottom-modal"
