@@ -3,6 +3,7 @@ import { create } from "zustand";
 interface InstallPromptStore {
   isIOS: boolean;
   isAndroid: boolean;
+  isGoogleApp: boolean;
   isStandalone: boolean;
   promptVisible: boolean;
   promptSkipped: boolean;
@@ -14,6 +15,7 @@ interface InstallPromptStore {
 export const useInstallPromptStore = create<InstallPromptStore>((set) => ({
   isIOS: false,
   isAndroid: false,
+  isGoogleApp: false,
   isStandalone: false,
   promptVisible: false,
   promptSkipped: false,
@@ -26,10 +28,11 @@ export const useInstallPromptStore = create<InstallPromptStore>((set) => ({
     const isAndroid = ua.includes("android");
 
     const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) && !("MSStream" in window);
+    const isGoogleApp = ua.includes("GSA") || ua.includes("GOOGLEAPP") || ua.includes("GMAIL");
     const isStandalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       ("standalone" in window.navigator && window.navigator.standalone === true);
 
-    set({ isIOS, isAndroid, isStandalone, promptVisible: !isStandalone });
+    set({ isIOS, isGoogleApp, isAndroid, isStandalone, promptVisible: !isStandalone });
   },
 }));
