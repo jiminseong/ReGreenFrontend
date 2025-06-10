@@ -1,4 +1,4 @@
-export type FurnitureCategory = "wallPaper" | "floor" | "furniture" | "window" | "prop";
+export type FurnitureCategory = "WALLPAPER" | "FLOOR" | "FURNITURE" | "WINDOW" | "PROP";
 
 export interface FurnitureItem {
   itemId: string;
