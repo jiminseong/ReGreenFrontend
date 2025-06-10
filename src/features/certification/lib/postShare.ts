@@ -6,7 +6,7 @@ interface PostShareResponse {
 }
 
 interface PostShareError {
-  code: 47001 | 47002 | 47006 | 47004 | number;
+  code: 47001 | 47002 | 47006 | number;
   message: string;
   method: string;
   path: string;
@@ -15,15 +15,11 @@ interface PostShareError {
 
 export const postShare = async (memberEcoVerificationId: string) => {
   const response = await httpNoThrow
-    .patch(`api/eco-verifications/my/${memberEcoVerificationId}/link`, {
-      json: { url: "https://blabla.com" },
-    })
+    .post(`api/eco-verifications/my/${memberEcoVerificationId}/share`)
     .json<PostShareResponse | PostShareError>();
   if (response.code === 2000) {
-    // 성공 처리
     return response as PostShareResponse;
   } else {
-    // 오류 처리
     return response as PostShareError;
   }
 };

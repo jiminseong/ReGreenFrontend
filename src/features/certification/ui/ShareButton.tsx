@@ -58,7 +58,7 @@ export default function ShareButton({
           openToast("공유는 완료되었지만, 서버 처리 중에 문제가 있었습니다.");
         }
       } else {
-        return;
+        openToast("공유가 완료되었어요! 감사합니다!");
       }
     } catch (err) {
       console.error(err);
