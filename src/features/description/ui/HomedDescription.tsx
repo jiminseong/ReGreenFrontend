@@ -59,10 +59,7 @@ const HomedDescription = ({ onFinish }: { onFinish: () => void }) => {
                   이별을 미룰 수 있는 <span className="font-bold">날짜</span>입니다.
                 </div>
               }
-              onConfirm={() => {
-                handleNext();
-                requestNotificationPermission(); // 사용자 제스처 기반 권한 요청
-              }}
+              onConfirm={handleNext}
               progress={progress}
             />
           </div>
@@ -98,7 +95,10 @@ const HomedDescription = ({ onFinish }: { onFinish: () => void }) => {
                   버튼을 통해 인증을 완료해주세요.
                 </div>
               }
-              onConfirm={handleNext}
+              onConfirm={() => {
+                handleNext();
+                requestNotificationPermission(); // 사용자 제스처 기반 권한 요청
+              }}
               progress={progress}
               trianglePosition="bottomLeft"
             />

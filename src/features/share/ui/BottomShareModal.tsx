@@ -49,7 +49,7 @@ const BottomShareModal = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 bg-black/50 z-[999] w-full max-w-[500px] left-1/2 transform -translate-x-1/2 cursor-pointer"
+          className="fixed inset-0 bg-black/50 z-[999] w-full max-w-[500px] left-1/2 transform -translate-x-1/2 will-change-opacity cursor-pointer"
         >
           <motion.div
             key="bottom-modal"
@@ -58,7 +58,7 @@ const BottomShareModal = ({
             animate={{ y: 0 }}
             exit={{ y: 650 }}
             transition={{ duration: 0.3 }}
-            className="absolute z-50 bottom-0 px-5 py-5 bg-white rounded-t-[20px] cursor-auto flex flex-col gap-5 w-full max-w-[500px] left-1/2 transform -translate-x-1/2"
+            className="absolute z-50 bottom-0 px-5 py-5 bg-white rounded-t-[20px] cursor-auto flex flex-col gap-5 w-full max-w-[500px] left-1/2 transform will-change-transform -translate-x-1/2"
           >
             <div ref={ref} className="w-full aspect-square overflow-hidden rounded-lg relative ">
               <Image src={imageUrl} alt="인증 사진" fill className="object-cover" />
