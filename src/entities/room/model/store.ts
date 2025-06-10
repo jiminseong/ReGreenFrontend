@@ -6,7 +6,7 @@ export const categoryMap: Record<FurnitureCategory, string> = {
   wallPaper: "벽지",
   prop: "소품",
   window: "창문",
-  floor: "바닥재",
+  floor: "바닥",
   furniture: "가구",
 };
 

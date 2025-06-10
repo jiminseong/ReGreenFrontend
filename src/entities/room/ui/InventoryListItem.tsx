@@ -37,7 +37,8 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
         />
       )}
       {item.name === "기본 벽지" ||
-        (item.name === "기본 바닥재 " && (
+        item.name === "기본 바닥" ||
+        (item.name === "기본 바닥재" && (
           <Image
             className={`absolute top-3.5 right-3.75 visible"`}
             src="/icon/home/checkIcon.svg"
