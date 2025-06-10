@@ -1,3 +1,4 @@
+// ActivityList.tsx
 "use client";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
@@ -22,27 +23,23 @@ import { isValidExifDate } from "../lib/isValidExifDate";
 import { useActivityTourStore } from "@/features/certification/model/useActivityTourStore";
 
 const ActivityList = () => {
-  const plusProgress = useCertificationStore((state) => state.plusProgress);
+  const plusProgress = useCertificationStore((s) => s.plusProgress);
   const router = useRouter();
   const { loading, setLoading } = useLoadingStore();
   const { openToast, isOpen, message } = useToastStore();
-  const [currentCheckedId, setCurrentCheckedId] = useState<string>("");
+  const [currentCheckedId, setCurrentCheckedId] = useState("");
   const { data: activities, isSuccess, isPending } = useActivityList();
   const { isSeen, syncWithLocalStorage } = useActivityTourStore();
   const notReadyActivities = dummyActivities;
-
-  const selected = activities?.find((a) => a.ecoVerificationId === currentCheckedId);
 
   useEffect(() => {
     syncWithLocalStorage();
   }, [syncWithLocalStorage]);
 
+  const selected = activities?.find((a) => a.ecoVerificationId === currentCheckedId);
+
   const handleCheckboxClick = (id: string) => {
-    if (isSeen === false) {
-      plusProgress?.(1);
-      setCurrentCheckedId((prev) => (prev === id ? "" : id));
-      return;
-    }
+    if (!isSeen) plusProgress?.(1);
     setCurrentCheckedId((prev) => (prev === id ? "" : id));
   };
 
@@ -53,106 +50,83 @@ const ActivityList = () => {
     ecoLovePoint: number,
     breakupBufferPoint: number
   ) => {
-    const MAX_FILE_SIZE = 20 * 1024 * 1024;
-
-    if (file.size > MAX_FILE_SIZE) {
-      setLoading(false);
+    const MAX = 20 * 1024 * 1024;
+    if (file.size > MAX) {
       openToast("파일 크기가 20MB를 초과합니다.");
       return;
     }
-
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      setLoading(false);
-      openToast("HEIC 형식이 아닌 JPG 또는 PNG로 바꿔주세요:)");
+      openToast("HEIC 형식이 아닌 JPG/PNG로 바꿔주세요.");
+      return;
+    }
+    const exif = await readImageDate(file);
+    if (exif && !isValidExifDate(exif, 24)) {
+      openToast("촬영일이 24시간 이전입니다.");
       return;
     }
 
-    const exifDateStr = await readImageDate(file);
+    const form = new FormData();
+    form.append("file", file);
 
-    if (exifDateStr) {
-      // EXIF 존재 시 날짜 비교
-      const isValid = isValidExifDate(exifDateStr, 24);
-      if (!isValid) {
-        setLoading(false);
-        openToast("촬영일이 현재보다 24시간 이전입니다.");
-        return;
-      }
-    } else {
-      // EXIF 없음 → 통과
-      console.log("EXIF 없음, 검사 생략");
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-
+    setLoading(true);
     try {
-      setLoading(true);
-      const res = await postCertification(ecoVerificationId, formData);
+      const res = await postCertification(ecoVerificationId, form);
 
       if (res.data.status === "REJECTED") {
-        setLoading(false);
         openToast("활동과 무관한 사진입니다.");
-      }
-
-      if (res.code !== 2000) {
-        setLoading(false);
-        openToast("인증 사진 업로드에 실패했어요.");
-      }
-
-      if (res.data.status === "APPROVED") {
-        const { memberEcoVerificationId, imageUrl } = res.data;
-        setLoading(false);
-        router.push(
-          `/activity/${memberEcoVerificationId}?imageUrl=${imageUrl}&title=${title}&ecoLovePoint=${ecoLovePoint}&breakupBufferPoint=${breakupBufferPoint}`
-        );
-      }
-    } catch (error) {
-      if (error instanceof HTTPError) {
-        const res = await error.response.json();
-        const code = res.code;
-        console.error("HTTP 에러:", res);
-
-        if (code === 47003) {
-          setLoading(false);
-          openToast("이미 인증한 활동입니다.");
-          return;
-        }
-
-        if (code === 54001) {
-          setLoading(false);
-          openToast("인증 사진은 1개만 업로드할 수 있습니다.");
-          return;
-        }
-
-        if (code === 44001) {
-          setLoading(false);
-          openToast("등록 되지 않은 활동이에요");
-          return;
-        }
-
-        setLoading(false);
-        openToast("네트워크 오류로 업로드에 실패했어요.");
         return;
       }
+      if (res.code !== 2000) {
+        openToast("인증 사진 업로드에 실패했어요.");
+        return;
+      }
+
+      const { memberEcoVerificationId, imageUrl } = res.data;
+      router.push(
+        `/activity/${memberEcoVerificationId}?imageUrl=${encodeURIComponent(
+          imageUrl
+        )}&title=${encodeURIComponent(
+          title
+        )}&ecoLovePoint=${ecoLovePoint}&breakupBufferPoint=${breakupBufferPoint}`
+      );
+    } catch (err) {
+      if (err instanceof HTTPError) {
+        const e = await err.response.json();
+        switch (e.code) {
+          case 47003:
+            openToast("이미 인증한 활동입니다.");
+            break;
+          case 54001:
+            openToast("인증 사진은 1개만 업로드할 수 있습니다.");
+            break;
+          case 44001:
+            openToast("등록되지 않은 활동이에요.");
+            break;
+          default:
+            openToast("네트워크 오류로 실패했어요.");
+        }
+      } else {
+        openToast("예상치 못한 오류가 발생했어요.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleCertificationClick = async () => {
-    if (isSeen === false) {
+  const handleCertificationClick = () => {
+    if (!isSeen) {
       plusProgress?.(1);
       return;
     }
     if (!selected) return;
 
     const input = prepareFileInput();
-
     input.onchange = async () => {
       const file = input.files?.[0];
       if (!file) {
         openToast("파일 선택 안 됨");
         return;
       }
-
       await uploadPhoto(
         file,
         selected.ecoVerificationId,
@@ -162,61 +136,55 @@ const ActivityList = () => {
       );
       setCurrentCheckedId("");
     };
-
     input.click();
   };
-
-  const TOAST_BUTTON_MESSAGE = selected ? (
-    <div className="flex items-center justify-center gap-2">
-      <>
-        사진으로 인증하기
-        <Image
-          src="/icon/activity/certification/cameraIcon.svg"
-          width={24}
-          height={24}
-          alt="카메라아이콘"
-        />
-      </>
-    </div>
-  ) : null;
 
   return (
     <div className="bg-white h-full overflow-y-scroll no-scrollbar relative">
       {isOpen && <Toast message={message} position="top" />}
-      {loading && <LogoLoading />}
+      {(isPending || loading) && <LogoLoading />}
+
       <AnimatePresence>
         {selected && (
-          <div className="w-full px-5 max-w-[500px] fixed bottom-10 left-1/2  transform -translate-x-1/2  flex flex-col gap-2 z-50">
+          <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full max-w-[500px] px-5 z-50 flex flex-col gap-2">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 50 }}
               transition={{ duration: 0.3 }}
-              className="w-full justify-center gap-4 flex items-center z-50"
+              className="flex justify-center gap-4 items-center"
             >
-              <div className=" bg-lpink px-2 py-[4.5px] border-[0.5px] rounded-[4px] border-ppink flex items-center justify-center  gap-2">
-                <Image src="/icon/home/heartIcon.svg" width={17} height={17} alt="하트아이콘" />
+              <div className="bg-lpink px-2 py-[4.5px] border border-ppink rounded flex items-center gap-2">
+                <Image src="/icon/home/heartIcon.svg" width={17} height={17} alt="하트" />
                 <span className="text-ppink font-bold">+{selected.ecoLovePoint}</span>
               </div>
-              <div className=" bg-[#EEEEEE] px-2 py-[4.5px] border-[0.5px] rounded-[4px] border-[#222222] flex items-center justify-center gap-2">
-                <Image src="/icon/home/calendarIcon.svg" width={17} height={17} alt="달력아이콘" />
+              <div className="bg-[#EEE] px-2 py-[4.5px] border border-[#222] rounded flex items-center gap-2">
+                <Image src="/icon/home/calendarIcon.svg" width={17} height={17} alt="캘린더" />
                 <span className="font-bold">+{selected.breakupBufferPoint}</span>
               </div>
             </motion.div>
-            <ToastButton message={TOAST_BUTTON_MESSAGE} onToastClick={handleCertificationClick} />
+            <ToastButton
+              message={
+                <div className="flex items-center justify-center gap-2">
+                  사진으로 인증하기
+                  <Image
+                    src="/icon/activity/certification/cameraIcon.svg"
+                    width={24}
+                    height={24}
+                    alt="카메라"
+                  />
+                </div>
+              }
+              onToastClick={handleCertificationClick}
+            />
           </div>
         )}
       </AnimatePresence>
-      {isPending && (
-        <div className="flex items-center justify-center h-[100dvh]">
-          <LogoLoading />
-        </div>
-      )}
+
       {isSuccess &&
-        activities.map((activity) =>
-          activity.title === "사전예약 히든미션" ? (
-            <></>
-          ) : (
+        activities
+          .filter((a) => a.title !== "사전예약 히든미션")
+          .map((activity) => (
             <ActivityItem
               key={activity.ecoVerificationId}
               ecoVerificationId={activity.ecoVerificationId}
@@ -224,32 +192,28 @@ const ActivityList = () => {
               ecoLovePoint={activity.ecoLovePoint}
               breakupBufferPoint={activity.breakupBufferPoint}
               imageUrl={
-                activity.iconImageUrl || activity.title === "다회용 컵 이용하기"
+                activity.iconImageUrl ||
+                (activity.title === "다회용 컵 이용하기"
                   ? "/icon/activity/cupIcon.svg"
                   : activity.title === "중고 제품 나눔/구매 인증하기"
                   ? "/icon/activity/danguenIcon.svg"
-                  : activity.title === "플로깅 데이트하기"
-                  ? "/icon/activity/trashIcon.svg"
-                  : ""
+                  : "/icon/activity/trashIcon.svg")
               }
               currentCheckedId={currentCheckedId}
               onChecked={handleCheckboxClick}
             />
-          )
-        )}{" "}
+          ))}
+
       <div className="relative">
-        <span className="absolute z-20 w-full text-center bottom-110  md:bottom-64  font-normal text-lg">
-          업데이트 예정입니다.
-        </span>
-        {notReadyActivities.map((activity) => (
+        <span className="absolute bottom-28 w-full text-center text-lg">업데이트 예정입니다.</span>
+        {notReadyActivities.map((d) => (
           <DummyActivityItem
-            key={activity.id}
-            ecoVerificationId={activity.id}
-            imageUrl={activity.iconSrc}
-            title={activity.label}
-            {...activity}
+            key={d.id}
+            ecoVerificationId={d.id}
+            imageUrl={d.iconSrc}
+            title={d.label}
           />
-        ))}{" "}
+        ))}
       </div>
     </div>
   );
