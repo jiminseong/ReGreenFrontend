@@ -12,6 +12,7 @@ interface BottomShareModalProps {
   title?: string | null;
   memberEcoVerificationId: string | null;
   actionLabel?: string;
+  isMe?: boolean;
 }
 
 const BottomShareModal = ({
@@ -19,6 +20,7 @@ const BottomShareModal = ({
   title,
   memberEcoVerificationId,
   actionLabel = "홈으로",
+  isMe,
 }: BottomShareModalProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -29,6 +31,7 @@ const BottomShareModal = ({
   const handleToggleModal = () => {
     setShouldTriggerAction(!shouldTriggerAction);
     setIsBottomModal(!isBottomModal);
+    console.log("Modal:", imageUrl, title, memberEcoVerificationId);
   };
 
   const handleActionClick = async () => {
@@ -76,6 +79,7 @@ const BottomShareModal = ({
             <div className="flex items-center justify-between gap-[15px]">
               {ref && (
                 <ShareButton
+                  isMe={isMe}
                   title={title ?? ""}
                   memberEcoVerificationId={String(memberEcoVerificationId)}
                   containerRef={ref}
@@ -93,4 +97,4 @@ const BottomShareModal = ({
   );
 };
 
-export default React.memo(BottomShareModal);
+export default BottomShareModal;
