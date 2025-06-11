@@ -6,9 +6,9 @@ import { useFurnitureStore } from "@/entities/room/model/store";
 import { FurnitureCategory } from "@/entities/room/model/type";
 import { useDragScroll } from "../lib/useDragScroll";
 
-// export type FurnitureCategory = "wallPaper" | "floor" | "furniture" | "window" | "decor";
+// export type FurnitureCategory = "WALL_PAPER" | "floor" | "furniture" | "window" | "decor";
 const categoryNameToTypeMap: Record<string, FurnitureCategory> = {
-  벽지: "WALLPAPER",
+  벽지: "WALL_PAPER",
   바닥: "FLOOR",
   가구: "FURNITURE",
   창문: "WINDOW",
