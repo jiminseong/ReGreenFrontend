@@ -3,7 +3,7 @@ import { FurnitureCategory, FurnitureItem } from "./type";
 
 // 카테고리 한글 변환 맵
 export const categoryMap: Record<FurnitureCategory, string> = {
-  WALLPAPER: "벽지",
+  WALL_PAPER: "벽지",
   PROP: "소품",
   WINDOW: "창문",
   FLOOR: "바닥",
