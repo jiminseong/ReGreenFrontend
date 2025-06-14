@@ -37,7 +37,7 @@ const LoginPage = () => {
       return;
     }
     if (inviteCode && inviteCode.trim().length > 0) {
-      router.push(`/couple/invited/${encodeURIComponent(inviteCode)}`);
+      router.push(`/couple/invited?inviteCode=${encodeURIComponent(inviteCode)}`);
       return;
     }
 
