@@ -102,14 +102,19 @@ const InventoryListComponent = () => {
 
         if (res.statusCode === 45003) {
           setLoading(false);
-          setModal(true, "notEnoughPoints", modalItem);
-          coupleRefetch();
+          setModal(false, null, null);
+          setTimeout(() => {
+            setModal(true, "notEnoughPoints", modalItem);
+          }, 10);
+
           return;
         }
         if (res.statusCode === 45002) {
           setLoading(false);
-          setModal(true, "alreadyOwned", modalItem);
-          coupleRefetch();
+          setModal(false, null, null);
+          setTimeout(() => {
+            setModal(true, "alreadyOwned", modalItem);
+          }, 10);
           return;
         }
 

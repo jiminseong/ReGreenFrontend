@@ -17,11 +17,9 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
 }) => {
   return (
     <div
-      onClick={
-        item.name === "기본 벽지" || item.name === "기본 바닥재" ? () => {} : () => onToggle()
-      }
+      onClick={item.name === "기본 벽지" || item.name === "기본 바닥" ? () => {} : () => onToggle()}
       className={`relative ${
-        isOwned || item.name === "기본 벽지" || item.name === "기본 바닥재"
+        isOwned || item.name === "기본 벽지" || item.name === "기본 바닥"
           ? "bg-[#F5F5F5] rounded-[20px] border border-[#DEDEDE]"
           : ""
       } flex flex-col items-center  px-6 py-3 md:py-5.5 cursor-pointer`}
@@ -38,7 +36,7 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
       )}
       {item.name === "기본 벽지" ||
         item.name === "기본 바닥" ||
-        (item.name === "기본 바닥재" && (
+        (item.name === "기본 바닥" && (
           <Image
             className={`absolute top-3.5 right-3.75 visible"`}
             src="/icon/home/checkIcon.svg"
