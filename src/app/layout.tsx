@@ -20,12 +20,6 @@ export const metadata: Metadata = {
   other: {
     "apple-mobile-web-app-capable": "yes",
   },
-  viewport: {
-    initialScale: 1,
-    width: "device-width",
-    maximumScale: 1,
-    userScalable: false,
-  },
 
   icons: {
     icon: "/192.png",
