@@ -5,7 +5,6 @@ import "./globals.css";
 import SwiperBlockWrapper from "./providers/SwiperBlockWrapper";
 import { Analytics } from "@vercel/analytics/next";
 import { RegisterSW } from "./providers/RegisterSW";
-import Head from "./head";
 
 export const metadata: Metadata = {
   title: "우리는 이별을 미루기로 했다.",
@@ -21,6 +20,13 @@ export const metadata: Metadata = {
   other: {
     "apple-mobile-web-app-capable": "yes",
   },
+  viewport: {
+    initialScale: 1,
+    width: "device-width",
+    maximumScale: 1,
+    userScalable: false,
+  },
+
   icons: {
     icon: "/192.png",
     apple: "/192.png",
@@ -108,7 +114,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head />
       <body className="antialiased">
         <QueryProvider>
           <div
