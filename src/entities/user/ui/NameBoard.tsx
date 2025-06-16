@@ -16,11 +16,8 @@ export default function NameBoard() {
   const [name, setName] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const { openToast } = useToastStore();
-
-  // 초기값 보관용 ref
   const initialNameRef = useRef<string>("");
 
-  // 1) 데이터 로딩 시
   useEffect(() => {
     if (coupleInfo?.data.name) {
       setName(coupleInfo.data.name);
@@ -28,39 +25,32 @@ export default function NameBoard() {
     }
   }, [coupleInfo?.data.name]);
 
-  // 2) blur 또는 Enter 시 호출
   const handleBlurOrEnter = async () => {
     setEditing(false);
 
-    // 2-1) 유효성 검사
     if (!checkIsValidNickName(name)) {
       openToast("띄어쓰기 포함 특수 문자 제외 10자 이내로 입력해주세요.");
-      setName(initialNameRef.current); // 초기값으로 롤백
+      setName(initialNameRef.current);
       return;
     }
 
-    // 2-2) 입력값이 초기값과 같으면 요청 안 함
     if (name === initialNameRef.current) {
       openToast("아지트명이 변경되지 않았어요.");
       return;
     }
 
-    // 2-3) 서버 요청
     try {
       const res = await postCoupleNickName(name);
       if (res.code !== 2000) throw new Error();
 
-      await refetch(); // 데이터 갱신
+      await refetch();
       openToast("아지트명이 수정되었어요 :)");
-
-      // refetch 후 useEffect가 실행되며 name, initialNameRef 동기화됨
     } catch {
       openToast("수정에 실패했습니다. 다시 시도해주세요.");
-      await refetch(); // 실패 시에도 rollback
+      await refetch();
     }
   };
 
-  // 3) 키 처리 (Enter → blur, Escape → 취소)
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       inputRef.current?.blur();
@@ -75,28 +65,27 @@ export default function NameBoard() {
 
   return (
     <div className="relative flex flex-col items-center">
-      {/* 표지판 텍스트 영역 */}
-      <div
-        className={
-          `bg-[#CA9C61] rounded-md shadow-md  py-2  flex items-center justify-center h-[32px] cursor-text z-10 ` +
-          (editing ? "ring-2 ring-inset ring-[#CA9C61]" : "")
-        }
-        onClick={() => {
-          setEditing(true);
-          inputRef.current?.focus();
-        }}
-      >
-        <input
-          ref={inputRef}
-          type="text"
-          className="p-0 m-0  text-sm text-center font-semibold bg-transparent border-none focus:outline-none  "
-          value={name}
-          onChange={(e) => setName(e.target.value.slice(0, 10))}
-          maxLength={10}
-          readOnly={!editing}
-          onBlur={handleBlurOrEnter}
-          onKeyDown={handleKeyDown}
-        />
+      <div className="bg-[#CA9C61] rounded-md shadow-md py-2 px-3 flex items-center justify-center h-[32px] cursor-text z-10 w-[120px]">
+        {editing ? (
+          <input
+            ref={inputRef}
+            autoFocus
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value.slice(0, 10))}
+            onBlur={handleBlurOrEnter}
+            onKeyDown={handleKeyDown}
+            className="w-full h-full text-sm text-center font-semibold bg-transparent border-none focus:outline-none truncate"
+            maxLength={10}
+          />
+        ) : (
+          <div
+            className="w-full h-full text-sm flex justify-center items-center font-semibold text-black truncate"
+            onClick={() => setEditing(true)}
+          >
+            {name}
+          </div>
+        )}
       </div>
 
       {/* 사다리꼴 꼬리 */}
