@@ -75,7 +75,19 @@ export default function NameBoard() {
             onChange={(e) => setName(e.target.value.slice(0, 10))}
             onBlur={handleBlurOrEnter}
             onKeyDown={handleKeyDown}
-            className="w-full h-full text-sm text-center font-semibold bg-transparent border-none focus:outline-none truncate"
+            className="
+              text-center
+              text-base
+              scale-[0.75]
+              w-full
+              transform
+              leading-none
+              p-0
+              m-0
+              bg-transparent
+              border-none
+              focus:outline-none
+            "
             maxLength={10}
           />
         ) : (
