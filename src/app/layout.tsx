@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description: "우리는 이별을 미루기로 했다.",
   manifest: "/manifest.json",
   themeColor: "#ffffff",
+
   appleWebApp: {
     capable: true,
     title: "우리는 이별을 미루기로 했다.",
@@ -106,6 +107,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+      </head>
       <body className="antialiased">
         <QueryProvider>
           <div
