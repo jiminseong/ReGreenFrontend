@@ -24,10 +24,12 @@ const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value, type, onClick }) => {
 
   return (
     <div
-      className={`relative w-[110px] h-[40px]  ${bgImage} bg-cover bg-no-repeat flex items-center justify-end `}
+      className={`relative w-[84px] h-[30.55px] md:w-[110px] md:h-[40px] ${bgImage} bg-cover bg-no-repeat flex items-center justify-end `}
       onClick={onClick}
     >
-      <span className={`${textColor} mr-2.5 font-bold leading-none text-xl`}>{textValue}</span>
+      <span className={`${textColor} mr-2.5 font-bold leading-none text-[15px] md:text-xl`}>
+        {textValue}
+      </span>
     </div>
   );
 };

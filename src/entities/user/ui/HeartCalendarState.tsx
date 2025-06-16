@@ -76,6 +76,7 @@ const HeartCalendarState = () => {
       >
         <WiggleBadge onClick={() => handleEasterEgg()} value={String(ecoLovePoint)} type="heart" />
         <WiggleBadge value={String(breakupBufferPoint)} type="calendar" />
+        {/* <WiggleBadge value={String(rankingPoint)} type="ranking" /> */}
       </motion.div>
     </>
   );
