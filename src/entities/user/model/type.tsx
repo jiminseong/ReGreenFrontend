@@ -19,3 +19,28 @@ export interface MemberInfo {
   profileImageUrl: string;
   coupleId: string | null;
 }
+
+export interface CoupleInfo {
+  coupleId: string;
+  ecoLovePoint: number;
+  breakupBufferPoint: number;
+  name: string | null;
+  members: [
+    {
+      memberId: string;
+      nickname: string;
+      profileImageUrl: string;
+    },
+    {
+      memberId: string;
+      nickname: string;
+      profileImageUrl: string;
+    }
+  ];
+}
+
+export interface CoupleInfoResponse {
+  code: string;
+  message: string;
+  data: CoupleInfo;
+}
