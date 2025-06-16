@@ -3,7 +3,7 @@ import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import Button from "@/shared/ui/Button";
 import Toast from "@/widgets/Toast";
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const CoupleInvitePage = () => {
   const { id: inviteCode } = useParams();
@@ -11,7 +11,7 @@ const CoupleInvitePage = () => {
   const data = useMyInfo();
   const name = data.isSuccess ? data.data.nickname : "우이미 손님";
   const router = useRouter();
-  const [copySuccessToast, setCopySuccessToast] = React.useState(false);
+  const [copySuccessToast, setCopySuccessToast] = useState(false);
 
   function handleCopyToClipboard() {
     navigator.clipboard.writeText(

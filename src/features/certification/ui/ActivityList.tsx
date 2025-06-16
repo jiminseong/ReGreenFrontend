@@ -21,6 +21,8 @@ import { HTTPError } from "ky";
 import { readImageDate } from "../lib/readImageDate";
 import { isValidExifDate } from "../lib/isValidExifDate";
 import { useActivityTourStore } from "@/features/certification/model/useActivityTourStore";
+import CommonModal from "@/widgets/ComonModal";
+import { postCertificationRetry } from "../lib/postCertificationRetry";
 
 const ActivityList = () => {
   const plusProgress = useCertificationStore((s) => s.plusProgress);
@@ -31,6 +33,8 @@ const ActivityList = () => {
   const { data: activities, isSuccess, isPending } = useActivityList();
   const { isSeen, syncWithLocalStorage } = useActivityTourStore();
   const notReadyActivities = dummyActivities;
+  const [retryId, setRetryId] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     syncWithLocalStorage();
@@ -73,7 +77,8 @@ const ActivityList = () => {
       const res = await postCertification(ecoVerificationId, form);
 
       if (res.data.status === "REJECTED") {
-        openToast("활동과 무관한 사진입니다.");
+        setRetryId(res.data.memberEcoVerificationId);
+        setIsModalOpen(true);
         return;
       }
       if (res.code !== 2000) {
@@ -143,7 +148,31 @@ const ActivityList = () => {
     <div className="bg-white h-full overflow-y-scroll no-scrollbar relative">
       {isOpen && <Toast message={message} position="top" />}
       {(isPending || loading) && <LogoLoading />}
-
+      {isModalOpen && (
+        <CommonModal
+          isOpen={isModalOpen}
+          message={
+            <div className="flex flex-col items-center px-6">
+              <span className="text-lg font-bold">아쉽게 거절되었어요.</span>
+              <span className="text-sm text-center mt-2">
+                지금 사진으로 재검토를 요청하시겠어요?
+                <br />
+                만약 새로운 사진으로 다시 시도하시려면 취소를 눌러주세요.
+                <br />
+                (재검토는 약 24시간 소요됩니다)
+              </span>
+            </div>
+          }
+          onConfirm={() => {
+            setIsModalOpen(false);
+            if (!retryId) return;
+            postCertificationRetry(retryId, openToast);
+          }}
+          onCancel={() => setIsModalOpen(false)}
+          confirmText="확인"
+          cancelText="취소"
+        />
+      )}
       <AnimatePresence>
         {selected && (
           <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 w-full max-w-[500px] px-5 z-50 flex flex-col gap-2">

@@ -2,7 +2,7 @@
 import Button from "@/shared/ui/Button";
 import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { httpNoThrow } from "@/shared/lib/http";
 
 import { useToastStore } from "@/shared/store/useToastStore";
@@ -14,14 +14,14 @@ import { KakaoInAppBanner } from "@/shared/ui/KakaoInAppBanner";
 const CoupleInvitePage = () => {
   const params = useSearchParams();
 
-  const [inviteCode, setInviteCode] = React.useState<string>(
+  const [inviteCode, setInviteCode] = useState<string>(
     decodeURIComponent(String(params.get("inviteCode") ?? ""))
   );
   const URLDecodedInviteCode = decodeURIComponent(inviteCode as string);
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { data, refetch, isSuccess } = useMyInfo();
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const { data: inviteNickName, isSuccess: isNickSuccess } = useNickName({
     inviteCode: String(URLDecodedInviteCode),

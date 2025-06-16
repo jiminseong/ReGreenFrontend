@@ -1,15 +1,16 @@
 import Image from "next/image";
 import React from "react";
+import { StatusCategory } from "../model/type";
 
 interface StatusListItemProp {
   iconSrc: string; // 아이콘 이미지 경로
   label: string; // 라벨 텍스트
-  status: "submit" | "APPROVED" | "REJECTED"; // 현재 상태
+  status: StatusCategory;
   date: Date;
   pending?: boolean; // 로딩 상태
 }
 
-const statusMap = {
+const statusMap: Record<StatusCategory, { label: string; className: string }> = {
   submit: {
     label: "제출완료",
     className: "bg-[#E9E9E9] text-[#9E9E9E]",
@@ -21,6 +22,10 @@ const statusMap = {
   REJECTED: {
     label: "인증거절",
     className: "bg-[#FFE6E6] text-[#FF3A3A]",
+  },
+  GOING_OVER: {
+    label: "인증검토",
+    className: "bg-[#DAF9E1] text-[#2BC34E]",
   },
 };
 

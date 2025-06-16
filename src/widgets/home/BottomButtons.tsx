@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
 import { useRouter } from "next/navigation";
@@ -9,7 +9,7 @@ interface BottomButtonsProps {
 }
 const BottomButtons = ({ type = null }: BottomButtonsProps) => {
   const router = useRouter();
-  const [pressedButton, setPressedButton] = React.useState<"activity" | "inventory" | null>(null);
+  const [pressedButton, setPressedButton] = useState<"activity" | "inventory" | null>(null);
   const { mode, setMode } = useHomeMode();
 
   const handleNavigation = (action: "activity" | "inventory") => {

@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
 
 import { useHomeMode } from "../lib/useHomeMode";
 import CommonModal from "@/widgets/ComonModal";
@@ -10,9 +10,9 @@ import { useMyPlacedFurniture } from "../lib/useMyPlacedFurniture";
 import LogoLoading from "@/widgets/LogoLoading";
 
 const RoomSaveButton = () => {
-  const [modal, setModal] = React.useState(false);
+  const [modal, setModal] = useState(false);
   const { mode, setMode } = useHomeMode();
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const { data, refetch } = useMyPlacedFurniture();
   const setCurrentFurnitures = useRoomStore((state) => state.setCurrentRoomFurnitures);
   const currentFurnitures = useRoomStore((state) => state.currentRoomFurnitures);
