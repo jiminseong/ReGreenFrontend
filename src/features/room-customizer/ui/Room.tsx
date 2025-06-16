@@ -99,7 +99,7 @@ const Room = () => {
           alt="벽"
           width={1000}
           height={1000}
-          className={`absolute `}
+          className={`absolute z-5 `}
         />
         {sortedItems.map((item) => (
           <Image

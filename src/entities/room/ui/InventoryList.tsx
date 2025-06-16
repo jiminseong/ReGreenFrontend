@@ -2,7 +2,7 @@
 
 import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
 import Image from "next/image";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useFurnitureModalStore, useFurnitureStore } from "@/entities/room/model/store";
 import { BuyFurnitureResponse, FurnitureItem } from "@/entities/room/model/type";
@@ -15,10 +15,11 @@ import { useCoupleInfo } from "@/entities/user/lib/useCoupleInfo";
 import { useMyPlacedFurniture } from "@/features/room-customizer/lib/useMyPlacedFurniture";
 import { httpNoThrow } from "@/shared/lib/http";
 import LogoLoading from "@/widgets/LogoLoading";
+import { normalizeExclusivePlacement } from "@/features/room-customizer/lib/normalizeExclusivePlacement";
 
 const InventoryListComponent = () => {
   const router = useRouter();
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const { data: coupleInfo, refetch: coupleRefetch } = useCoupleInfo();
   const {
     data: newCoupleFurniture,
@@ -82,48 +83,57 @@ const InventoryListComponent = () => {
       return;
     }
 
-    const buyFurnitures = async () => {
+    const buyFurnitures = async (itemId: string) => {
       try {
         setLoading(true);
         const res = await httpNoThrow
-          .post(`api/items/${modalItem.itemId}/purchase`)
+          .post(`api/items/${itemId}/purchase`)
           .json<BuyFurnitureResponse>();
         setLoading(false);
         if ("code" in res && res.code === 2000) {
           setLoading(false);
-
           setModal(true, "buyFinished", modalItem);
           const updated = await furnituresRefetch();
           coupleRefetch();
-          setCurrentFurnitures(updated.data?.data ?? []);
+          const normalized = normalizeExclusivePlacement(updated.data?.data ?? []);
+          setCurrentFurnitures(normalized);
+          return;
         }
+
         if (res.statusCode === 45003) {
           setLoading(false);
-          setModal(true, "notEnoughPoints", modalItem);
-          coupleRefetch();
-        } else if (res.statusCode === 45002) {
-          setLoading(false);
-          setModal(true, "alreadyOwned", modalItem);
-          coupleRefetch();
-        } else {
-          setLoading(false);
+          setModal(false, null, null);
+          setTimeout(() => {
+            setModal(true, "notEnoughPoints", modalItem);
+          }, 10);
+
+          return;
         }
+        if (res.statusCode === 45002) {
+          setLoading(false);
+          setModal(false, null, null);
+          setTimeout(() => {
+            setModal(true, "alreadyOwned", modalItem);
+          }, 10);
+          return;
+        }
+
+        setLoading(false);
       } catch (error) {
         setLoading(false);
         console.error("Error buying furniture:", error);
       }
     };
 
-    buyFurnitures();
+    buyFurnitures(modalItem.itemId);
   };
 
   useEffect(() => {
-    if (furnitureSuccess && newCoupleFurniture?.data?.length > 0) {
+    if (furnitureSuccess && newCoupleFurniture?.data?.length > 0 && currentCategory === undefined) {
       const firstCategory = newCoupleFurniture.data[0].category;
       setCategories([firstCategory]);
     }
   }, [furnitureSuccess, newCoupleFurniture]);
-
   function handleHomeMode() {
     if (mode === "inventory" && furnitureSuccess && newCoupleFurniture.data.length > 0) {
       setMode("home");
