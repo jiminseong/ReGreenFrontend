@@ -5,6 +5,7 @@ import "./globals.css";
 import SwiperBlockWrapper from "./providers/SwiperBlockWrapper";
 import { Analytics } from "@vercel/analytics/next";
 import { RegisterSW } from "./providers/RegisterSW";
+import Head from "./head";
 
 export const metadata: Metadata = {
   title: "우리는 이별을 미루기로 했다.",
@@ -107,12 +108,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
-      </head>
+      <Head />
       <body className="antialiased">
         <QueryProvider>
           <div
