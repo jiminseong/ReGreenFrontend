@@ -4,8 +4,6 @@ import React from "react";
 import { createPortal } from "react-dom";
 
 const LogoLoading = () => {
-  if (typeof document === "undefined") return null;
-
   return createPortal(
     <AnimatePresence>
       <motion.div
