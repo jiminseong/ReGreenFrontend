@@ -4,7 +4,7 @@ import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const CoupleGuard = () => {
+const NickNameGuard = () => {
   const router = useRouter();
   const {
     data: myData,
@@ -27,7 +27,11 @@ const CoupleGuard = () => {
     }
 
     if (mySuccess && coupleSuccess && coupleData?.data.name === null) {
-      router.push("/couple/nickname");
+      return;
+    }
+
+    if (mySuccess && coupleSuccess && coupleData?.data.name !== null) {
+      router.push("/home");
       return;
     }
   }, [
@@ -43,4 +47,4 @@ const CoupleGuard = () => {
   return null;
 };
 
-export default CoupleGuard;
+export default NickNameGuard;

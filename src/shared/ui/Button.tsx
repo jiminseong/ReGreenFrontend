@@ -6,6 +6,7 @@ interface ButtonProps {
   primary?: boolean;
   gray?: boolean;
   ref?: React.Ref<HTMLButtonElement>;
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -15,6 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   className,
   gray = false,
   ref,
+  disabled = false,
 }) => {
   const bgColor = gray
     ? "bg-[#EEEEEE] text-black"
@@ -29,6 +31,7 @@ const Button: React.FC<ButtonProps> = ({
       type="button"
       onClick={onClick}
       className={`${className} z-5 w-full px-4 py-4 rounded-lg font-bold ${bgColor}`}
+      disabled={disabled}
     >
       {children}
     </motion.button>
