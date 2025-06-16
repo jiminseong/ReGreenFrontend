@@ -1,3 +1,5 @@
+export type StatusCategory = "submit" | "APPROVED" | "REJECTED" | "GOING_OVER";
+
 export interface SubmitActivitiesItem {
   ecoVerificationId: string;
   title: string;
@@ -7,7 +9,7 @@ export interface SubmitActivitiesItem {
   memberEcoVerificationId: string;
   createdAt: string;
   imageUrl: string;
-  status: "submit" | "REJECTED" | "APPROVED";
+  status: StatusCategory;
   location: null;
   geoLat: null;
   geoLng: null;
