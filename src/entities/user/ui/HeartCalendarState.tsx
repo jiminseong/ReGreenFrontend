@@ -1,7 +1,7 @@
 "use client";
 import WiggleBadge from "@/widgets/home/WiggleBadge";
 import { motion } from "framer-motion";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { useCoupleInfo } from "../lib/useCoupleInfo";
@@ -18,8 +18,8 @@ const HeartCalendarState = () => {
   const ecoLovePoint = coupleInfo?.ecoLovePoint ?? 0;
   const breakupBufferPoint = coupleInfo?.breakupBufferPoint ?? 0;
 
-  const [easterEgg, setEasterEgg] = React.useState(0);
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const [easterEgg, setEasterEgg] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
