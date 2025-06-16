@@ -6,9 +6,12 @@ import TopSatatusBar from "@/widgets/home/TopSatatusBar";
 import InventoryList from "@/entities/room/ui/InventoryList";
 import CoupleGuard from "@/shared/lib/CoupleGuard";
 import HomedDescription from "@/features/description/ui/HomedDescription";
+import Toast from "@/widgets/Toast";
+import { useToastStore } from "@/shared/store/useToastStore";
 
 const HomePage = () => {
   const [showTour, setShowTour] = useState(false);
+  const { isOpen, message } = useToastStore();
 
   useEffect(() => {
     const isSeen = localStorage.getItem("homeTourSeen");
@@ -24,6 +27,7 @@ const HomePage = () => {
 
   return (
     <div className="relative">
+      {isOpen && <Toast message={message} position="top" />}
       {showTour && <HomedDescription onFinish={handleTourFinish} />}
       <div className="py-5 relative flex flex-col items-center justify-evenly h-[100dvh] w-full">
         <div className="absolute top-0 w-full h-[50%] z-[0] bg-gradient-to-b from-white to-[#C2F1EE]" />
