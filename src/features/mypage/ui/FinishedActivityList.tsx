@@ -28,7 +28,6 @@ export const FinishedActivityList = () => {
   const { isOpen: isOpenToast, message } = useToastStore();
 
   const members = data ? [...data.today.members] : [];
-  const allActivities = members.flatMap((member) => member.memberEcoVerifications);
 
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const { setIsOpen: setIsOpenBottomModal } = useModalStore();
@@ -78,7 +77,9 @@ export const FinishedActivityList = () => {
         </div>
 
         {(isPending || !data) && <SkeletonFinishedActivityList />}
-        {allActivities.length === 0 ? (
+
+        {/* APPROVED된 활동이 없을 때로 수정 */}
+        {Object.entries(groupedByType).length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full">
             <p className="text-gray-500 mt-[-128px]">아직 활동이 없습니다.</p>
           </div>
