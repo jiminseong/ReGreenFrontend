@@ -1,18 +1,16 @@
 import Image from "next/image";
+import { RankingItem } from "../model/type";
 
 export default function RankCard({
+  rankingItem,
   rank,
-  name,
-  points,
-  coupleImageUrl,
 }: {
+  rankingItem: RankingItem;
   rank: number;
-  name: string;
-  points: number;
-  coupleImageUrl: string;
 }) {
   const isFirst = rank === 1;
-
+  const name = rankingItem.name || "익명의 커플";
+  const imageUrl = rankingItem.profileImageUrl || "/image/couple/defaultProfile.png";
   return (
     <div
       className={`flex flex-col items-center justify-center  rounded-[10px] ${
@@ -35,7 +33,7 @@ export default function RankCard({
           isFirst ? "mb-[10px] w-20 h-20 " : "mb-[15px] w-16 h-16"
         }  rounded-full border border-[#F3F3F3] overflow-hidden`}
       >
-        <Image alt="커플이미지" src={coupleImageUrl} fill className="object-cover rounded-full" />
+        <Image alt="커플이미지" src={imageUrl} fill className="object-cover rounded-full" />
       </div>
       <p className={`text-sm ${isFirst ? "font-semibold" : "font-regular"} text-center truncate`}>
         {name}
@@ -46,7 +44,7 @@ export default function RankCard({
         ) : (
           <Image src="/icon/home/heartIcon.svg" alt="heart" width={16} height={16} />
         )}
-        <span className="font-semibold flex items-center">{points}</span>
+        <span className="font-semibold flex items-center">{rankingItem.ecoScore}</span>
       </div>
     </div>
   );

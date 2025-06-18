@@ -2,14 +2,9 @@
 import React, { useEffect, useRef } from "react";
 import RankListItem from "./RankListItem";
 import MyRankListItem from "./MyRankListItem";
+import { RankingItem } from "../model/type";
 
-const RankList = ({
-  data,
-  myrankdata,
-}: {
-  data: Array<{ coupleId: string; rank: number; name: string; ecoScore: number }>;
-  myrankdata: { coupleId: string; rank: number; name: string; ecoScore: number };
-}) => {
+const RankList = ({ data, myCoupleId }: { data: RankingItem[]; myCoupleId: string }) => {
   const myRankRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -24,14 +19,14 @@ const RankList = ({
       <div className="absolute top-0 w-full bg-amber-200" />
 
       <div className="bg-white">
-        {data.map((item) => {
-          if (item.coupleId === myrankdata.coupleId)
+        {data.map((item, i) => {
+          if (item.coupleId === myCoupleId)
             return (
-              <div key={myrankdata.coupleId} ref={myRankRef}>
-                <MyRankListItem {...myrankdata} />
+              <div key={myCoupleId} ref={myRankRef}>
+                <MyRankListItem rankingItem={{ ...item, index: i + 4 }} />
               </div>
             );
-          return <RankListItem key={item.coupleId} {...item} />;
+          return <RankListItem key={item.coupleId} rankingItem={{ ...item, index: i + 4 }} />;
         })}
       </div>
     </div>

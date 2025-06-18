@@ -1,34 +1,14 @@
 import React from "react";
 import RankCard from "./RankCard";
+import { RankingItem } from "../model/type";
 
-const TopThreeRank = ({
-  topThree,
-}: {
-  topThree: Array<{ rank: number; name: string; ecoScore: number; coupleImageUrl: string }>;
-}) => {
+const TopThreeRank = ({ topThree }: { topThree: RankingItem[] }) => {
+  if (topThree.length < 3) return null;
   return (
     <div className="relative flex justify-center gap-30 h-full items-center pt-4 pb-[64px]  ">
-      <RankCard
-        key={topThree[1].rank}
-        rank={topThree[1].rank}
-        name={topThree[1].name}
-        coupleImageUrl={topThree[1].coupleImageUrl}
-        points={topThree[1].ecoScore}
-      />{" "}
-      <RankCard
-        key={topThree[0].rank}
-        rank={topThree[0].rank}
-        name={topThree[0].name}
-        coupleImageUrl={topThree[0].coupleImageUrl}
-        points={topThree[0].ecoScore}
-      />
-      <RankCard
-        key={topThree[2].rank}
-        rank={topThree[2].rank}
-        name={topThree[2].name}
-        coupleImageUrl={topThree[2].coupleImageUrl}
-        points={topThree[2].ecoScore}
-      />
+      <RankCard key={topThree[1].coupleId} rank={2} rankingItem={topThree[1]} />{" "}
+      <RankCard key={topThree[0].coupleId} rank={1} rankingItem={topThree[0]} />
+      <RankCard key={topThree[2].coupleId} rank={3} rankingItem={topThree[2]} />
     </div>
   );
 };

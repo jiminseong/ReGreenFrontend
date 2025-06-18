@@ -17,4 +17,5 @@ export interface RankingItem {
   ecoScore: number;
   cumulativeEcoLovePoints: number;
   ecoVerificationCount: number;
+  index?: number;
 }
