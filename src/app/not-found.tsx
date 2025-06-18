@@ -9,7 +9,7 @@ export default function NotFound() {
     router.push("/");
   }
   return (
-    <div className="px-5 py-10 relative flex flex-col items-center justify-center h-[100dvh]">
+    <div className="px-5 py-8 relative flex flex-col items-center justify-center h-[100dvh]">
       <div className="flex flex-col items-center justify-center gap-3">
         <h1 className="text-ppink font-extrabold text-5xl">404</h1>
         <p className="text-2xl font-bold">페이지를 찾을 수 없어요</p>

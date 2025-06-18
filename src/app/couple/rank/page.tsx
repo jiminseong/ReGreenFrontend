@@ -6,6 +6,7 @@ import TopNavigationBar from "@/shared/ui/TopNavigationBar";
 import { useRankings } from "@/entities/rank/lib/useRankings";
 import { useCoupleInfo } from "@/entities/user/lib/useCoupleInfo";
 import LogoLoading from "@/widgets/LogoLoading";
+import CoupleGuard from "@/shared/lib/CoupleGuard";
 
 const RankPage = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useRankings();
@@ -40,6 +41,7 @@ const RankPage = () => {
 
   return (
     <div className="flex flex-col h-[100dvh]  bg-white overflow-y-hidden z-10">
+      <CoupleGuard />
       {isPending && <LogoLoading />}
       <TopNavigationBar title="랭킹" />
       <TopThreeRank topThree={topThree} />

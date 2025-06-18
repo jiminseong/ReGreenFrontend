@@ -5,7 +5,7 @@ import Acitivity from "./Acitivity";
 
 const SettingList = () => {
   return (
-    <div className="flex flex-col border-t-8 mt-12 overflow-auto border-[#EEEEEE]">
+    <div className="flex flex-col   overflow-auto ">
       <Acitivity />
       <Setting />
       <Auth />
