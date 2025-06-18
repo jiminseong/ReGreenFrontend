@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, KeyboardEvent } from "react";
 import { useCoupleInfo } from "../lib/useCoupleInfo";
 import { postCoupleNickName } from "@/features/couple-nickname/lib/postCoupleNickName";
 import { checkIsValidNickName } from "@/features/couple-nickname/lib/checkIsValidNickName";
-import { useToastStore } from "@/shared/store/useToastStore";
+import { useToastStore } from "@/shared/model/useToastStore";
 
 const TAIL_STYLE = {
   clipPath: "polygon(0% 0%, 100% 0%, 75% 100%, 25% 100%)",

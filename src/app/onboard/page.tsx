@@ -35,14 +35,14 @@ const OnboardingPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between h-[100dvh] p-5">
-      <div className="relative w-full flex flex-col items-center justify-center ">
+    <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pb-8">
+      <div className="relative w-full flex flex-col items-center justify-center pt-10  ">
         <ProgressBar step={currentStep + 1} totalSteps={4} />
         <button
-          className="absolute top-5 text-ppink text-lg font-semibold right-0 z-50"
+          className="absolute top-15 text-ppink text-[18px] font-semibold right-0 z-50"
           onClick={() => handleOnboardfinsh()}
         >
-          skip
+          SKIP
         </button>
       </div>
 

@@ -1,4 +1,4 @@
-import { useToastStore } from "@/shared/store/useToastStore";
+import { useToastStore } from "@/shared/model/useToastStore";
 import { useEffect } from "react";
 
 interface ToastProps {

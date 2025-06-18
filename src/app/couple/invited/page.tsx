@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { httpNoThrow } from "@/shared/lib/http";
 
-import { useToastStore } from "@/shared/store/useToastStore";
+import { useToastStore } from "@/shared/model/useToastStore";
 import { useNickName } from "@/entities/user/lib/useNickName";
 import CommonModal from "@/widgets/ComonModal";
 import LogoLoading from "@/widgets/LogoLoading";
@@ -69,7 +69,7 @@ const CoupleInvitePage = () => {
   }, [data?.coupleId, isSuccess]);
 
   return (
-    <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pt-24">
+    <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pb-8 pt-24">
       <KakaoInAppBanner />
       {loading && <LogoLoading />}
       {modalOpen && (

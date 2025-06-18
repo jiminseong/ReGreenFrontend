@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Button from "@/shared/ui/Button";
 import { postShare } from "../lib/postShare";
-import { useToastStore } from "@/shared/store/useToastStore";
+import { useToastStore } from "@/shared/model/useToastStore";
 import LogoLoading from "@/widgets/LogoLoading";
 import { createShareBlob } from "../lib/createShareBlob";
 

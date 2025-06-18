@@ -6,7 +6,7 @@ import { useCoupleSubmitActivity } from "../lib/useCoupleSubmitActivity";
 import { SkeletonFinishedActivityList } from "@/widgets/mypage/SkeletonFinishedActivityList";
 import FinishedActivityListItem, { Activity } from "./FinishedActivityListItem";
 import Toast from "@/widgets/Toast";
-import { useToastStore } from "@/shared/store/useToastStore";
+import { useToastStore } from "@/shared/model/useToastStore";
 import BottomShareModal from "@/features/share/ui/BottomShareModal";
 import { useModalStore } from "@/features/certification/model/useModalStore";
 

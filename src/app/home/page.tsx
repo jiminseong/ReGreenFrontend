@@ -7,7 +7,7 @@ import InventoryList from "@/entities/room/ui/InventoryList";
 import CoupleGuard from "@/shared/lib/CoupleGuard";
 import HomedDescription from "@/features/description/ui/HomedDescription";
 import Toast from "@/widgets/Toast";
-import { useToastStore } from "@/shared/store/useToastStore";
+import { useToastStore } from "@/shared/model/useToastStore";
 
 const HomePage = () => {
   const [showTour, setShowTour] = useState(false);
