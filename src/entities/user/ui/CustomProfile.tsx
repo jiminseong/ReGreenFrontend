@@ -7,7 +7,7 @@ import Toast from "@/widgets/Toast";
 import { useToastStore } from "@/shared/model/useToastStore";
 
 const CustomProfile = () => {
-  const { data, refetch } = useCoupleInfo();
+  const { data, refetch, isPending } = useCoupleInfo();
   const { isOpen, openToast, message } = useToastStore();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -33,8 +33,17 @@ const CustomProfile = () => {
     event.target.value = "";
   };
 
+  if (isPending) {
+    return (
+      <div className="flex flex-col justify-center mt-[12px]  items-center gap-[13px]  h-[131px] animate-pulse">
+        <div className={`bg-gray-300 rounded-full`} style={{ width: 96, height: 96 }} />
+        <div className="w-[80px] h-[22px] rounded-full bg-gray-300 " />
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-[13px] items-center">
+    <div className="flex flex-col mt-[12px]  gap-[13px] items-center">
       {isOpen && <Toast message={message} position="top" />}
       <div className="relative w-24 h-24 rounded-full overflow-hidden">
         <Image

@@ -9,40 +9,44 @@ const CoupleProfile = () => {
   const renderProfile = (memberIndex: number) => {
     if (isPending || !data?.data.members[memberIndex]) {
       return (
-        <div className="flex flex-col items-center gap-2.5 animate-pulse">
-          <div className={`bg-gray-300 rounded-full`} style={{ width: 100, height: 100 }} />
-          <div className={`bg-gray-300 w-24 h-4rounded`} />
+        <div
+          className={` ${
+            memberIndex === 1 ? "" : "flex-row-reverse"
+          } w-full items-center flex gap-2.5`}
+        >
+          <div className="w-[58px] h-[58px] bg-gray-300 rounded-full" />
+          <div className="w-[36px] h-[16px] bg-gray-300 rounded-full" />
         </div>
       );
     }
 
     const member = data.data.members[memberIndex];
     return (
-      <div className="relative flex   w-[100px] h-[100px] flex-col items-center gap-2.5">
-        <Image
-          className="rounded-full object-cover"
-          src={member.profileImageUrl ?? "/default/profile.png"}
-          alt="커플 프로필"
-          fill
-        />
-        <p className={`font-bold text-[#121212] absolute bottom-[-32px]`}>{member.nickname}</p>
+      <div
+        className={` ${
+          memberIndex === 1 ? "" : "flex-row-reverse"
+        } w-full items-center flex gap-2.5`}
+      >
+        <div className="relative  w-[58px] h-[58px] flex flex-col  items-center gap-2.5">
+          <Image
+            className="rounded-full object-cover"
+            src={member.profileImageUrl ?? "/image/couple/defaultProfile.png"}
+            alt="커플 프로필"
+            fill
+          />
+        </div>
+        <p className="font-semibold text-[#121212]">{member.nickname}</p>
       </div>
     );
   };
 
   return (
-    <div className={`mt-6 mb-6 relative flex items-end justify-center gap-3 `}>
+    <div
+      className={` relative bg-[#F0F0F0]  mt-8 py-5 flex items-center justify-center gap-[21px] `}
+    >
       {renderProfile(0)}
 
-      <div className="py-1 flex items-end justify-center">
-        <Image
-          src="/icon/home/lightHeartIcon.svg"
-          alt="하트 아이콘"
-          width={20}
-          height={20}
-          className="absolute z-1 bottom-[-28px]"
-        />
-      </div>
+      <Image src="/icon/home/lightHeartIcon.svg" alt="하트 아이콘" width={15} height={14.15} />
 
       {renderProfile(1)}
     </div>
