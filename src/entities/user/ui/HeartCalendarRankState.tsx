@@ -9,7 +9,7 @@ import CommonModal from "@/widgets/ComonModal";
 import { postEasterEgg } from "../lib/postEasterEgg";
 import { useToastStore } from "@/shared/model/useToastStore";
 
-const HeartCalendarState = () => {
+const HeartCalendarRankState = () => {
   const router = useRouter();
   const { openToast } = useToastStore();
   const { data, refetch } = useCoupleInfo();
@@ -17,6 +17,7 @@ const HeartCalendarState = () => {
 
   const ecoLovePoint = coupleInfo?.ecoLovePoint ?? 0;
   const breakupBufferPoint = coupleInfo?.breakupBufferPoint ?? 0;
+  const rank = coupleInfo?.rank ?? 0;
 
   const [easterEgg, setEasterEgg] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
@@ -76,10 +77,14 @@ const HeartCalendarState = () => {
       >
         <WiggleBadge onClick={() => handleEasterEgg()} value={String(ecoLovePoint)} type="heart" />
         <WiggleBadge value={String(breakupBufferPoint)} type="calendar" />
-        {/* <WiggleBadge value={String(rankingPoint)} type="ranking" /> */}
+        <WiggleBadge
+          onClick={() => router.push("/couple/rank")}
+          value={String(rank)}
+          type="ranking"
+        />
       </motion.div>
     </>
   );
 };
 
-export default HeartCalendarState;
+export default HeartCalendarRankState;

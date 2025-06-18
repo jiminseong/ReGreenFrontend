@@ -1,6 +1,6 @@
 "use client";
 
-import HeartCalendarState from "@/entities/user/ui/HeartCalendarState";
+import HeartCalendarState from "@/entities/user/ui/HeartCalendarRankState";
 import React, { useEffect, useState } from "react";
 import TextBox from "./TextBox";
 import MyProfile from "@/entities/user/ui/MyProfile";
