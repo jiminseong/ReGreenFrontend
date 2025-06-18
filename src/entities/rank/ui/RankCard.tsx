@@ -13,7 +13,7 @@ export default function RankCard({
   const imageUrl = rankingItem.profileImageUrl || "/image/couple/defaultProfile.png";
   return (
     <div
-      className={`flex flex-col items-center justify-center  rounded-[10px] ${
+      className={`flex flex-col items-center justify-center  rounded-[10px] max-h-[233px] min-h-[178px] min-w-[114px] ${
         isFirst
           ? "py-3.5 px-[26px]  bg-ppink text-white absolute w-[136px]  "
           : "py-2.5 px-[15px] bg-[#FFF5F9] border-ppink border-1 text-black w-[113px]"

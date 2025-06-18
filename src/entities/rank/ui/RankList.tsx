@@ -14,10 +14,7 @@ const RankList = ({ data, myCoupleId }: { data: RankingItem[]; myCoupleId: strin
   }, []);
 
   return (
-    <div className="relative bg-[#F4F4F4]   px-5  h-[100dvh] overflow-hidden no-scrollbar">
-      {/* 상단 빈 공간 */}
-      <div className="absolute top-0 w-full bg-amber-200" />
-
+    <div className="relative bg-[#F4F4F4] px-5 h-[100dvh] overflow-hidden no-scrollbar">
       <div className="bg-white">
         {data.map((item, i) => {
           if (item.coupleId === myCoupleId)

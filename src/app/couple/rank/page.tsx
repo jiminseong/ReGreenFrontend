@@ -39,31 +39,30 @@ const RankPage = () => {
   const rest = allRankings.slice(3);
 
   return (
-    <div className="flex flex-col h-screen bg-[#F4F4F4]">
-      {/* 로딩 중일 때 로딩 UI */}
+    <div className="flex flex-col h-[100dvh]  bg-white z-10">
       {isPending && <LogoLoading />}
-      {/* 1) 고정 헤더 */}
-      <div className="flex-shrink-0 bg-white z-10">
-        <TopNavigationBar title="랭킹" />
-        <TopThreeRank topThree={topThree} />
+      <TopNavigationBar title="랭킹" />
+      <TopThreeRank topThree={topThree} />
+
+      {/* 스크롤 가능 본문 */}
+      <div className="flex flex-col h-full bg-[#F4F4F4] mt-[44px]">
+        <div className="w-full h-8 bg-[#F4F4F4] z-10" />
+        {coupleData && (
+          <div className="flex-grow overflow-y-auto no-scrollbar">
+            <RankList data={rest} myCoupleId={coupleData?.data.coupleId} />
+
+            {/* 로딩 중일 때 로딩 UI */}
+            {isFetchingNextPage && (
+              <div className="text-center py-4">
+                <LogoLoading />
+              </div>
+            )}
+
+            {/* 무한 스크롤 트리거 지점 */}
+            <div ref={bottomRef} className="h-10" />
+          </div>
+        )}
       </div>
-
-      {/* 2) 스크롤 가능 본문 */}
-      {coupleData && (
-        <div className="flex-grow overflow-y-auto no-scrollbar">
-          <RankList data={rest} myCoupleId={coupleData?.data.coupleId} />
-
-          {/* 로딩 중일 때 로딩 UI */}
-          {isFetchingNextPage && (
-            <div className="text-center py-4">
-              <LogoLoading />
-            </div>
-          )}
-
-          {/* 무한 스크롤 트리거 지점 */}
-          <div ref={bottomRef} className="h-10" />
-        </div>
-      )}
     </div>
   );
 };
