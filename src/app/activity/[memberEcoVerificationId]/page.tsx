@@ -7,7 +7,7 @@ import CoupleGuard from "@/shared/lib/CoupleGuard";
 
 import Button from "@/shared/ui/Button";
 import Toast from "@/widgets/Toast";
-import { useToastStore } from "@/shared/store/useToastStore";
+import { useToastStore } from "@/shared/model/useToastStore";
 import { useModalStore } from "@/features/certification/model/useModalStore";
 import BottomShareModal from "@/features/share/ui/BottomShareModal";
 

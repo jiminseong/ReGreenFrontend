@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useCoupleInfo } from "../lib/useCoupleInfo";
 import CommonModal from "@/widgets/ComonModal";
 import { postEasterEgg } from "../lib/postEasterEgg";
-import { useToastStore } from "@/shared/store/useToastStore";
+import { useToastStore } from "@/shared/model/useToastStore";
 
 const HeartCalendarState = () => {
   const router = useRouter();

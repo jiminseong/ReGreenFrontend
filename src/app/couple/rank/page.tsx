@@ -1,8 +1,8 @@
+import React from "react";
 import RankList from "@/entities/rank/ui/RankList";
 import TopThreeRank from "@/entities/rank/ui/TopThreeRank";
 import TopNavigationBar from "@/shared/ui/TopNavigationBar";
 
-import React from "react";
 const mockData = [
   {
     rank: 1,

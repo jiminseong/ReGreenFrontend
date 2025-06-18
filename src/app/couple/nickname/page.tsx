@@ -3,7 +3,7 @@
 import { checkIsValidNickName } from "@/features/couple-nickname/lib/checkIsValidNickName";
 import { postCoupleNickName } from "@/features/couple-nickname/lib/postCoupleNickName";
 import NickNameGuard from "@/features/couple-nickname/lib/NickNameGuard";
-import { useToastStore } from "@/shared/store/useToastStore";
+import { useToastStore } from "@/shared/model/useToastStore";
 import Button from "@/shared/ui/Button";
 import Input from "@/shared/ui/Input";
 import { useRouter } from "next/navigation";
