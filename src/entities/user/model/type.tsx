@@ -24,6 +24,7 @@ export interface CoupleInfo {
   coupleId: string;
   ecoLovePoint: number;
   breakupBufferPoint: number;
+  profileImageUrl: string | null;
   name: string | null;
   rank: number | null;
   members: [
