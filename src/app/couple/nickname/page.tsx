@@ -37,7 +37,7 @@ const NickNamePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pt-24">
+    <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pb-8 pt-24">
       <NickNameGuard />
       <div className="flex flex-col w-full gap-6">
         <h1 className="font-bold w-full text-left text-[26px]">아지트명을 정해주세요!</h1>

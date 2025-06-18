@@ -69,7 +69,7 @@ const CoupleInvitePage = () => {
   }, [data?.coupleId, isSuccess]);
 
   return (
-    <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pt-24">
+    <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pb-8 pt-24">
       <KakaoInAppBanner />
       {loading && <LogoLoading />}
       {modalOpen && (

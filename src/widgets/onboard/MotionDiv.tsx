@@ -8,7 +8,7 @@ interface MotionDivProps {
 const MotionDiv = ({ children }: MotionDivProps) => {
   return (
     <motion.div
-      className="relative flex flex-col gap-8 items-center justify-start w-full h-full pt-24"
+      className="relative flex flex-col gap-8 items-center justify-start w-full h-full pt-22"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -50 }}
