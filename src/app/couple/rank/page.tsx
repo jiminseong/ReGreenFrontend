@@ -39,7 +39,7 @@ const RankPage = () => {
   const rest = allRankings.slice(3);
 
   return (
-    <div className="flex flex-col h-[100dvh]  bg-white z-10">
+    <div className="flex flex-col h-[100dvh]  bg-white overflow-y-hidden z-10">
       {isPending && <LogoLoading />}
       <TopNavigationBar title="랭킹" />
       <TopThreeRank topThree={topThree} />
