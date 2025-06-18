@@ -26,7 +26,7 @@ export default function SwiperBlockWrapper({ children }: { children: React.React
   }, []);
 
   return (
-    <div ref={wrapperRef} className="w-full h-full">
+    <div ref={wrapperRef} className="w-full h-full overflow-hidden">
       {children}
     </div>
   );
