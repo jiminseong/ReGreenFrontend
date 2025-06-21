@@ -35,9 +35,23 @@ export default function RankCard({
       >
         <Image alt="커플이미지" src={imageUrl} fill className="object-cover rounded-full" />
       </div>
-      <p className={`text-sm ${isFirst ? "font-semibold" : "font-regular"} text-center truncate`}>
-        {name}
+      <p
+        className={`
+    text-sm ${isFirst ? "font-semibold" : "font-regular"}
+    flex flex-col justify-center items-center
+    leading-5 h-10 overflow-hidden text-center
+  `}
+      >
+        {name.length > 7 ? (
+          <>
+            <span>{name.slice(0, 7)}</span>
+            <span>{name.slice(7)}</span>
+          </>
+        ) : (
+          <span>{name}</span>
+        )}
       </p>
+
       <div className="flex items-center justify-center mt-2 space-x-1">
         {isFirst ? (
           <Image src="/icon/home/whiteHeartIcon.svg" alt="heart" width={16} height={16} />
