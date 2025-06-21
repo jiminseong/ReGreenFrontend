@@ -11,8 +11,24 @@ import CoupleGuard from "@/shared/lib/CoupleGuard";
 const RankPage = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useRankings();
   const { data: coupleData, isPending } = useCoupleInfo();
-
+  const scrollRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  // “우리” 요소가 렌더링된 다음에 맨 위로 스크롤
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    // 렌더링된 “우리” 요소를 찾기
+    const myEl = container.querySelector<HTMLElement>("[data-my-rank]");
+    if (myEl) {
+      container.scrollTo({
+        top: myEl.offsetTop,
+        behavior: "smooth",
+      });
+    }
+    // allRankings, coupleData 쪽이 다 준비된 직후 한 번만 실행
+  }, [data, coupleData]);
 
   // 스크롤 하단 감지 후 fetchNextPage 호출
   useEffect(() => {
@@ -44,13 +60,13 @@ const RankPage = () => {
       <CoupleGuard />
       {isPending && <LogoLoading />}
       <TopNavigationBar title="랭킹" />
-      <TopThreeRank topThree={topThree} />
+      {coupleData && <TopThreeRank topThree={topThree} myCoupleId={coupleData.data.coupleId} />}
 
       {/* 스크롤 가능 본문 */}
       <div className="flex flex-col h-full bg-[#F4F4F4] mt-[44px]">
         <div className="w-full h-8 bg-[#F4F4F4] z-10" />
         {coupleData && (
-          <div className="flex-grow overflow-y-auto no-scrollbar">
+          <div ref={scrollRef} className="flex-grow overflow-y-auto no-scrollbar  pb-screen ">
             <RankList data={rest} myCoupleId={coupleData?.data.coupleId} />
 
             {/* 로딩 중일 때 로딩 UI */}
