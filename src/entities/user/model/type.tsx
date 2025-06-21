@@ -23,8 +23,10 @@ export interface MemberInfo {
 export interface CoupleInfo {
   coupleId: string;
   ecoLovePoint: number;
-  breakupBufferPoint: number;
+  breakupBufferPoint: number | null;
   profileImageUrl: string | null;
+  cumulativeEcoLovePoints: number | null;
+  ecoScore: number | null;
   name: string | null;
   rank: number | null;
   members: [

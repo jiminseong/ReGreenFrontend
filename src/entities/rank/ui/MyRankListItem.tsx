@@ -7,7 +7,7 @@ const MyRankListItem = ({ rankingItem }: { rankingItem: RankingItem }) => {
   return (
     <div
       key={rankingItem.coupleId}
-      className="flex items-center justify-between pl-[15px] pr-5 py-5  border-l-5 border-l-ppink "
+      className="flex items-center bg-white justify-between pl-[15px] pr-5 py-5  border-l-5 border-b border-[#EEEEEE] border-l-ppink "
     >
       <div className="flex items-center justify-center gap-6 h-full">
         <div className="flex flex-col gap-0 items-center justify-center">

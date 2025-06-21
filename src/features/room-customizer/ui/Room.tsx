@@ -79,13 +79,16 @@ const Room = () => {
         className="relative w-full h-full flex flex-col items-center justify-center  overflow-hidden"
       >
         {coupleIsSuccess && couple.data.breakupBufferPoint === 0 && (
-          <Image
-            src="/image/home/roomBackdrop.png"
-            alt="방 배경"
-            width={1000}
-            height={1000}
-            className="absolute z-[500] opacity-55 "
-          />
+          <span className="fixed top-0 left-0 z-50 text-white bg-red-500 px-2 py-1 rounded">
+            이별 버퍼링 중{couple.data.breakupBufferPoint}일 남음
+          </span>
+          // <Image
+          //   src="/image/home/roomBackdrop.png"
+          //   alt="방 배경"
+          //   width={1000}
+          //   height={1000}
+          //   className="absolute z-99999 opacity-55 "
+          // />
         )}
         <Image
           src="https://regreen-bucket.s3.ap-northeast-2.amazonaws.com/images/constant/furniture/20250524-00.png"

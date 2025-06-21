@@ -5,7 +5,7 @@ import { RankingItem } from "../model/type";
 const RankListItem = ({ rankingItem }: { rankingItem: RankingItem }) => {
   const name = rankingItem.name || "익명의 커플";
   return (
-    <div className="flex items-center justify-between p-5 border-b border-[#EEEEEE]">
+    <div className="flex bg-white items-center justify-between p-5 border-b border-[#EEEEEE]">
       <div className="flex items-center justify-center gap-6 h-full">
         <p className="text-[#222222] text-xl font-medium">{rankingItem.index}</p>
         <h3 className="text-[#333333] font-semibold">{name}</h3>

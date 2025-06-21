@@ -6,6 +6,12 @@ interface WiggleBadgeProps {
 
 const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value: rawValue, type, onClick }) => {
   let value = rawValue;
+  const rankRange =
+    type === "ranking" && Number(value) <= 3
+      ? "gold"
+      : type === "ranking" && Number(value) <= 10
+      ? "silver"
+      : "bronze";
 
   if (type === "heart") {
     value = value.padStart(4, "0");
@@ -22,11 +28,11 @@ const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value: rawValue, type, onClic
     bgImage = "bg-[url('/image/home/heartBackground.svg')]";
   } else if (type === "calendar") {
     bgImage = "bg-[url('/image/home/calendarBackground.svg')]";
-  } else if (type === "ranking" && Number(value) < 4) {
+  } else if (rankRange === "gold" && type === "ranking") {
     bgImage = "bg-[url('/image/home/rankingBackgroundGold.svg')]";
-  } else if (type === "ranking" && Number(value) < 11) {
+  } else if (rankRange === "silver" && type === "ranking") {
     bgImage = "bg-[url('/image/home/rankingBackgroundSilver.svg')]";
-  } else if (type === "ranking" && Number(value) >= 11) {
+  } else if (rankRange === "bronze" && type === "ranking") {
     bgImage = "bg-[url('/image/home/rankingBackgroundBronze.svg')]";
   }
 
@@ -35,11 +41,11 @@ const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value: rawValue, type, onClic
       ? "text-ppink"
       : type === "calendar"
       ? "text-black"
-      : type === "ranking" && Number(value) <= 1
+      : type === "ranking" && rankRange === "gold"
       ? "text-[#FF9D00]"
-      : type === "ranking" && Number(value) === 2
+      : type === "ranking" && rankRange === "silver"
       ? "text-[#979797]"
-      : type === "ranking" && Number(value) >= 3
+      : type === "ranking" && rankRange === "bronze"
       ? "text-[#694500]"
       : "text-ppink";
 

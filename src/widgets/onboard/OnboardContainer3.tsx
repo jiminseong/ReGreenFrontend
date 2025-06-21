@@ -5,7 +5,7 @@ import MotionDiv from "./MotionDiv";
 const OnboardContainer3 = ({ imageUrl }: OnboardContainerProps) => {
   return (
     <MotionDiv>
-      <h1 className=" text-[26px] font-semibold text-center ">
+      <h1 className=" text-2xl font-semibold text-center ">
         인증 후 받은 보상으로
         <br />
         상점에서 가구를 살 수 있어요!
@@ -13,9 +13,9 @@ const OnboardContainer3 = ({ imageUrl }: OnboardContainerProps) => {
       <Image
         src={imageUrl}
         alt="온보딩 이미지"
-        width={326}
-        height={444}
-        className="absolute bottom-[68px] z-0"
+        width={400}
+        height={244}
+        className="absolute top-52"
       />
     </MotionDiv>
   );

@@ -7,7 +7,7 @@ export interface OnboardContainerProps {
 const OnboardContainer1 = ({ imageUrl }: OnboardContainerProps) => {
   return (
     <MotionDiv>
-      <h1 className=" text-[26px] font-semibold text-center ">
+      <h1 className="text-2xl font-semibold text-center ">
         지구가 망하면 <br /> 우리의 연애도 끝이다!
       </h1>
       <Image
