@@ -13,7 +13,7 @@ const CoupleGuard = () => {
     isPending: myPending,
   } = useMyInfo();
 
-  const { data: coupleData, isSuccess: coupleSuccess } = useCoupleInfo();
+  const { data: coupleData, isSuccess: coupleSuccess, isError: coupleError } = useCoupleInfo();
 
   useEffect(() => {
     if (myError && !myPending) {
@@ -22,6 +22,11 @@ const CoupleGuard = () => {
     }
 
     if (mySuccess && myData.coupleId === null) {
+      router.push("/couple");
+      return;
+    }
+    // coupleId는 있지만, 커플 조회에서 에러가 났다면
+    if (mySuccess && myData.coupleId && coupleError) {
       router.push("/couple");
       return;
     }
