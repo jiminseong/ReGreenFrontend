@@ -23,21 +23,19 @@ const LoginPage = () => {
     inviteCode: string | null,
     coupleName: string | null
   ) => {
-    // 커플 닉네임이 없다면
     if (coupleId && !coupleName) {
+      // 커플 닉네임이 없으면 닉네임 설정 페이지로
       router.push("/couple/nickname");
-      return;
-    }
-    if (coupleId) {
+    } else if (coupleId) {
+      // 커플이 이미 있으면 홈으로
       router.push("/home");
-      return;
-    }
-    if (inviteCode && inviteCode.trim().length > 0) {
+    } else if (inviteCode?.trim()) {
+      // 초대 코드가 있으면 초대 수락 페이지로
       router.push(`/couple/invited?inviteCode=${encodeURIComponent(inviteCode)}`);
-      return;
+    } else {
+      // 그 외는 커플 생성 페이지로
+      router.push("/couple");
     }
-
-    router.push("/couple");
   };
 
   useEffect(() => {
