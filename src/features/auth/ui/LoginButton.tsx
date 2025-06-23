@@ -4,14 +4,12 @@ import React from "react";
 
 interface LoginButtonProps {
   provider?: "kakao" | "naver";
+  disabled?: boolean;
 }
 
-const LoginButton: React.FC<LoginButtonProps> = ({ provider = "kakao" }) => {
+const LoginButton: React.FC<LoginButtonProps> = ({ provider = "kakao", disabled }) => {
   const handleLogin = async () => {
-    window.location.href =
-      provider === "kakao"
-        ? `${process.env.NEXT_PUBLIC_KAKAO_URL}`
-        : `${process.env.NEXT_PUBLIC_KAKAO_URL}`;
+    window.location.href = `${process.env.NEXT_PUBLIC_KAKAO_URL}`;
   };
 
   return (
@@ -20,6 +18,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({ provider = "kakao" }) => {
         provider === "kakao" ? "bg-[#F7CE45] " : "bg-white "
       }  flex items-center justify-center w-full max-w-xs px-4 py-3  border-[1px] border-[#E2E2E2]  font-semibold rounded-xl `}
       onClick={handleLogin}
+      disabled={disabled}
     >
       <Image
         src={`/icon/auth/${provider}.svg`}

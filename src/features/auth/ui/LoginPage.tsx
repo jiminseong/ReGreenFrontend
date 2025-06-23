@@ -9,103 +9,119 @@ import LogoLoading from "@/widgets/LogoLoading";
 import { fetchMyInfo } from "@/entities/user/lib/fetchMyInfo";
 import { ErrorWithResponse, LoginResponse } from "../model/type";
 import { fetchCoupleInfo } from "@/entities/user/lib/fetchCoupleInfo";
+import { useToastStore } from "@/shared/model/useToastStore";
+import Toast from "@/widgets/Toast";
 
 const LoginPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const code = searchParams.get("code"); // 카카오 로그인 후 리디렉션된 code
-
+  const code = searchParams.get("code");
+  const { isOpen, openToast, message } = useToastStore();
   const [loading, setLoading] = useState(false);
 
-  // 로그인 후 커플 여부 및 초대코드에 따라 이동 경로 결정
+  // 리디렉션 경로 계산 함수
+  const getRedirectPath = (
+    coupleId: string | null,
+    inviteCode: string | null,
+    coupleName: string | null
+  ) => {
+    if (coupleId && !coupleName) return "/couple/nickname";
+    if (coupleId) return "/home";
+    if (inviteCode?.trim()) return `/couple/invited?inviteCode=${encodeURIComponent(inviteCode)}`;
+    return "/couple";
+  };
+
+  // 로그인 완료 후 리디렉션
   const redirectAfterLogin = (
     coupleId: string | null,
     inviteCode: string | null,
     coupleName: string | null
   ) => {
-    if (coupleId && !coupleName) {
-      // 커플 닉네임이 없으면 닉네임 설정 페이지로
-      router.push("/couple/nickname");
-    } else if (coupleId) {
-      // 커플이 이미 있으면 홈으로
-      router.push("/home");
-    } else if (inviteCode?.trim()) {
-      // 초대 코드가 있으면 초대 수락 페이지로
-      router.push(`/couple/invited?inviteCode=${encodeURIComponent(inviteCode)}`);
-    } else {
-      // 그 외는 커플 생성 페이지로
-      router.push("/couple");
-    }
+    const path = getRedirectPath(coupleId, inviteCode, coupleName);
+    localStorage.removeItem("inviteCode");
+    router.push(path);
   };
 
+  // 토큰이 이미 있는 경우 자동 리디렉션
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!code && token) {
+      (async () => {
+        setLoading(true);
+        try {
+          const inviteCode = localStorage.getItem("inviteCode");
+          const user = await fetchMyInfo();
+          const coupleInfo = await fetchCoupleInfo();
+          redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
+        } catch {
+          // 실패 시 토큰 제거 후 새로 로그인 페이지 유지
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+        } finally {
+          setLoading(false);
+        }
+      })();
+    }
+  }, []);
+
+  // 카카오 로그인 처리
   useEffect(() => {
     if (!code) return;
 
     let isMounted = true;
     setLoading(true);
 
-    const loginHandler = async () => {
+    (async () => {
       try {
-        // 카카오 로그인 요청
         const res = await http
           .post(`api/auth/kakao/login?code=${code}&local=${process.env.NEXT_PUBLIC_LOCAL_BOOLEAN}`)
           .json<LoginResponse>();
 
         if (res.code === 2000) {
-          // 토큰 저장
           localStorage.setItem("accessToken", res.data.accessToken);
           localStorage.setItem("refreshToken", res.data.refreshToken);
-
-          // 로그인 후 유저 정보 조회 및 리디렉션
-          const inviteCode = localStorage.getItem("inviteCode");
-          const user = await fetchMyInfo();
-          const coupleInfo = await fetchCoupleInfo();
-          if (!isMounted) return;
-          redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
         } else {
           throw new Error(res.message || "로그인 실패");
         }
+
+        if (!isMounted) return;
+        const inviteCode = localStorage.getItem("inviteCode");
+        const user = await fetchMyInfo();
+        const coupleInfo = await fetchCoupleInfo();
+        redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
       } catch (err) {
-        // 이미 로그인된 경우 예외 처리
         const error = err as ErrorWithResponse;
-        const isAlreadyLoggedIn = error?.res?.code === 41001;
-        if (isAlreadyLoggedIn) {
+        if (error?.res?.code === 41001) {
+          const inviteCode = localStorage.getItem("inviteCode");
           const user = await fetchMyInfo();
           const coupleInfo = await fetchCoupleInfo();
-          if (!isMounted) return;
-          const inviteCode = localStorage.getItem("inviteCode");
-          redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
+          if (isMounted) redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
         } else {
-          if (!isMounted) return;
-          router.replace("/login"); // 실패 시 로그인 페이지로 이동
+          openToast("로그인에 실패했습니다. 다시 시도해주세요.");
+          if (isMounted) router.replace("/login");
         }
       } finally {
-        if (!isMounted) return;
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
-    };
-
-    // useEffect 비동기 처리 트릭
-    setTimeout(loginHandler, 0);
+    })();
 
     return () => {
-      isMounted = false; // 컴포넌트 언마운트 방지
+      isMounted = false;
     };
   }, [code]);
 
   return (
     <div className="flex flex-col items-center justify-between h-[100dvh] p-5">
+      {isOpen && <Toast message={message} />}
       {loading && <LogoLoading />}
 
-      {/* 인트로 텍스트 영역 */}
       <div className="text-center h-[80%] flex flex-col items-center justify-center">
         <h1 className="text-4xl font-bold text-ppink">wooimi</h1>
         <p className="text-xl font-medium">우리는 이별을 미루기로 했다.</p>
       </div>
 
-      {/* 로그인 버튼 영역 */}
       <div className="w-full flex flex-col items-center gap-4 mb-12.5">
-        <LoginButton provider="kakao" />
+        <LoginButton provider="kakao" disabled={loading} />
         <button
           onClick={() => window.open(process.env.NEXT_PUBLIC_KAKAO_CHANNEL_URL || "#", "_blank")}
           className="underline text-sm text-gray-500"
