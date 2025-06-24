@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import LoginButton from "@/features/auth/ui/LoginButton";
-import { http } from "@/shared/lib/http";
+import { httpNoThrow } from "@/shared/lib/http";
 import LogoLoading from "@/widgets/LogoLoading";
 import { fetchMyInfo } from "@/entities/user/lib/fetchMyInfo";
-import { ErrorWithResponse, LoginResponse } from "../model/type";
+import { LoginResponse } from "../model/type";
 import { fetchCoupleInfo } from "@/entities/user/lib/fetchCoupleInfo";
 import { useToastStore } from "@/shared/model/useToastStore";
 import Toast from "@/widgets/Toast";
@@ -50,11 +50,16 @@ const LoginPage = () => {
         setLoading(true);
         try {
           const inviteCode = localStorage.getItem("inviteCode");
+
           const user = await fetchMyInfo();
+
           const coupleInfo = await fetchCoupleInfo();
-          redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
-        } catch {
-          // 실패 시 토큰 제거 후 새로 로그인 페이지 유지
+
+          const coupleName = coupleInfo.data?.name ?? null;
+
+          redirectAfterLogin(user.coupleId, inviteCode, coupleName);
+        } catch (error) {
+          console.error("[useEffect] 자동 리디렉션 실패:", error);
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
         } finally {
@@ -73,7 +78,7 @@ const LoginPage = () => {
 
     (async () => {
       try {
-        const res = await http
+        const res = await httpNoThrow
           .post(`api/auth/kakao/login?code=${code}&local=${process.env.NEXT_PUBLIC_LOCAL_BOOLEAN}`)
           .json<LoginResponse>();
 
@@ -84,21 +89,33 @@ const LoginPage = () => {
           throw new Error(res.message || "로그인 실패");
         }
 
-        if (!isMounted) return;
-        const inviteCode = localStorage.getItem("inviteCode");
-        const user = await fetchMyInfo();
-        const coupleInfo = await fetchCoupleInfo();
-        redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
-      } catch (err) {
-        const error = err as ErrorWithResponse;
-        if (error?.res?.code === 41001) {
+        if (res.err?.code === 41001) {
           const inviteCode = localStorage.getItem("inviteCode");
           const user = await fetchMyInfo();
+
           const coupleInfo = await fetchCoupleInfo();
-          if (isMounted) redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
+
+          if (isMounted) await redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
         } else {
           openToast("로그인에 실패했습니다. 다시 시도해주세요.");
           if (isMounted) router.replace("/login");
+        }
+
+        if (!isMounted) {
+          return;
+        }
+
+        const inviteCode = localStorage.getItem("inviteCode");
+        const user = await fetchMyInfo();
+
+        const coupleInfo = await fetchCoupleInfo();
+
+        const coupleName = coupleInfo.data?.name ?? null;
+        await redirectAfterLogin(user.coupleId, inviteCode, coupleName);
+      } catch (err) {
+        if (err && typeof err === "object" && "status" in err && err.status === 401) {
+          console.error("[useEffect] 로그인 처리 중 오류 발생:", err);
+          openToast("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
         }
       } finally {
         if (isMounted) setLoading(false);

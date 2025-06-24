@@ -5,11 +5,8 @@ export interface LoginResponse {
     accessToken: string;
     refreshToken: string;
   };
-}
-
-export interface ErrorWithResponse {
-  res?: {
-    code?: number;
-    message?: string;
+  err: {
+    code: number;
+    message: string;
   };
 }
