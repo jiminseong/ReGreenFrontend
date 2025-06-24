@@ -6,15 +6,16 @@ import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import { useRouter } from "next/navigation";
 import { http } from "@/shared/lib/http";
 import { useEffect } from "react";
+import LogoLoading from "@/widgets/LogoLoading";
 
 const CoupleCheckPage = () => {
   const router = useRouter();
-  const data = useMyInfo();
+  const { data, isSuccess, isPending } = useMyInfo();
 
   // 커플이라면 초대 코드 발급 누르면 발급 후
   const handleInvite = async () => {
-    if (data.isSuccess) {
-      if (data.data.coupleId === null) {
+    if (isSuccess) {
+      if (data.coupleId === null) {
         // 발급 API 호출
         try {
           const res = await http.get("api/couples/code").json<{
@@ -38,8 +39,8 @@ const CoupleCheckPage = () => {
 
   // 초대 코드 발급 입력 페이지로 이동
   const handleInvited = () => {
-    if (data.isSuccess) {
-      if (data.data.coupleId === null) {
+    if (isSuccess) {
+      if (data.coupleId === null) {
         router.push(`/couple/invited`);
       }
       return;
@@ -53,8 +54,8 @@ const CoupleCheckPage = () => {
       router.push("/login");
       return;
     }
-    if (data.isSuccess) {
-      if (data.data.coupleId) {
+    if (isSuccess) {
+      if (data.coupleId) {
         // 커플이 이미 존재하는 경우
         router.push("/home");
       } else {
@@ -64,19 +65,22 @@ const CoupleCheckPage = () => {
   });
 
   return (
-    <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pb-8 pt-24">
-      <h1 className="text-2xl text-center w-full font-bold mb-4">
-        친구, 연인을 <br />
-        초대해 주세요!
-      </h1>
-      <Image src="/image/couple/coupleInvite.png" width={255} height={260} alt="일러스트" />
-      <div className="w-full flex flex-col gap-2">
-        <Button onClick={() => handleInvite()}>초대하러 가기 </Button>
-        <Button primary={false} onClick={() => handleInvited()}>
-          초대받으러 가기 {">"}
-        </Button>
+    <>
+      {isPending && <LogoLoading />}
+      <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pb-8 pt-24">
+        <h1 className="text-2xl text-center w-full font-bold mb-4">
+          친구, 연인을 <br />
+          초대해 주세요!
+        </h1>
+        <Image src="/image/couple/coupleInvite.png" width={255} height={260} alt="일러스트" />
+        <div className="w-full flex flex-col gap-2">
+          <Button onClick={() => handleInvite()}>초대하러 가기 </Button>
+          <Button primary={false} onClick={() => handleInvited()}>
+            초대받으러 가기 {">"}
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
