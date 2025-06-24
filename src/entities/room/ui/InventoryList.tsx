@@ -129,13 +129,23 @@ const InventoryListComponent = () => {
   };
 
   useEffect(() => {
-    if (furnitureSuccess && newCoupleFurniture?.data?.length > 0 && currentCategory === undefined) {
+    if (
+      furnitureSuccess &&
+      newCoupleFurniture &&
+      newCoupleFurniture?.data?.length > 0 &&
+      currentCategory === undefined
+    ) {
       const firstCategory = newCoupleFurniture.data[0].category;
       setCategories([firstCategory]);
     }
   }, [furnitureSuccess, newCoupleFurniture]);
   function handleHomeMode() {
-    if (mode === "inventory" && furnitureSuccess && newCoupleFurniture.data.length > 0) {
+    if (
+      mode === "inventory" &&
+      furnitureSuccess &&
+      newCoupleFurniture &&
+      newCoupleFurniture.data.length > 0
+    ) {
       setMode("home");
     }
   }

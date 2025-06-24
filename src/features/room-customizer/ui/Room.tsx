@@ -78,7 +78,7 @@ const Room = () => {
         }}
         className="relative w-full h-full flex flex-col items-center justify-center  overflow-hidden"
       >
-        {coupleIsSuccess && couple.data.breakupBufferPoint === 0 && (
+        {coupleIsSuccess && couple.data && couple.data.breakupBufferPoint === 0 && (
           <span className="fixed top-0 left-0 z-50 text-white bg-red-500 px-2 py-1 rounded">
             이별 버퍼링 중{couple.data.breakupBufferPoint}일 남음
           </span>
