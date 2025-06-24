@@ -19,11 +19,15 @@ export default function NameBoard() {
   const initialNameRef = useRef<string>("");
 
   useEffect(() => {
-    if (coupleInfo?.data.name) {
-      setName(coupleInfo.data.name);
-      initialNameRef.current = coupleInfo.data.name;
+    if (!coupleInfo || coupleInfo.data === null) return;
+    const nickname = coupleInfo.data.name;
+    if (nickname) {
+      setName(nickname);
+      initialNameRef.current = nickname;
     }
-  }, [coupleInfo?.data.name]);
+  }, [coupleInfo, coupleInfo?.data?.name]);
+
+  if (!coupleInfo || coupleInfo.data === null) return null;
 
   const handleBlurOrEnter = async () => {
     setEditing(false);

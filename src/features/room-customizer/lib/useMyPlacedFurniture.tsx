@@ -1,32 +1,38 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { http } from "@/shared/lib/http";
+import { httpNoThrow } from "@/shared/lib/http";
 import { FurnitureItem } from "@/entities/room/model/type";
+import { useRouter } from "next/navigation";
 
 interface PlacedFurnitureInfo {
   code: string;
   message: string;
   data: FurnitureItem[];
+  err: {
+    code: number;
+    message: string;
+  };
 }
 
 export function useMyPlacedFurniture() {
-  return useQuery<PlacedFurnitureInfo>({
+  const router = useRouter();
+
+  return useQuery({
     queryKey: ["couplePlacedFurniture"],
 
     queryFn: async () => {
-      try {
-        const res = await http
-          .get("api/items")
-          .json<{ code: string; message: string; data: FurnitureItem[] }>();
-        return {
-          code: res.code,
-          message: res.message,
-          data: res.data,
-        };
-      } catch (error) {
-        console.error("가구 배치 데이터 불러오기 실패:", error);
-        throw new Error("Failed to fetch furniture data");
+      const res = await httpNoThrow.get("api/items").json<PlacedFurnitureInfo>();
+
+      if (res.err.code === 42001) {
+        router.push("/couple");
+        return;
       }
+
+      return {
+        code: res.code,
+        message: res.message,
+        data: res.data,
+      };
     },
     retry: false,
     refetchOnWindowFocus: false,
