@@ -10,7 +10,7 @@ import LogoLoading from "@/widgets/LogoLoading";
 
 const CoupleCheckPage = () => {
   const router = useRouter();
-  const { data, isSuccess, isPending } = useMyInfo();
+  const { data, isSuccess } = useMyInfo();
 
   // 커플이라면 초대 코드 발급 누르면 발급 후
   const handleInvite = async () => {
@@ -66,20 +66,23 @@ const CoupleCheckPage = () => {
 
   return (
     <>
-      {isPending && <LogoLoading />}
-      <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pb-8 pt-24">
-        <h1 className="text-2xl text-center w-full font-bold mb-4">
-          친구, 연인을 <br />
-          초대해 주세요!
-        </h1>
-        <Image src="/image/couple/coupleInvite.png" width={255} height={260} alt="일러스트" />
-        <div className="w-full flex flex-col gap-2">
-          <Button onClick={() => handleInvite()}>초대하러 가기 </Button>
-          <Button primary={false} onClick={() => handleInvited()}>
-            초대받으러 가기 {">"}
-          </Button>
+      {!isSuccess ? (
+        <LogoLoading />
+      ) : (
+        <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pb-8 pt-24">
+          <h1 className="text-2xl text-center w-full font-bold mb-4">
+            친구, 연인을 <br />
+            초대해 주세요!
+          </h1>
+          <Image src="/image/couple/coupleInvite.png" width={255} height={260} alt="일러스트" />
+          <div className="w-full flex flex-col gap-2">
+            <Button onClick={() => handleInvite()}>초대하러 가기 </Button>
+            <Button primary={false} onClick={() => handleInvited()}>
+              초대받으러 가기 {">"}
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
