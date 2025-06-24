@@ -5,34 +5,38 @@ import { FurnitureItem } from "@/entities/room/model/type";
 import { useRouter } from "next/navigation";
 
 interface PlacedFurnitureInfo {
-  code: string;
+  code: number;
   message: string;
   data: FurnitureItem[];
-  err: {
-    code: number;
-    message: string;
-  };
 }
 
 export function useMyPlacedFurniture() {
   const router = useRouter();
-
-  return useQuery({
+  return useQuery<PlacedFurnitureInfo>({
     queryKey: ["couplePlacedFurniture"],
 
     queryFn: async () => {
-      const res = await httpNoThrow.get("api/items").json<PlacedFurnitureInfo>();
+      try {
+        const res = await httpNoThrow.get("api/items").json<PlacedFurnitureInfo>();
 
-      if (res.err.code === 42001) {
-        router.push("/couple");
-        return;
+        if (res.code === 42001) {
+          router.push("/couple");
+          // 빈 배열과 기본 메시지로 PlacedFurnitureInfo 객체 반환
+          return {
+            code: res.code,
+            message: res.message || "redirect",
+            data: [],
+          };
+        }
+        return {
+          code: res.code,
+          message: res.message,
+          data: res.data,
+        };
+      } catch (error) {
+        console.error("가구 배치 데이터 불러오기 실패:", error);
+        throw new Error("Failed to fetch furniture data");
       }
-
-      return {
-        code: res.code,
-        message: res.message,
-        data: res.data,
-      };
     },
     retry: false,
     refetchOnWindowFocus: false,
