@@ -21,7 +21,6 @@ export function useMyPlacedFurniture() {
 
         if (res.code === 42001) {
           router.push("/couple");
-          // 빈 배열과 기본 메시지로 PlacedFurnitureInfo 객체 반환
           return {
             code: res.code,
             message: res.message || "redirect",
