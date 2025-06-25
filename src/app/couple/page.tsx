@@ -106,7 +106,7 @@ const CoupleCheckPage = () => {
               className="text-black underline font-medium text-center mt-2.5"
               onClick={handleSolo}
             >
-              솔로모드로 시작하기
+              나 혼자 시작하기
             </button>
           </div>
         </div>
