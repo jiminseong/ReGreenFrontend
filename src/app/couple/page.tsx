@@ -7,10 +7,11 @@ import { useRouter } from "next/navigation";
 import { http } from "@/shared/lib/http";
 import { useEffect } from "react";
 import LogoLoading from "@/widgets/LogoLoading";
+import { postSoloMode } from "@/features/solo/lib/postSoloMode";
 
 const CoupleCheckPage = () => {
   const router = useRouter();
-  const { data, isSuccess } = useMyInfo();
+  const { data, isSuccess, refetch } = useMyInfo();
 
   // 커플이라면 초대 코드 발급 누르면 발급 후
   const handleInvite = async () => {
@@ -42,6 +43,27 @@ const CoupleCheckPage = () => {
     if (isSuccess) {
       if (data.coupleId === null) {
         router.push(`/couple/invited`);
+      }
+      return;
+    }
+  };
+
+  // 솔로 모드 시작
+  const handleSolo = async () => {
+    if (isSuccess) {
+      if (data.coupleId === null) {
+        const res = await postSoloMode();
+        if (res.code === 2000) {
+          await refetch();
+          router.push("/home");
+          return;
+        }
+        if (res.err.code === 42002) {
+          await refetch();
+          router.push("/home");
+          return;
+        }
+        return;
       }
       return;
     }
@@ -80,6 +102,12 @@ const CoupleCheckPage = () => {
             <Button primary={false} onClick={() => handleInvited()}>
               초대받으러 가기 {">"}
             </Button>
+            <button
+              className="text-black underline font-medium text-center mt-2.5"
+              onClick={handleSolo}
+            >
+              솔로모드로 시작하기
+            </button>
           </div>
         </div>
       )}
