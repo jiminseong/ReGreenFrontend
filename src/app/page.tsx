@@ -10,7 +10,6 @@ import { KakaoInAppBanner } from "@/shared/ui/KakaoInAppBanner";
 export default function Page() {
   const router = useRouter();
   const { data, isSuccess, isPending } = useMyInfo();
-  
 
   const {
     isIOS,
@@ -29,6 +28,9 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
+    // 오늘 날짜 및 시간 콘솔
+    console.log("오늘 날짜:", new Date().toDateString());
+    console.log("현재 시간:", new Date().toTimeString());
     if (isPending) return;
     const accessToken = localStorage.getItem("accessToken");
     const onboarded = localStorage.getItem("onboarded");
