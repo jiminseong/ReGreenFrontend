@@ -1,0 +1,49 @@
+name: 일반 이슈
+description: 작업 유형과 함께 버그 또는 기능 요청을 등록해주세요.
+title: "[FEAT] 이슈 제목을 입력해주세요"
+labels: []
+body:
+  - type: dropdown
+    id: category
+    attributes:
+      label: 📁 작업 카테고리
+      description: 작업의 성격에 가장 적절한 항목을 선택해주세요.
+      options:
+        - feat (새로운 기능)
+        - fix (버그 수정)
+        - chore (빌드, 설정 등 잡일)
+        - docs (문서 관련 변경)
+        - style (스타일 및 포맷 변경)
+        - refactor (리팩토링)
+        - test (테스트 코드 추가/수정)
+        - perf (성능 향상)
+        - rename (이름 변경)
+        - remove (코드 제거)
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 📝 설명
+      description: 어떤 작업이 필요한지 또는 어떤 문제가 발생했는지 구체적으로 작성해주세요.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 📌 배경 및 맥락
+      description: 이 작업이 왜 필요한지, 어떤 상황에서 제안되었는지 설명해주세요.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: ✅ 완료 조건
+      description: 이 이슈가 해결되었음을 판단할 수 있는 기준을 작성해주세요.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: 📎 참고 링크 / 추가 자료 (선택)
+      description: 관련 자료나 레퍼런스가 있다면 첨부해주세요.
