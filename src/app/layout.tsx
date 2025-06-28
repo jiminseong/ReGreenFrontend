@@ -5,6 +5,7 @@ import "./globals.css";
 import SwiperBlockWrapper from "./providers/SwiperBlockWrapper";
 import { Analytics } from "@vercel/analytics/next";
 import { RegisterSW } from "./providers/RegisterSW";
+import {PreventZoomGesture} from "@/app/preventZoomGesture";
 
 export const metadata: Metadata = {
   title: "우리는 이별을 미루기로 했다.",
@@ -115,6 +116,7 @@ export default function RootLayout({
       <title>우리는 이별을 미루기로 했다.</title>
     </head>
     <body className="antialiased">
+      <PreventZoomGesture />
       <QueryProvider>
         <div
           className={`
