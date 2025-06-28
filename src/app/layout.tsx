@@ -106,31 +106,36 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className="antialiased">
-        <QueryProvider>
-          <div
-            className={`
-          ${Pretendard.className}
-          mx-auto
-          min-h-[100dvh]
-          max-w-[500px]
-          w-full
-          min-w-[320px]
-          bg-white
-          overflow-hidden
-          pb-[env(safe-area-inset-bottom)]
-        `}
-          >
-            <SwiperBlockWrapper>
-              <RegisterSW />
-              <Analytics />
-              {children}
-            </SwiperBlockWrapper>
-          </div>
-        </QueryProvider>
-      </body>
-    </html>
-  );
+  return (<html lang={"en"}>
+    <head>
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      />
+      <title>우리는 이별을 미루기로 했다.</title>
+    </head>
+    <body className="antialiased">
+      <QueryProvider>
+        <div
+          className={`
+        ${Pretendard.className}
+        mx-auto
+        min-h-[100dvh]
+        max-w-[500px]
+        w-full
+        min-w-[320px]
+        bg-white
+        overflow-hidden
+        pb-[env(safe-area-inset-bottom)]
+      `}
+        >
+          <SwiperBlockWrapper>
+            <RegisterSW />
+            <Analytics />
+            {children}
+          </SwiperBlockWrapper>
+        </div>
+      </QueryProvider>
+    </body>
+  </html>);
 }
