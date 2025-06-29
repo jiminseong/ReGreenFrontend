@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { RegisterSW } from "./providers/RegisterSW";
 import {PreventZoomGesture} from "@/app/preventZoomGesture";
 import {ForceViewportReset} from "@/app/forceViewportReset";
+import {PreventIOSPullToRefresh} from "@/app/preventIOSPullToRefresh";
 
 export const metadata: Metadata = {
   title: "우리는 이별을 미루기로 했다.",
@@ -116,7 +117,8 @@ export default function RootLayout({
       />
       <title>우리는 이별을 미루기로 했다.</title>
     </head>
-    <body className="antialiased touch-manipulation">
+    <body className="antialiased touch-manipulation overscroll-none">
+      <PreventIOSPullToRefresh />
       <ForceViewportReset />
       <QueryProvider>
         <div
