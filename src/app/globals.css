@@ -69,4 +69,5 @@ input {
 
 .scrollable-area {
   overscroll-behavior: contain;
+  min-height: 101%
 }
