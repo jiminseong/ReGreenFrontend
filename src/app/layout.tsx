@@ -118,8 +118,8 @@ export default function RootLayout({
       <title>우리는 이별을 미루기로 했다.</title>
     </head>
     <body className="antialiased touch-manipulation overscroll-contain">
-      <ForceViewportReset />
       <PreventIOSPullToRefresh />
+      <ForceViewportReset />
       <QueryProvider>
         <div
           className={`

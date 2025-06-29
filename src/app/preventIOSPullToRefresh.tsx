@@ -1,20 +1,18 @@
-// components/PreventIOSPullToRefresh.tsx
 'use client'
-
 import { useEffect } from 'react'
 
 export function PreventIOSPullToRefresh() {
   useEffect(() => {
-    const preventPullToRefresh = (e: TouchEvent) => {
-      if (window.scrollY <= 0 && e.touches[0].clientY > 0) {
+    const handler = (e: TouchEvent) => {
+      const scrollable = (e.target as HTMLElement).closest('.scrollable-area')
+      if (!scrollable) {
         e.preventDefault()
       }
     }
 
-    window.addEventListener('touchmove', preventPullToRefresh, { passive: false })
-
+    document.addEventListener('touchmove', handler, { passive: false })
     return () => {
-      window.removeEventListener('touchmove', preventPullToRefresh)
+      document.removeEventListener('touchmove', handler)
     }
   }, [])
 

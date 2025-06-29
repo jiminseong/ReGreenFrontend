@@ -66,7 +66,7 @@ const RankPage = () => {
       <div className="flex flex-col h-full bg-[#F4F4F4] mt-[44px]">
         <div className="w-full h-8 bg-[#F4F4F4] z-10" />
         {coupleData && (
-          <div ref={scrollRef} className="flex-grow overflow-y-auto no-scrollbar  pb-screen ">
+          <div ref={scrollRef} className="scrollable-area flex-grow overflow-y-auto no-scrollbar  pb-screen ">
             <RankList data={rest} myCoupleId={coupleData?.data.coupleId} />
 
             {/* 로딩 중일 때 로딩 UI */}
