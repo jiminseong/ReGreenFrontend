@@ -10,12 +10,6 @@ export function PreventZoomGesture() {
       e.preventDefault();
     };
 
-    // iOS에서 핀치 줌 방지
-    document.addEventListener('gesturestart', preventGesture);
-    document.addEventListener('gesturechange', preventGesture);
-    document.addEventListener('gestureend', preventGesture);
-
-    // iOS에서 더블탭 줌 방지
     let lastTouchEnd = 0;
     const preventDoubleTapZoom = (e: TouchEvent) => {
       const now = new Date().getTime();
@@ -24,7 +18,11 @@ export function PreventZoomGesture() {
       }
       lastTouchEnd = now;
     };
+
     document.addEventListener('touchend', preventDoubleTapZoom);
+    document.addEventListener('gesturestart', preventGesture);
+    document.addEventListener('gesturechange', preventGesture);
+    document.addEventListener('gestureend', preventGesture);
 
     return () => {
       document.removeEventListener('gesturestart', preventGesture);

@@ -5,7 +5,7 @@ import Acitivity from "./Acitivity";
 
 const SettingList = () => {
   return (
-    <div className="flex flex-col   overflow-auto ">
+    <div className="flex flex-col scrollable-area overflow-auto ">
       <Acitivity />
       <Setting />
       <Auth />
