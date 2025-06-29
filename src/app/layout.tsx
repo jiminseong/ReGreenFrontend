@@ -10,7 +10,7 @@ import { PreventZoomGesture } from "@/app/preventZoomGesture";
 export const metadata: Metadata = {
   title: "우리는 이별을 미루기로 했다.",
   description: "우리는 이별을 미루기로 했다.",
-  manifest: "/manifest.ts",
+  manifest: "/manifest.json",
   themeColor: "#ffffff",
 
   appleWebApp: {
