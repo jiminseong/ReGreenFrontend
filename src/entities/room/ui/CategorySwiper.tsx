@@ -35,17 +35,21 @@ const CategorySwiper = () => {
           const isActive = cat === currentCategory;
 
           return (
-            <button
+            <motion.button
               key={tab}
-              className={` text-center w-full py-2 whitespace-nowrap transition-all duration-150 min-w-[64px] ${
-                isActive
-                  ? "border-b-2 border-black font-bold"
-                  : "text-[#999999] border-[#EEEEEE] border-b-2"
-              }`}
+              className={`text-center w-full h-10 whitespace-nowrap transition-all duration-150 min-w-[64px]`}
               onClick={() => setCategories([cat])}
             >
-              {tab}
-            </button>
+              <div className={"relative h-full"}>
+                <p className={"absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center"}>{tab}</p>
+                {
+                  isActive ? <motion.div
+                  layoutId={"tab"}
+                  className={`relative h-full border-b-2 border-black`
+                }></motion.div> : <></>
+                }
+              </div>
+            </motion.button>
           );
         })}
       </motion.div>
