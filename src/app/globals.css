@@ -56,3 +56,7 @@ input {
 &::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+
+.scrollable-area {
+  overscroll-behavior: contain;
+}

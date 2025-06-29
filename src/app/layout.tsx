@@ -5,7 +5,9 @@ import "./globals.css";
 import SwiperBlockWrapper from "./providers/SwiperBlockWrapper";
 import { Analytics } from "@vercel/analytics/next";
 import { RegisterSW } from "./providers/RegisterSW";
-import { PreventZoomGesture } from "@/app/preventZoomGesture";
+import {PreventZoomGesture} from "@/app/preventZoomGesture";
+import {ForceViewportReset} from "@/app/forceViewportReset";
+import {PreventIOSPullToRefresh} from "@/app/preventIOSPullToRefresh";
 
 export const metadata: Metadata = {
   title: "우리는 이별을 미루기로 했다.",
@@ -107,20 +109,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang={"en"}>
-      <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
-        <title>우리는 이별을 미루기로 했다.</title>
-      </head>
-      <body className="antialiased">
-        <PreventZoomGesture />
-        <QueryProvider>
-          <div
-            className={`
+  return (<html lang={"en"}>
+    <head>
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      />
+      <title>우리는 이별을 미루기로 했다.</title>
+    </head>
+    <body className="antialiased touch-manipulation overscroll-none">
+      <PreventIOSPullToRefresh />
+      <ForceViewportReset />
+      <QueryProvider>
+        <div
+          className={`
         ${Pretendard.className}
         mx-auto
         min-h-[100dvh]
@@ -131,15 +133,15 @@ export default function RootLayout({
         overflow-hidden
         pb-[env(safe-area-inset-bottom)]
       `}
-          >
-            <SwiperBlockWrapper>
-              <RegisterSW />
-              <Analytics />
-              {children}
-            </SwiperBlockWrapper>
-          </div>
-        </QueryProvider>
-      </body>
-    </html>
-  );
+        >
+          <SwiperBlockWrapper>
+            <RegisterSW />
+            <Analytics />
+            <PreventZoomGesture />
+            {children}
+          </SwiperBlockWrapper>
+        </div>
+      </QueryProvider>
+    </body>
+  </html>);
 }
