@@ -90,14 +90,12 @@ const LoginPage = () => {
         }
 
         if (res.err?.code === 41001) {
+          openToast("로그인에 실패했습니다. 다시 시도해주세요.");
           const inviteCode = localStorage.getItem("inviteCode");
           const user = await fetchMyInfo();
-
           const coupleInfo = await fetchCoupleInfo();
-
           if (isMounted) await redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
         } else {
-          openToast("로그인에 실패했습니다. 다시 시도해주세요.");
           if (isMounted) router.replace("/login");
         }
 
