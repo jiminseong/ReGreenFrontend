@@ -2,7 +2,7 @@ import React from "react";
 
 const TermsContent = () => {
   return (
-    <div className="h-full p-4 text-sm leading-relaxed text-gray-800 overflow-y-scroll no-scrollbar">
+    <div className="h-full p-4 text-sm leading-relaxed text-gray-800">
       <p className="mb-4">
         본 약관은 &quot;우리는 이별을 미루기로 했다&quot;(이하 &quot;회사&quot;)가 제공하는 모바일
         애플리케이션 &quot;우이미&quot;(이하 &quot;서비스&quot;)의 이용과 관련하여 회사와 이용자

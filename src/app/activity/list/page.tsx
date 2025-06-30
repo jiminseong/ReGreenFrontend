@@ -5,6 +5,7 @@ import ActivityList from "@/features/certification/ui/ActivityList";
 import React, { useEffect, useState } from "react";
 import ActivityDescription from "@/features/description/ui/ActivityDescription";
 import { useActivityTourStore } from "@/features/certification/model/useActivityTourStore";
+import {PreventIOSPullToRefresh} from "@/app/preventIOSPullToRefresh";
 
 const ActivitySelectClientPage = () => {
   const [activeTab, setActiveTab] = useState("select");
@@ -20,7 +21,7 @@ const ActivitySelectClientPage = () => {
   }, [syncWithLocalStorage]);
 
   return (
-    <div className="flex relative flex-col h-[100dvh]">
+    <div className="flex relative flex-col h-[100dvh] overflow-y-hidden">
       {isSeen === false && <ActivityDescription onFinish={handleTourFinish} />}
       {/* 상단 네비게이션 바 */}
 
@@ -51,7 +52,8 @@ const ActivitySelectClientPage = () => {
       </div>
 
       {/* 탭 내용 */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-hidden">
+        <PreventIOSPullToRefresh />
         {activeTab === "select" ? <ActivityList /> : <StatusList />}
       </div>
     </div>
