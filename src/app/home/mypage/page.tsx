@@ -6,12 +6,16 @@ import TopNavigationBar from "@/shared/ui/TopNavigationBar";
 
 const MyPage = () => {
   return (
-    <div className="flex flex-col h-[100dvh]">
+    <div className="h-screen flex flex-col overflow-hidden">
       <CoupleGuard />
       <TopNavigationBar title="마이페이지" />
       <CustomProfile />
       <CoupleProfile />
-      <SettingList />
+
+      {/* 이 부분만 스크롤되도록 수정 */}
+      <div className="flex-1 scrollable-area">
+        <SettingList />
+      </div>
     </div>
   );
 };

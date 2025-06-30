@@ -1,12 +1,12 @@
 import React from "react";
 import Auth from "./Auth";
 import Setting from "./Setting";
-import Acitivity from "./Acitivity";
+import Activity from "./Acitivity";
 
 const SettingList = () => {
   return (
-    <div className="flex flex-col scrollable-area overflow-auto ">
-      <Acitivity />
+    <div className="flex flex-col">
+      <Activity />
       <Setting />
       <Auth />
     </div>

@@ -4,6 +4,7 @@ import StatusListItem from "./StatusListItem";
 import SkeletonStatusItem from "@/widgets/SkeletonStatusItem";
 import { useSubmitActivityList } from "../lib/useSubmitActivities";
 import { SubmitActivitiesItem } from "../model/type";
+import {PreventIOSPullToRefresh} from "@/app/preventIOSPullToRefresh";
 
 const StatusList = () => {
   const [page, setPage] = useState(1);
@@ -38,13 +39,15 @@ const StatusList = () => {
   }, [data]);
 
   return (
-    <div className="scrollable-area bg-[#F4F5F7] flex flex-col gap-2.5 py-8 px-5 h-full no-scrollbar overflow-y-scroll">
+    <div className="bg-[#F4F5F7] flex flex-col gap-2.5 py-8 px-5 no-scrollbar overflow-y-hidden h-full">
+      <PreventIOSPullToRefresh />
       {!isPending && items.length === 0 ? (
         <div className="text-center text-lg font-semibold text-[#777777] flex items-center justify-center h-full pb-48">
           아직 모인 활동이 없어요! <br />
           다양한 활동에 참여해보세요!
         </div>
       ) : (
+        <div className="flex flex-col gap-2.5 scrollable-area">{
         !isPending &&
         items &&
         items.map((activity, index) => (
@@ -64,6 +67,7 @@ const StatusList = () => {
             date={new Date(activity.createdAt)}
           />
         ))
+        }</div>
       )}
 
       {/* 스켈레톤 UI */}
