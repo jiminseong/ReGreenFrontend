@@ -63,12 +63,11 @@ const RankPage = () => {
       {coupleData && <TopThreeRank topThree={topThree} myCoupleId={coupleData.data.coupleId} />}
 
       {/* 스크롤 가능 본문 */}
-      <div className="flex flex-col h-full bg-[#F4F4F4] mt-[44px]">
+      <div ref={scrollRef} className="flex flex-col flex-1 scrollable-area bg-[#F4F4F4] mt-[44px] no-scrollbar py-5">
         <div className="w-full h-8 bg-[#F4F4F4] z-10" />
         {coupleData && (
-          <div ref={scrollRef} className="scrollable-area flex-grow overflow-y-auto no-scrollbar  pb-screen ">
+          <div  className="">
             <RankList data={rest} myCoupleId={coupleData?.data.coupleId} />
-
             {/* 로딩 중일 때 로딩 UI */}
             {isFetchingNextPage && (
               <div className="text-center py-4">
