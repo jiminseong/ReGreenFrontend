@@ -6,7 +6,7 @@ import { RankingItem } from "../model/type";
 
 const RankList = ({ data, myCoupleId }: { data: RankingItem[]; myCoupleId: string }) => {
   return (
-    <div className="relative bg-[#F4F4F4] px-5 pb-8 flex h-full flex-col ">
+    <div className="relative bg-[#F4F4F4] px-5 flex flex-col">
       {data.map((item, i) => {
         if (item.coupleId === myCoupleId)
           return (
