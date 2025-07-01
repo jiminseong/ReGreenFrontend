@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import LoginButton from "@/features/auth/ui/LoginButton";
 import { httpNoThrow } from "@/shared/lib/http";
@@ -13,7 +13,6 @@ import { useToastStore } from "@/shared/model/useToastStore";
 import Toast from "@/widgets/Toast";
 
 const LoginPage = () => {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
   const { isOpen, openToast, message } = useToastStore();
@@ -39,7 +38,7 @@ const LoginPage = () => {
   ) => {
     const path = getRedirectPath(coupleId, inviteCode, coupleName);
     localStorage.removeItem("inviteCode");
-    router.push(path);
+    window.location.replace(path);
   };
 
   // 토큰이 이미 있는 경우 자동 리디렉션
@@ -96,7 +95,7 @@ const LoginPage = () => {
           const coupleInfo = await fetchCoupleInfo();
           if (isMounted) await redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
         } else {
-          if (isMounted) router.replace("/login");
+          if (isMounted) window.location.replace("/login");
         }
 
         if (!isMounted) {
