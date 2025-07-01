@@ -55,7 +55,7 @@ const CoupleCheckPage = () => {
         const res = await postSoloMode();
         if (res.code === 2000) {
           await refetch();
-          router.push("/home");
+          router.push("/couple/nickname");
           return;
         }
         if (res.err.code === 42002) {

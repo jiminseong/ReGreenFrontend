@@ -6,6 +6,7 @@ interface InputProps {
   value: string | number;
   className?: string;
   active?: boolean;
+  activeColor?: "blue" | "pink";
 }
 
 const Input: React.FC<InputProps> = ({
@@ -13,6 +14,7 @@ const Input: React.FC<InputProps> = ({
   value,
   className,
   active = true,
+  activeColor = "pink",
   onChange,
 }) => {
   return (
@@ -21,7 +23,11 @@ const Input: React.FC<InputProps> = ({
       placeholder={placeHolder}
       value={value}
       className={`${className} w-full px-4 py-4 ${
-        active ? "bg-lpink border-b border-ppink" : "bg-[#EEEEEE] border-b border-[#999999]"
+        active
+          ? activeColor === "blue"
+            ? "bg-[#EEFBFA] border-b border-[#29C8BD]"
+            : "bg-lpink border-b border-ppink"
+          : "bg-[#EEEEEE] border-b border-[#999999]"
       }`}
     />
   );

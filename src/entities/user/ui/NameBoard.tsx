@@ -33,7 +33,7 @@ export default function NameBoard() {
     setEditing(false);
 
     if (!checkIsValidNickName(name)) {
-      openToast("띄어쓰기 포함 특수 문자 제외 10자 이내로 입력해주세요.");
+      openToast("띄어쓰기, 특수문자 포함 10자 이내로 입력해주세요.");
       setName(initialNameRef.current);
       return;
     }
