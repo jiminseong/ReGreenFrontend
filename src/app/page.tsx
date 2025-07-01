@@ -6,7 +6,7 @@ import { useMyInfo } from "@/entities/user/lib/userMyInfo";
 import InstallPrompt from "@/features/splash/ui/InstallPrompt";
 import { useInstallPromptStore } from "@/features/splash/ui/model/store";
 import { KakaoInAppBanner } from "@/shared/ui/KakaoInAppBanner";
-import {PreventZoomGesture} from "@/app/preventZoomGesture";
+import { PreventZoomGesture } from "@/app/preventZoomGesture";
 
 export default function Page() {
   const router = useRouter();
@@ -29,11 +29,7 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    // 오늘 날짜 및 시간 콘솔
-    console.log("오늘 날짜:", new Date().toDateString());
-    console.log("현재 시간:", new Date().toTimeString());
     if (isPending) return;
-    const accessToken = localStorage.getItem("accessToken");
     const onboarded = localStorage.getItem("onboarded");
 
     // PWA 미설치 + 아직 "웹으로 시작" 선택 안한 경우: 설치 안내만 보여줌
@@ -42,31 +38,20 @@ export default function Page() {
       return;
     }
 
-    // 로그인 되었고 coupleId 있음 + 온보딩 완료
-    if (accessToken !== null) {
-      if (data?.coupleId !== "" && onboarded === "true") {
-        router.push("/home");
-      }
-      // 로그인 되었고 coupleId 없음 + 온보딩 완료
-      else if (data?.coupleId === "" && onboarded === "true") {
-        router.push("/couple");
-      }
-      // 로그인 되었으나 온보딩 아직 안한 경우
-      else if (onboarded !== "true") {
-        router.push("/onboard");
-      }
+    // 1) 온보딩이 완료되지 않은 경우 최우선 처리
+    if (onboarded !== "true") {
+      router.push("/onboard");
+      return;
     }
 
-    // 로그인 안 된 상태
-    if (accessToken === null) {
-      if (onboarded !== "true") {
-        router.push("/onboard");
-        return;
-      } else if (onboarded === "true") {
-        router.push("/login");
-        return;
-      }
+    // 2) 커플 정보 유무에 따른 라우팅
+    if (data?.coupleId) {
+      router.push("/home");
+      return;
     }
+
+    // 3) 로그인 상태가 필요한 경우
+    router.push("/login");
   }, [isPending, isSuccess, data, isStandalone, promptSkipped]);
 
   return (

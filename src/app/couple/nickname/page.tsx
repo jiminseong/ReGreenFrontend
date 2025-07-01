@@ -46,11 +46,12 @@ const NickNamePage = () => {
             value={nickName}
             placeHolder="아지트명을 입력해주세요"
             active={isValid}
+            activeColor="blue"
             onChange={(e) => setNickName(e.target.value)}
           />
           {!isValid && nickName.length > 0 && (
             <div className="text-ppink text-sm font-regular">
-              띄어쓰기 포함 10자 이내로 입력해주세요.
+              띄어쓰기, 특수문자 포함 10자 이내로 입력해주세요.
             </div>
           )}
         </div>
