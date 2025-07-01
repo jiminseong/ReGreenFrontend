@@ -184,11 +184,11 @@ const ActivityList = () => {
               className="flex justify-center gap-4 items-center"
             >
               <div className="bg-lpink px-2 py-[4.5px] border border-ppink rounded flex items-center gap-2">
-                <Image src="/icon/home/heartIcon.svg" width={17} height={17} alt="하트" />
+                <Image src="/icon/home/heartIcon.svg" width={17} height={17} alt="하트" draggable={false}/>
                 <span className="text-ppink font-bold">+{selected.ecoLovePoint}</span>
               </div>
               <div className="bg-[#EEE] px-2 py-[4.5px] border border-[#222] rounded flex items-center gap-2">
-                <Image src="/icon/home/calendarIcon.svg" width={17} height={17} alt="캘린더" />
+                <Image src="/icon/home/calendarIcon.svg" width={17} height={17} alt="캘린더" draggable={false} />
                 <span className="font-bold">+{selected.breakupBufferPoint}</span>
               </div>
             </motion.div>
@@ -201,6 +201,7 @@ const ActivityList = () => {
                     width={24}
                     height={24}
                     alt="카메라"
+                    draggable={false}
                   />
                 </div>
               }

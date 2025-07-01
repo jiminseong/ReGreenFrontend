@@ -30,7 +30,7 @@ const ActivityItem = ({
       >
         {/* 아이콘과 라벨 */}
         <div className={`flex items-center gap-4 `}>
-          {imageUrl.length > 0 && <Image src={imageUrl} alt={title} width={36} height={36} />}
+          {imageUrl.length > 0 && <Image src={imageUrl} alt={title} width={36} height={36} draggable={false} />}
           <span className="text-lg font-medium">{title}</span>
         </div>
 

@@ -64,7 +64,7 @@ const BottomShareModal = ({
             className="absolute z-50 bottom-0 px-5 py-5 bg-white rounded-t-[20px] cursor-auto flex flex-col gap-5 w-full max-w-[500px] left-1/2 transform will-change-transform -translate-x-1/2"
           >
             <div ref={ref} className="w-full aspect-square overflow-hidden rounded-lg relative ">
-              <Image src={imageUrl} alt="인증 사진" fill className="object-cover" />
+              <Image src={imageUrl} alt="인증 사진" fill className="object-cover" draggable={false} />
               <div className="absolute inset-0 bg-black/30" />
               <div className="absolute bottom-5 right-5 flex items-center gap-2">
                 <Image
@@ -72,6 +72,7 @@ const BottomShareModal = ({
                   alt="프레임 아이콘"
                   width={38}
                   height={56}
+                  draggable={false}
                 />
               </div>
             </div>

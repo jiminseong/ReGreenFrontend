@@ -51,6 +51,7 @@ const CustomProfile = () => {
           fill
           alt="커플 프로필 이미지"
           className="object-cover"
+          draggable={false}
         />
 
         <input

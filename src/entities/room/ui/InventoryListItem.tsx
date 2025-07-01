@@ -32,6 +32,7 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
           alt="체크아이콘"
           width={14}
           height={14}
+          draggable={false}
         />
       )}
       {item.name === "기본 벽지" ||
@@ -43,19 +44,20 @@ const InventoryListItem: React.FC<InventoryListItemProps> = ({
             alt="체크아이콘"
             width={14}
             height={14}
+            draggable={false}
           />
         ))}
 
       {/* 이미지 높이 고정 */}
       <div className="w-[62px] h-[58px] relative  flex items-center justify-center mt-2">
-        <Image src={item.previewImageUrl} fill className="object-cover" alt={item.name} />
+        <Image src={item.previewImageUrl} fill className="object-cover" alt={item.name} draggable={false}/>
       </div>
       <p className={` mt-2 text-sm py-auto text-center w-[80px]`}>{item.name}</p>
       {isOwned || item.name === "기본 룸쉘" ? (
         <span className="mt-2 text-[#777777] text-sm font-semibold">보유중</span>
       ) : (
         <div className="mt-2 flex items-center justify-center gap-1">
-          <Image alt="하트아이콘" src="/icon/home/heartIcon.svg" width={14.17} height={12.19} />
+          <Image alt="하트아이콘" src="/icon/home/heartIcon.svg" width={14.17} height={12.19} draggable={false}/>
           <p className="text-pink-500 text-sm font-semibold">
             {item.price === 0 ? "무료" : item.price}
           </p>

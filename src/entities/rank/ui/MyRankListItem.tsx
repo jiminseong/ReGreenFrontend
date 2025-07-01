@@ -18,7 +18,7 @@ const MyRankListItem = ({ rankingItem }: { rankingItem: RankingItem }) => {
       </div>
 
       <div className="flex items-center gap-1">
-        <Image src={"/icon/home/heartIcon.svg"} alt="heart" width={17.5} height={17.5} />
+        <Image src={"/icon/home/heartIcon.svg"} alt="heart" width={17.5} height={17.5} draggable={false}/>
         <span className="font-semibold">{rankingItem.ecoScore}</span>
       </div>
     </div>
