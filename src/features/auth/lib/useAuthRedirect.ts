@@ -43,14 +43,14 @@ export const useAuthRedirect = () => {
 
         // 3) 리다이렉트
         router.replace(getRedirectPath(user.coupleId, inviteCode, coupleInfo.data?.name ?? null));
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (err: any) {
+      } catch (err) {
         console.error(err);
+        const errorMessage = err instanceof Error ? err.message : "Unknown error";
         // 로그인 콜백 실패 or refresh 실패 등
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         openToast(
-          err.message === "LOGIN_FAILED"
+          errorMessage === "LOGIN_FAILED"
             ? "로그인에 실패했습니다. 다시 시도해주세요."
             : "세션이 만료되었습니다. 다시 로그인해주세요."
         );
