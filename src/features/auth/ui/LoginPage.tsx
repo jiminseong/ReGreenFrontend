@@ -1,118 +1,14 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-
-import LoginButton from "@/features/auth/ui/LoginButton";
-import { httpNoThrow } from "@/shared/lib/http";
-import LogoLoading from "@/widgets/LogoLoading";
-import { fetchMyInfo } from "@/entities/user/lib/fetchMyInfo";
-import { LoginResponse } from "../model/type";
-import { fetchCoupleInfo } from "@/entities/user/lib/fetchCoupleInfo";
+import React from "react";
+import { useAuthRedirect } from "../lib/useAuthRedirect";
 import { useToastStore } from "@/shared/model/useToastStore";
+import LoginButton from "@/features/auth/ui/LoginButton";
+import LogoLoading from "@/widgets/LogoLoading";
 import Toast from "@/widgets/Toast";
 
 const LoginPage = () => {
-  const searchParams = useSearchParams();
-  const code = searchParams.get("code");
-  const { isOpen, openToast, message } = useToastStore();
-  const [loading, setLoading] = useState(false);
-
-  // 리디렉션 경로 계산 함수
-  const getRedirectPath = (
-    coupleId: string | null,
-    inviteCode: string | null,
-    coupleName: string | null
-  ) => {
-    if (coupleId && !coupleName) return "/couple/nickname";
-    if (coupleId) return "/home";
-    if (inviteCode?.trim()) return `/couple/invited?inviteCode=${encodeURIComponent(inviteCode)}`;
-    return "/couple";
-  };
-
-  // 로그인 완료 후 리디렉션
-  const redirectAfterLogin = (
-    coupleId: string | null,
-    inviteCode: string | null,
-    coupleName: string | null
-  ) => {
-    const path = getRedirectPath(coupleId, inviteCode, coupleName);
-    localStorage.removeItem("inviteCode");
-    window.location.replace(path);
-  };
-
-  // 토큰이 이미 있는 경우 자동 리디렉션
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!code && token) {
-      (async () => {
-        setLoading(true);
-        try {
-          const inviteCode = localStorage.getItem("inviteCode");
-          const user = await fetchMyInfo();
-          const coupleInfo = await fetchCoupleInfo();
-          const coupleName = coupleInfo.data?.name ?? null;
-          redirectAfterLogin(user.coupleId, inviteCode, coupleName);
-        } catch (error) {
-          console.error("[useEffect] 자동 리디렉션 실패:", error);
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-        } finally {
-          setLoading(false);
-        }
-      })();
-    }
-  }, []);
-
-  // 카카오 로그인 처리
-  useEffect(() => {
-    if (!code) return;
-    let isMounted = true;
-    setLoading(true);
-
-    (async () => {
-      try {
-        const res = await httpNoThrow
-          .post(`api/auth/kakao/login?code=${code}&local=${process.env.NEXT_PUBLIC_LOCAL_BOOLEAN}`)
-          .json<LoginResponse>();
-
-        // 1) 로그인 성공
-        if (res.code === 2000) {
-          localStorage.setItem("accessToken", res.data.accessToken);
-          localStorage.setItem("refreshToken", res.data.refreshToken);
-
-          // 토큰 저장 후 곧바로 리다이렉트
-          if (isMounted) {
-            const inviteCode = localStorage.getItem("inviteCode");
-            const user = await fetchMyInfo();
-            const coupleInfo = await fetchCoupleInfo();
-            redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data?.name ?? null);
-          }
-          return; // 여기서 종료
-        }
-
-        // 2) 로그인 실패 (2000 아니면 모두 실패 처리)
-        //    필요한 에러 메시지만 보여주고 /login으로만 보냄
-        if (res.err?.code === 41001) {
-          openToast("로그인에 실패했습니다. 다시 시도해주세요.");
-        } else {
-          openToast(res.message || "알 수 없는 에러가 발생했습니다.");
-        }
-        if (isMounted) window.location.replace("/login");
-      } catch (err) {
-        if (err && typeof err === "object" && "status" in err && err.status === 401) {
-          console.error("[useEffect] 로그인 처리 중 오류 발생:", err);
-          openToast("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
-        }
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    })();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [code]);
+  const { loading } = useAuthRedirect();
+  const { isOpen, message } = useToastStore();
 
   return (
     <div className="flex flex-col items-center justify-between h-[100dvh] p-5">
