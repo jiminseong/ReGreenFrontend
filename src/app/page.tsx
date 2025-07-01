@@ -38,21 +38,20 @@ export default function Page() {
       return;
     }
 
-    if (data?.coupleId) {
-      if (onboarded === "true") {
-        router.push("/home");
-      } else {
-        router.push("/couple");
-      }
-    } else {
-      if (onboarded === "true") {
-        router.push("/login");
-      }
-    }
-
+    // 1) 온보딩이 완료되지 않은 경우 최우선 처리
     if (onboarded !== "true") {
       router.push("/onboard");
+      return;
     }
+
+    // 2) 커플 정보 유무에 따른 라우팅
+    if (data?.coupleId) {
+      router.push("/home");
+      return;
+    }
+
+    // 3) 로그인 상태가 필요한 경우
+    router.push("/login");
   }, [isPending, isSuccess, data, isStandalone, promptSkipped]);
 
   return (
