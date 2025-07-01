@@ -93,7 +93,7 @@ const LoginPage = () => {
           const inviteCode = localStorage.getItem("inviteCode");
           const user = await fetchMyInfo();
           const coupleInfo = await fetchCoupleInfo();
-          if (isMounted) await redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
+          if (isMounted) redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
         } else {
           if (isMounted) window.location.replace("/login");
         }
@@ -108,7 +108,7 @@ const LoginPage = () => {
         const coupleInfo = await fetchCoupleInfo();
 
         const coupleName = coupleInfo.data?.name ?? null;
-        await redirectAfterLogin(user.coupleId, inviteCode, coupleName);
+        redirectAfterLogin(user.coupleId, inviteCode, coupleName);
       } catch (err) {
         if (err && typeof err === "object" && "status" in err && err.status === 401) {
           console.error("[useEffect] 로그인 처리 중 오류 발생:", err);
