@@ -22,6 +22,7 @@ const MyProfile = () => {
           src={data?.profileImageUrl ?? "/default/profile.png"}
           alt="유저 프로필"
           fill
+          draggable={false}
         />
       </div>
       <p className={`font-semibold  text-[#121212] absolute bottom-[-32px]`}>프로필</p>

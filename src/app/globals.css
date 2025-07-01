@@ -35,6 +35,7 @@
     margin: 0;
     overscroll-behavior: none;
     touch-action: manipulation;
+    user-select: none;
   }
   #landscape-warning {
     display: block;

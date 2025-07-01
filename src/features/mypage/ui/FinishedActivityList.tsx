@@ -68,11 +68,11 @@ export const FinishedActivityList = () => {
       <div className="p-4 space-y-6 bg-[#F1F2F5] h-[100dvh]">
         <div className="flex justify-center items-center space-x-4 z-10 ">
           <button onClick={() => handleDateChange(-1)}>
-            <Image src="/icon/mypage/leftArrow.svg" alt="이전 날짜" width={28} height={28} />
+            <Image src="/icon/mypage/leftArrow.svg" alt="이전 날짜" width={28} height={28} draggable={false}/>
           </button>
           <span className="text-[19px] font-semibold">{date}</span>
           <button onClick={() => handleDateChange(1)}>
-            <Image src="/icon/mypage/rightArrow.svg" alt="다음 날짜" width={28} height={28} />
+            <Image src="/icon/mypage/rightArrow.svg" alt="다음 날짜" width={28} height={28} draggable={false}/>
           </button>
         </div>
 

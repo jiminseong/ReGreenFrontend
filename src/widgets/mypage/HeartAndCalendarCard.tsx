@@ -10,11 +10,11 @@ const HeartAndCalendarCard = ({ ecoLovePoint, breakupBufferPoint }: HeartAndCale
   return (
     <div className="w-full justify-between flex gap-1 items-center z-50 text-sm lg:text-lg ">
       <div className="w-full bg-lpink px-[6px] py-[3.5px]  rounded-[4px] flex items-center justify-center  gap-2">
-        <Image src="/icon/home/heartIcon.svg" width={17} height={17} alt="하트아이콘" />
+        <Image src="/icon/home/heartIcon.svg" width={17} height={17} alt="하트아이콘" draggable={false}/>
         <span className="text-ppink font-bold">+{ecoLovePoint}</span>
       </div>
       <div className="w-full bg-[#EEEEEE] px-[6px] py-[3.5px]  rounded-[4px]  flex items-center justify-center gap-2">
-        <Image src="/icon/home/calendarIcon.svg" width={17} height={17} alt="달력아이콘" />
+        <Image src="/icon/home/calendarIcon.svg" width={17} height={17} alt="달력아이콘" draggable={false}/>
         <span className="font-bold ">+{breakupBufferPoint}</span>
       </div>
     </div>

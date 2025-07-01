@@ -57,8 +57,9 @@ const WiggleBadge: React.FC<WiggleBadgeProps> = ({ value: rawValue, type, onClic
           : "w-[63.37px] h-[30.55px] md:w-[81.9px] md:h-[40px]"
       } ${bgImage} bg-cover bg-no-repeat flex items-center justify-end `}
       onClick={onClick}
+      draggable={false}
     >
-      <span className={`${textColor} mr-2.5 font-bold leading-none text-[15px] md:text-xl`}>
+      <span className={`${textColor} mr-2.5 font-bold leading-none text-[15px] md:text-xl`} draggable={false}>
         {textValue}
       </span>
     </div>

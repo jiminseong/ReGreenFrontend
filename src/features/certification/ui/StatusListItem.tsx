@@ -58,7 +58,7 @@ const StatusListItem: React.FC<StatusListItemProp> = ({
         <div className="flex items-center justify-between bg-[#FFFFFF] px-4 py-6 rounded-2xl ">
           {/* 아이콘 + 텍스트 */}
           <div className="flex items-center gap-4">
-            <Image src={iconSrc} alt={label} width={56} height={56} />
+            <Image src={iconSrc} alt={label} width={56} height={56} draggable={false}/>
             <div className="flex flex-col">
               {formattedLabel}
               <span className="text-sm font-normal text-[#777777]">

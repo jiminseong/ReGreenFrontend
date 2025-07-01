@@ -51,6 +51,7 @@ export default function Page() {
               alt="complete icon"
               width={100}
               height={100}
+              draggable={false}
             />
             <div className="flex flex-col items-center justify-center gap-2.5">
               <p className="text-lg text-center">
@@ -60,7 +61,7 @@ export default function Page() {
               </p>
               <div className="flex gap-4 justify-center items-center">
                 <div className="flex items-center bg-lpink rounded-lg px-2 py-[1.5px] gap-2  min-w-[71px]">
-                  <Image src="/icon/home/heartIcon.svg" alt="heart icon" width={17} height={17} />
+                  <Image src="/icon/home/heartIcon.svg" alt="heart icon" width={17} height={17} draggable={false} />
                   <span className="text-ppink font-semibold text-lg">+{ecoLovePoint}</span>
                 </div>
                 <div className="flex items-center bg-[#EEEEEE] rounded-lg px-2 py-[1.5px] gap-2  min-w-[71px]">
@@ -69,6 +70,7 @@ export default function Page() {
                     alt="calendar icon"
                     width={17}
                     height={17}
+                    draggable={false}
                   />
                   <span className="text-[#333333] font-semibold text-lg">
                     +{breakupBufferPoint}

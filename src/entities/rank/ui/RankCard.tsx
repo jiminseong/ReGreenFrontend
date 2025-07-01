@@ -33,7 +33,7 @@ export default function RankCard({
           isFirst ? "mb-[10px] w-20 h-20 " : "mb-[15px] w-16 h-16"
         }  rounded-full border border-[#F3F3F3] overflow-hidden`}
       >
-        <Image alt="커플이미지" src={imageUrl} fill className="object-cover rounded-full" />
+        <Image alt="커플이미지" src={imageUrl} fill className="object-cover rounded-full" draggable={false}/>
       </div>
       <p
         className={`
@@ -54,9 +54,9 @@ export default function RankCard({
 
       <div className="flex items-center justify-center mt-2 space-x-1">
         {isFirst ? (
-          <Image src="/icon/home/whiteHeartIcon.svg" alt="heart" width={16} height={16} />
+          <Image src="/icon/home/whiteHeartIcon.svg" alt="heart" width={16} height={16} draggable={false} />
         ) : (
-          <Image src="/icon/home/heartIcon.svg" alt="heart" width={16} height={16} />
+          <Image src="/icon/home/heartIcon.svg" alt="heart" width={16} height={16} draggable={false}/>
         )}
         <span className="font-semibold flex items-center">{rankingItem.ecoScore}</span>
       </div>

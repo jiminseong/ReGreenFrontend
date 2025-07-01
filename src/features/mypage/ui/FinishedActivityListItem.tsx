@@ -33,7 +33,7 @@ const FinishedActivityListItem = ({
   return (
     <div key={type}>
       <div className="flex items-center space-x-2 mb-2">
-        {iconMap[type] && <Image src={iconMap[type]} alt={type} width={20} height={20} />}
+        {iconMap[type] && <Image src={iconMap[type]} alt={type} width={20} height={20} draggable={false}/>}
         <span className="text-[#777777] font-regular text-sm ">
           {activityTitleMap[type] || type}
         </span>

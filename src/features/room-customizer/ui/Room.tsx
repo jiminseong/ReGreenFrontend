@@ -112,6 +112,7 @@ const Room = () => {
             width={1000}
             height={1000}
             style={{ zIndex: item.zIndex, position: "absolute" }}
+            draggable={false}
           />
         ))}
         <div
@@ -125,6 +126,7 @@ const Room = () => {
             width={1000}
             height={1000}
             className="absolute z-[-10] bottom-[80px] md:bottom-[150px] w-full h-full"
+            draggable={false}
           />
         </div>
       </motion.div>

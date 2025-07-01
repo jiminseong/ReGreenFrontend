@@ -33,6 +33,7 @@ const CoupleProfile = () => {
             src={member.profileImageUrl ?? "/image/couple/defaultProfile.png"}
             alt="커플 프로필"
             fill
+            draggable={false}
           />
         </div>
         <p className="font-semibold text-[#121212]">{member.nickname}</p>
@@ -46,7 +47,7 @@ const CoupleProfile = () => {
     >
       {renderProfile(0)}
 
-      <Image src="/icon/home/lightHeartIcon.svg" alt="하트 아이콘" width={15} height={14.15} />
+      <Image src="/icon/home/lightHeartIcon.svg" alt="하트 아이콘" width={15} height={14.15} draggable={false} />
 
       {renderProfile(1)}
     </div>

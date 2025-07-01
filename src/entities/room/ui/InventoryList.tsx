@@ -176,6 +176,7 @@ const InventoryListComponent = () => {
               width={25}
               height={12}
               className="absolute z-50 cursor-pointer top-[-32px] left-[50%] translate-x-[-50%]"
+              draggable={false}
             />
 
             {/* 탭 메뉴 */}
