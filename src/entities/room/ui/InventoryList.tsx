@@ -196,6 +196,8 @@ const InventoryListComponent = () => {
             </div>
           </motion.div>
         )}{" "}
+      </AnimatePresence>
+      <AnimatePresence mode="wait">
         {modal && modalType === "buy" && (
           <CommonModal
             isOpen={modal}
