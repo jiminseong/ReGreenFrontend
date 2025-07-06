@@ -47,7 +47,7 @@ const CoupleInvitePage = () => {
         openToast("커플 연결 성공되었습니다!");
         localStorage.removeItem("inviteCode");
         router.push("/home");
-        refetch();
+        await refetch();
       } else {
         setModalOpen(true);
       }
@@ -66,7 +66,7 @@ const CoupleInvitePage = () => {
       router.push("/home");
     }
     // 커플 없으면 그대로 초대코드 입력화면 유지
-  }, [data?.coupleId, isSuccess]);
+  }, [data?.coupleId, isSuccess, router]);
 
   return (
     <div className="flex flex-col items-center justify-between h-[100dvh] p-5 pb-8 pt-24">

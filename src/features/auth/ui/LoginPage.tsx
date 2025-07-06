@@ -66,7 +66,7 @@ const LoginPage = () => {
         }
       })();
     }
-  }, []);
+  }, [code, redirectAfterLogin]);
 
   // 카카오 로그인 처리
   useEffect(() => {
@@ -93,7 +93,7 @@ const LoginPage = () => {
           const inviteCode = localStorage.getItem("inviteCode");
           const user = await fetchMyInfo();
           const coupleInfo = await fetchCoupleInfo();
-          if (isMounted) await redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
+          if (isMounted) redirectAfterLogin(user.coupleId, inviteCode, coupleInfo.data.name);
         } else {
           if (isMounted) router.replace("/login");
         }
@@ -108,7 +108,7 @@ const LoginPage = () => {
         const coupleInfo = await fetchCoupleInfo();
 
         const coupleName = coupleInfo.data?.name ?? null;
-        await redirectAfterLogin(user.coupleId, inviteCode, coupleName);
+        redirectAfterLogin(user.coupleId, inviteCode, coupleName);
       } catch (err) {
         if (err && typeof err === "object" && "status" in err && err.status === 401) {
           console.error("[useEffect] 로그인 처리 중 오류 발생:", err);
@@ -122,7 +122,7 @@ const LoginPage = () => {
     return () => {
       isMounted = false;
     };
-  }, [code]);
+  }, [code, openToast, redirectAfterLogin, router]);
 
   return (
     <div className="flex flex-col items-center justify-between h-[100dvh] p-5">

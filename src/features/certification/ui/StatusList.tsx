@@ -4,7 +4,6 @@ import StatusListItem from "./StatusListItem";
 import SkeletonStatusItem from "@/widgets/SkeletonStatusItem";
 import { useSubmitActivityList } from "../lib/useSubmitActivities";
 import { SubmitActivitiesItem } from "../model/type";
-import {PreventIOSPullToRefresh} from "@/app/preventIOSPullToRefresh";
 
 const StatusList = () => {
   const [page, setPage] = useState(1);
@@ -29,14 +28,14 @@ const StatusList = () => {
     observer.observe(current);
 
     return () => observer.unobserve(current);
-  }, [hasNextPage, isPending, loader.current]);
+  }, [hasNextPage, isPending]);
 
   useEffect(() => {
     if (!isPending && isSuccess && data?.results) {
       setItems((prev) => [...prev, ...(data.results ?? [])]);
       if (data.results.length < 10) setHasNextPage(false);
     }
-  }, [data]);
+  }, [data, isPending, isSuccess]);
 
   return (
     <div className="bg-[#F4F5F7] flex flex-col gap-2.5 py-8 px-5 no-scrollbar overflow-y-hidden h-full">

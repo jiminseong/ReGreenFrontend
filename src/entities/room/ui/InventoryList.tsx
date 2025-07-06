@@ -1,21 +1,21 @@
 "use client";
 
-import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
+import {useHomeMode} from "@/features/room-customizer/lib/useHomeMode";
 import Image from "next/image";
-import React, { useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { useFurnitureModalStore, useFurnitureStore } from "@/entities/room/model/store";
-import { BuyFurnitureResponse, FurnitureItem } from "@/entities/room/model/type";
+import React, {useEffect, useMemo, useState} from "react";
+import {AnimatePresence, motion} from "framer-motion";
+import {useFurnitureModalStore, useFurnitureStore} from "@/entities/room/model/store";
+import {BuyFurnitureResponse, FurnitureItem} from "@/entities/room/model/type";
 import CategorySwiper from "./CategorySwiper";
 import InventoryListItem from "./InventoryListItem";
 import CommonModal from "@/widgets/ComonModal";
-import { useRoomStore } from "@/features/room-customizer/model/store";
-import { useRouter } from "next/navigation";
-import { useCoupleInfo } from "@/entities/user/lib/useCoupleInfo";
-import { useMyPlacedFurniture } from "@/features/room-customizer/lib/useMyPlacedFurniture";
-import { httpNoThrow } from "@/shared/lib/http";
+import {useRoomStore} from "@/features/room-customizer/model/store";
+import {useRouter} from "next/navigation";
+import {useCoupleInfo} from "@/entities/user/lib/useCoupleInfo";
+import {useMyPlacedFurniture} from "@/features/room-customizer/lib/useMyPlacedFurniture";
+import {httpNoThrow} from "@/shared/lib/http";
 import LogoLoading from "@/widgets/LogoLoading";
-import { normalizeExclusivePlacement } from "@/features/room-customizer/lib/normalizeExclusivePlacement";
+import {normalizeExclusivePlacement} from "@/features/room-customizer/lib/normalizeExclusivePlacement";
 
 const InventoryListComponent = () => {
   const router = useRouter();
@@ -72,8 +72,7 @@ const InventoryListComponent = () => {
   );
 
   const handleBuy = async () => {
-    const coupleData = coupleInfo;
-    if (!coupleData || !modalItem) {
+    if (!coupleInfo || !modalItem) {
       console.error("커플 데이터 또는 모달 아이템이 없습니다." + coupleInfo + modalItem);
       return;
     }
@@ -138,7 +137,7 @@ const InventoryListComponent = () => {
       const firstCategory = newCoupleFurniture.data[0].category;
       setCategories([firstCategory]);
     }
-  }, [furnitureSuccess, newCoupleFurniture]);
+  }, [currentCategory, furnitureSuccess, newCoupleFurniture, setCategories]);
   function handleHomeMode() {
     if (
       mode === "inventory" &&
