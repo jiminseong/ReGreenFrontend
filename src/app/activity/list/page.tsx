@@ -53,6 +53,7 @@ const ActivitySelectClientPage = () => {
 
       {/* 탭 내용 */}
       <div className="flex-1 overflow-y-hidden">
+        <PreventIOSPullToRefresh/>
         {activeTab === "select" ? <ActivityList /> : <StatusList />}
       </div>
     </div>

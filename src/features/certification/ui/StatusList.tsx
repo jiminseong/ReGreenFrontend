@@ -40,7 +40,6 @@ const StatusList = () => {
 
   return (
     <div className="bg-[#F4F5F7] flex flex-col gap-2.5 py-8 px-5 no-scrollbar overflow-y-hidden h-full">
-      <PreventIOSPullToRefresh />
       {!isPending && items.length === 0 ? (
         <div className="text-center text-lg font-semibold text-[#777777] flex items-center justify-center h-full pb-48">
           아직 모인 활동이 없어요! <br />

@@ -50,8 +50,9 @@ const CustomProfile = () => {
           src={data?.data.profileImageUrl || "/image/couple/defaultProfile.png"}
           fill
           alt="커플 프로필 이미지"
-          className="object-cover"
+          className="object-cover cursor-pointer"
           draggable={false}
+          onClick={openFileDialog}
         />
 
         <input
