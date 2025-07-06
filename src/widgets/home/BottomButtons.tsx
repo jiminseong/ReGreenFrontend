@@ -42,7 +42,7 @@ const BottomButtons = ({ type = null }: BottomButtonsProps) => {
         <div
           className={`flex ${
             type === "description" ? "w-[48%]" : "w-full"
-          }  justify-center gap-4 mb-9 `}
+          }  justify-center gap-4 pb-9 `}
         >
           <button
             type="button"
