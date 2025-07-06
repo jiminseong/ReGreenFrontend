@@ -145,7 +145,7 @@ const ActivityList = () => {
   };
 
   return (
-    <div className="scrollable-area bg-white h-full overflow-y-scroll no-scrollbar relative">
+    <div className="scrollable-area bg-white overflow-y-scroll no-scrollbar relative">
       {isOpen && <Toast message={message} position="top" />}
       {(isPending || loading) && <LogoLoading />}
       {isModalOpen && (
