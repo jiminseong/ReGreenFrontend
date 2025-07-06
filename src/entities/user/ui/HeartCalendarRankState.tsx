@@ -28,7 +28,7 @@ const HeartCalendarRankState = () => {
       router.push("/login");
       return;
     }
-  }, []);
+  }, [router]);
 
   const handleEasterEgg = async () => {
     setEasterEgg((prev) => prev + 1);

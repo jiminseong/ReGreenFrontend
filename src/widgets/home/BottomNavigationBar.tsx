@@ -3,7 +3,6 @@
 import { useHomeMode } from "@/features/room-customizer/lib/useHomeMode";
 
 import React from "react";
-import Image from "next/image";
 import BottomButtons from "./BottomButtons";
 import NameBoard from "@/entities/user/ui/NameBoard";
 

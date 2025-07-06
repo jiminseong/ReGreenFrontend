@@ -35,7 +35,7 @@ const CoupleGuard = () => {
       router.push("/couple/nickname");
       return;
     }
-  }, [myError, myPending, mySuccess, myData?.coupleId, coupleSuccess, coupleData, router]);
+  }, [myError, myPending, mySuccess, myData?.coupleId, coupleSuccess, coupleData, router, coupleError]);
 
   return null;
 };

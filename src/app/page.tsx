@@ -26,7 +26,7 @@ export default function Page() {
 
   useEffect(() => {
     initEnvironment();
-  }, []);
+  }, [initEnvironment]);
 
   useEffect(() => {
     if (isPending) return;
@@ -52,7 +52,7 @@ export default function Page() {
 
     // 3) 로그인 상태가 필요한 경우
     router.push("/login");
-  }, [isPending, isSuccess, data, isStandalone, promptSkipped]);
+  }, [isPending, isSuccess, data, isStandalone, promptSkipped, router, setPromptVisible]);
 
   return (
     <main className="min-h-[100dvh] bg-white flex  items-center justify-center px-4">
